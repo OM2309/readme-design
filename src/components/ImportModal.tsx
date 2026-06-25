@@ -25,6 +25,22 @@ export default function ImportModal({ isOpen, onClose, onAiSuccess }: ImportModa
   const [repoPath, setRepoPath] = useState("");
   const [loading, setLoading] = useState(false);
 
+  React.useEffect(() => {
+    if (typeof window === "undefined" || !isOpen) return;
+    const params = new URLSearchParams(window.location.search);
+    const importUrl = params.get("importUrl");
+    if (importUrl) {
+      Promise.resolve().then(() => {
+        setRepoPath(importUrl);
+      });
+      // Clean query param
+      const newParams = new URLSearchParams(window.location.search);
+      newParams.delete("importUrl");
+      const qs = newParams.toString();
+      window.history.replaceState({}, "", `/studio${qs ? `?${qs}` : ""}`);
+    }
+  }, [isOpen]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!repoPath.trim()) return;
