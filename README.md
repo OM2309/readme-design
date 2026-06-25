@@ -268,8 +268,6 @@ This project is licensed under the **MIT License** — see the [LICENSE](LICENSE
 
 <div align="center">
 
-**Built with ❤️ by [Om](https://github.com/OM2309)**
-
 If you found this helpful, please consider giving it a ⭐
 
 [**🚀 Open Studio**](https://readme-studio.vercel.app/studio) · [**🐛 Report Bug**](https://github.com/OM2309/readme-design/issues) · [**💡 Request Feature**](https://github.com/OM2309/readme-design/issues)
