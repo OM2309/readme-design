@@ -86,7 +86,7 @@ export default function ExportModal({ isOpen, onClose }: ExportModalProps) {
       <DialogContent className="max-w-sm bg-panel border-neutral-800 text-foreground select-none">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-base font-bold">
-            <ImageIcon className="w-5 h-5 text-indigo-400" />
+            <ImageIcon className="w-5 h-5 text-emerald-400" />
             Export Canvas as Image
           </DialogTitle>
           <DialogDescription className="text-[11px] text-neutral-400">
@@ -141,7 +141,7 @@ export default function ExportModal({ isOpen, onClose }: ExportModalProps) {
             </Select>
           </div>
 
-          <Button onClick={handleExport} disabled={exporting} className="w-full h-8 text-xs bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center gap-1.5 mt-2">
+          <Button onClick={handleExport} disabled={exporting} className="w-full h-8 text-xs bg-emerald-400 hover:bg-emerald-400/90 text-emerald-950 flex items-center justify-center gap-1.5 mt-2">
             {exporting ? (
               <>
                 <Loader2 className="w-3.5 h-3.5 animate-spin" /> Rendering layout...

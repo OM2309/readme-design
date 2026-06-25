@@ -314,7 +314,7 @@ function VisualBadges({ props }: { props: Record<string, any> }) {
 function VisualGroup({ props }: { props: Record<string, any> }) {
   return (
     <div className="flex items-center gap-2 border-b border-neutral-800 pb-2 mb-2">
-      <FolderOpen className="w-4 h-4 text-indigo-400" />
+      <FolderOpen className="w-4 h-4 text-emerald-400" />
       <span className="text-xs font-semibold text-neutral-300 uppercase tracking-wider">
         {props.title || "Group Container"}
       </span>
@@ -421,7 +421,7 @@ function VisualSponsors({ props }: { props: Record<string, any> }) {
     <ul className="list-disc pl-5 text-xs text-neutral-300 space-y-1">
       {sponsors.map((sp: any, i: number) => (
         <li key={i}>
-          <a href={sp.link || "https://github.com"} target="_blank" rel="noreferrer" className="text-indigo-400 hover:underline">
+          <a href={sp.link || "https://github.com"} target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">
             {sp.name}
           </a>
         </li>
@@ -523,7 +523,7 @@ function VisualContributors({ props }: { props: Record<string, any> }) {
           <img 
             src={user.avatar_url} 
             alt={user.login} 
-            className="rounded-full border border-border hover:border-indigo-400 hover:scale-105 transition-all"
+            className="rounded-full border border-border hover:border-emerald-400 hover:scale-105 transition-all"
             style={{ width: avatarSize, height: avatarSize }}
           />
         </a>
@@ -613,7 +613,7 @@ function VisualRoadmap({ props, blockId }: { props: Record<string, any>; blockId
             checked={item.done} 
             onChange={() => {}} // handled by click
             onClick={(e) => toggleDone(e, i)}
-            className="w-4 h-4 rounded border-neutral-700 bg-neutral-900 text-indigo-600 focus:ring-indigo-500 cursor-pointer"
+            className="w-4 h-4 rounded border-neutral-700 bg-neutral-900 text-emerald-600 focus:ring-emerald-500 cursor-pointer"
           />
           <input
             value={item.text}
@@ -839,7 +839,7 @@ export default function Canvas() {
       {isMultiSelect && (
         <div className="fixed top-20 z-40 bg-neutral-900 border border-neutral-800 px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4 select-none">
           <div className="flex items-center gap-1.5 text-xs text-neutral-300 font-semibold border-r border-border pr-3">
-            <Group className="w-4 h-4 text-indigo-400" />
+            <Group className="w-4 h-4 text-emerald-400" />
             <span>{selectedBlockIds.length} blocks selected</span>
           </div>
           <div className="flex gap-2">
@@ -867,7 +867,7 @@ export default function Canvas() {
         {/* Onboarding Empty Canvas State (Requirement 11) */}
         {blocks.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 text-center select-none">
-            <div className="p-4 bg-neutral-900 border border-neutral-850 text-indigo-400 rounded-full mb-4">
+            <div className="p-4 bg-neutral-900 border border-neutral-850 text-emerald-400 rounded-full mb-4">
               <FileText className="w-8 h-8 stroke-[1.5]" />
             </div>
             

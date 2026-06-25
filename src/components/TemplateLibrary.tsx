@@ -39,7 +39,7 @@ export default function TemplateLibrary({ isOpen, onClose }: TemplateLibraryProp
       <DialogContent className="min-w-[900px] max-h-[85vh] overflow-y-auto custom-scrollbar bg-[#111215] border-[#23252a] text-[#f7f8f8] select-none rounded-xl p-6 ">
         <DialogHeader className="mb-4">
           <DialogTitle className="flex items-center gap-2 text-xl font-semibold tracking-tight text-white">
-            <Sparkles className="w-5 h-5 text-indigo-400 animate-pulse" />
+            <Sparkles className="w-5 h-5 text-emerald-400 animate-pulse" />
             Template Library
           </DialogTitle>
           <DialogDescription className="text-[#8a8f98] text-sm mt-1.5">

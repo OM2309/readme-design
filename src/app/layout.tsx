@@ -17,9 +17,9 @@ const outfit = Outfit({
 const APP_URL = "https://readme-studio.vercel.app";
 
 export const metadata: Metadata = {
-  title: "README Studio — Visual Drag & Drop README Builder",
+  title: "Readme Design — Design beautiful GitHub READMEs, visually",
   description:
-    "Build beautiful, interactive GitHub README files visually using a block-based drag-and-drop editor. No markdown writing required.",
+    "Design beautiful GitHub READMEs visually with drag-and-drop blocks, a live GitHub-accurate preview, AI autofill, and one-click push. No more wrestling with raw markdown.",
   metadataBase: new URL(APP_URL),
   keywords: [
     "README builder",
@@ -30,22 +30,22 @@ export const metadata: Metadata = {
     "README templates",
     "GitHub profile README",
   ],
-  authors: [{ name: "README Studio" }],
-  creator: "README Studio",
+  authors: [{ name: "Readme Design" }],
+  creator: "Readme Design",
   openGraph: {
     type: "website",
     locale: "en_US",
     url: APP_URL,
-    title: "README Studio — Visual Drag & Drop README Builder",
+    title: "Readme Design — Design beautiful GitHub READMEs, visually",
     description:
-      "Build beautiful, interactive GitHub README files visually using a block-based editor. Powered by drag-and-drop.",
-    siteName: "README Studio",
+      "Drag-and-drop blocks, a live GitHub-accurate preview, AI autofill, and one-click push. No more wrestling with raw markdown.",
+    siteName: "Readme Design",
   },
   twitter: {
     card: "summary_large_image",
-    title: "README Studio — Visual Drag & Drop README Builder",
+    title: "Readme Design — Design beautiful GitHub READMEs, visually",
     description:
-      "Build beautiful, interactive GitHub README files visually using a block-based editor.",
+      "Drag-and-drop blocks, a live GitHub-accurate preview, AI autofill, and one-click push. No more wrestling with raw markdown.",
     creator: "@_whyom",
   },
   robots: {
