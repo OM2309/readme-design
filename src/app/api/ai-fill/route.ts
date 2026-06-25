@@ -50,39 +50,163 @@ export async function POST(req: NextRequest) {
     const topics = topicsRes && topicsRes.names ? topicsRes.names.join(", ") : "";
 
     // AI Generation prompt
-    const prompt = `Given this GitHub repo data, generate a README Studio block configuration as JSON.
-Repo: ${name}, Description: ${description}, Stars: ${stars}
-Languages: ${languages}, Topics: ${topics}
-Existing README snippet: ${readmeExcerpt}
+    const prompt = `
+You are a README generation expert for GitHub projects.
 
-Return a JSON array of blocks with type and props that would make a great README.
-The JSON array MUST fit the block structure:
-[
-  {
-    "type": "header" | "text" | "badges" | "group" | "chart" | "table" | "image" | "sponsors" | "techstack" | "contributors" | "socials" | "roadmap" | "divider" | "video" | "code" | "githubstats",
-    "props": { ... }
-  }
-]
+Your job is to analyze the repository data provided below and return a README Studio
+block configuration — a JSON array of blocks that, when rendered together, produce
+a complete, professional, and well-structured README for this project.
 
-Block details:
-- header: { "style": "gradient" | "solid" | "minimal", "title": "${name}", "subtitle": "${description}", "logoType": "auto", "bgColor": "#000000", "border": true, "watermark": false }
-- techstack: { "techs": "${languages}", "layout": "row", "iconSize": 40, "showLabel": true }
-- badges: { "packageName": "", "githubRepo": "${owner}/${repoName}", "badgeList": ["github-stars", "license"], "badgeStyle": "flat" }
-- text: { "content": "markdown string summarizing overview, installation, usage, or features" }
-- contributors: { "repo": "${owner}/${repoName}", "maxCount": 12, "avatarSize": 48 }
-- githubstats: { "username": "${owner}", "theme": "dark", "statsType": "general" }
-- divider: { "style": "line", "color": "#262626" }
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REPOSITORY DATA
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Name:              ${name}
+Owner:             ${owner}
+Full repo path:    ${owner}/${repoName}
+Description:       ${description}
+Stars:             ${stars}
+Primary languages: ${languages}
+Topics/tags:       ${topics}
+Existing README:   ${readmeExcerpt}
 
-Include a:
-1. Header block
-2. Badges block
-3. Tech Stack block
-4. Text block outlining what the project is about and its main features
-5. Text block explaining installation/setup
-6. Contributors block
-7. GitHub Stats block (if personal project)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+YOUR TASK
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Using the repository data above, generate a JSON array of README blocks.
 
-Output ONLY the raw JSON array. Do not include markdown formatting or wrapper fields.`;
+Each block must follow this exact shape:
+{
+  "type": "",
+  "props": {  }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+AVAILABLE BLOCK TYPES & THEIR PROPS
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+1. "header"
+   The hero banner at the top of the README.
+   Use the repo name as the title and the description as the subtitle.
+   Choose a style based on the project's nature:
+     - "gradient" for modern/flashy open-source tools
+     - "solid"    for professional/corporate projects
+     - "minimal"  for simple libraries or CLIs
+   Props:
+   {
+     "style":     "gradient" | "solid" | "minimal",
+     "title":     "${name}",
+     "subtitle":  "${description}",
+     "logoType":  "auto",
+     "bgColor":   "#000000",
+     "border":    true,
+     "watermark": false
+   }
+
+2. "badges"
+   Shields.io badges shown below the header.
+   Always include "github-stars" and "license".
+   Add "npm-version" if the project is an npm package.
+   Add "build-status" if it looks like a CI/CD project.
+   Props:
+   {
+     "packageName": "",
+     "githubRepo":  "${owner}/${repoName}",
+     "badgeList":   ["github-stars", "license"],
+     "badgeStyle":  "flat"
+   }
+
+3. "techstack"
+   A visual row of technology icons.
+   Extract the languages from the languages field above and list them
+   as a comma-separated string (e.g. "TypeScript, React, PostgreSQL").
+   Props:
+   {
+     "techs":     "${languages}",
+     "layout":    "row",
+     "iconSize":  40,
+     "showLabel": true
+   }
+
+4. "text"
+   A markdown text block. Use this for:
+   - Project overview (what it does, why it exists, key features as a bullet list)
+   - Installation / setup instructions (with bash code fences)
+   - Usage examples (with code fences showing real commands or API calls)
+   Write the "content" field as real, helpful GitHub Markdown.
+   Props:
+   {
+     "content": ""
+   }
+
+5. "divider"
+   A thin horizontal separator. Place one between major sections.
+   Props:
+   {
+     "style": "line",
+     "color": "#262626"
+   }
+
+6. "contributors"
+   Renders the top contributors of the repo as avatars.
+   Always use the full repo path. Keep maxCount at 12.
+   Props:
+   {
+     "repo":       "${owner}/${repoName}",
+     "maxCount":   12,
+     "avatarSize": 48
+   }
+
+7. "githubstats"
+   Renders the owner's GitHub stats card.
+   Only include this block if the project appears to be a personal/portfolio project
+   (i.e. the owner is an individual, not an org, and topics suggest a personal project).
+   Use "dark" theme by default.
+   Props:
+   {
+     "username":  "${owner}",
+     "theme":     "dark",
+     "statsType": "general"
+   }
+
+Other available types (use only when the repo data clearly warrants them):
+  "chart"       — star history chart       → props: { "repo": "${owner}/${repoName}" }
+  "roadmap"     — feature checklist        → props: { "items": [{ "text": "...", "done": true/false }] }
+  "code"        — fenced code snippet      → props: { "language": "bash", "filename": "", "code": "..." }
+  "socials"     — social links row         → props: { "items": [{ "platform": "...", "url": "...", "label": "..." }] }
+  "image"       — screenshot or demo image → props: { "url": "...", "caption": "...", "width": 100 }
+  "table"       — markdown data table      → props: { "rows": [["Col A", "Col B"], ["val", "val"]] }
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+REQUIRED BLOCK ORDER
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Always output blocks in this sequence:
+
+  1.  header        — project title + description
+  2.  badges        — stars, license, optional npm/build badges
+  3.  divider
+  4.  techstack     — icons of all detected languages/frameworks
+  5.  divider
+  6.  text          — "About" section: what the project does + key features list
+  7.  text          — "Installation" section: how to install and run it
+  8.  text          — "Usage" section: code example showing how to use it (skip if not enough info)
+  9.  divider
+  10. contributors  — contributor avatar grid
+  11. githubstats   — owner's GitHub stats card (personal projects only)
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+STRICT OUTPUT RULES
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- Output ONLY the raw JSON array. Nothing else.
+- Do NOT wrap the output in markdown code fences (\`\`\`json ... \`\`\`).
+- Do NOT include any explanation, preamble, or commentary.
+- Do NOT add wrapper fields like { "blocks": [...] }. Return the array directly.
+- Every block must have both "type" and "props" fields.
+- All "text" block content must be real, useful markdown — not placeholder text.
+- If the existing README snippet contains useful content, incorporate it into the text blocks.
+- If a field value is unknown or unavailable, use a sensible default — never leave props empty.
+- The final output must be valid, parseable JSON.
+`.trim();
+
 
     let aiBlocks: any[] = [];
     const openAiKey = process.env.OPENAI_API_KEY;
