@@ -112,9 +112,9 @@ export default function Navbar({
       {/* Left side: Project name edit & Count */}
       <div className="flex items-center gap-3 min-w-0">
         <div className="flex items-center gap-2 shrink-0">
-          <div className="p-1 rounded bg-white text-black font-extrabold flex items-center justify-center">
-            <Sparkles className="w-4 h-4 fill-black stroke-black" />
-          </div>
+          <a href="/" className="w-[24px] h-[24px] rounded-[6px] flex items-center justify-center" style={{ backgroundColor: "#121212" }}>
+            <FileText className="w-3.5 h-3.5" style={{ color: "#f4f4f6" }} />
+          </a>
         </div>
 
         {/* Project Rename trigger (Requirement 5) */}

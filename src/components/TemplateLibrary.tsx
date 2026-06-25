@@ -233,6 +233,146 @@ export default function TemplateLibrary({ isOpen, onClose }: TemplateLibraryProp
             </div>
           </div>
 
+          {/* 6. Hackathon Project */}
+          <div
+            onClick={() => handleSelectTemplate("hackathon-2", "Hackathon Project")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-yellow-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-yellow-900/50 bg-yellow-950/20 text-yellow-400">
+                <Sparkles className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-yellow-400 hover:text-yellow-300 hover:bg-yellow-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-yellow-50 transition-colors">
+              Hackathon Project
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              Structured to present your hackathon build clearly. Includes Problem, Solution, Demo, and Features checklist.
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Video Demo", "Features Checklist", "Tech Stack", "Team"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-yellow-400/80 bg-yellow-950/30 border border-yellow-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 7. REST API */}
+          <div
+            onClick={() => handleSelectTemplate("rest-api-2", "REST API")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-blue-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-blue-900/50 bg-blue-950/20 text-blue-400">
+                <Terminal className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-blue-400 hover:text-blue-300 hover:bg-blue-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-blue-50 transition-colors">
+              REST API
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              Comprehensive template for documenting API endpoints, authentication, and error codes effectively.
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Authentication", "Endpoints", "Error Codes", "Rate Limits"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-blue-400/80 bg-blue-950/30 border border-blue-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 8. NPM Package V2 */}
+          <div
+            onClick={() => handleSelectTemplate("npm-package-2", "NPM Package")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-pink-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-pink-900/50 bg-pink-950/20 text-pink-400">
+                <Package className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-pink-400 hover:text-pink-300 hover:bg-pink-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-pink-50 transition-colors">
+              NPM Package
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              Essential boilerplate for NPM packages. Highlights installation, API usage, and code examples.
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Installation", "Usage", "API Table", "Contributing"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-pink-400/80 bg-pink-950/30 border border-pink-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 9. Modern Toolkit */}
+          <div
+            onClick={() => handleSelectTemplate("modern-toolkit", "Modern Toolkit")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-teal-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-teal-900/50 bg-teal-950/20 text-teal-400">
+                <Rocket className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-teal-400 hover:text-teal-300 hover:bg-teal-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-teal-50 transition-colors">
+              Modern Toolkit
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              Advanced template for high-performance frameworks and tools. Includes feature grid and star history.
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Feature Table", "Star History", "Tech Grid", "Performance"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-teal-400/80 bg-teal-950/30 border border-teal-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
         </div>
       </DialogContent>
     </Dialog>

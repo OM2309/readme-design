@@ -17,7 +17,11 @@ export type TemplateType =
   | "browser-ext"
   | "vscode-ext"
   | "discord-bot"
-  | "youtube-channel";
+  | "youtube-channel"
+  | "hackathon-2"
+  | "rest-api-2"
+  | "npm-package-2"
+  | "modern-toolkit";
 
 export interface Project {
   id: string;
@@ -354,6 +358,178 @@ Consider sponsoring my work to keep open source sustainable:
     { id: "yt-v", type: "video", props: { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", width: "70%", align: "center" } },
     { id: "yt-txt", type: "text", props: { content: "## Latest Videos\nCheck out my latest content above and don't forget to subscribe!" } },
     { id: "yt-s", type: "socials", props: { youtube: "https://youtube.com/@example", twitter: "https://twitter.com/example", align: "center" } }
+  ],
+  "hackathon-2": [
+    {
+      id: "hackathon-header",
+      type: "header",
+      props: {
+        style: "minimal",
+        title: "Hackathon Name 2025",
+        subtitle: "One paragraph: what problem does this solve? Be specific. Who is affected?",
+        logoType: "none",
+        border: true
+      }
+    },
+    {
+      id: "hackathon-badges",
+      type: "badges",
+      props: {
+        badgeList: ["license"],
+        badgeStyle: "flat-square"
+      }
+    },
+    {
+      id: "hackathon-text-1",
+      type: "text",
+      props: {
+        content: "## 💡 The Problem\n\n[One paragraph: what problem does this solve? Be specific. Who is affected?]\n\n## 🎯 Our Solution\n\n[One paragraph: what did you build? How does it solve the problem? What's the key insight?]"
+      }
+    },
+    {
+      id: "hackathon-video",
+      type: "video",
+      props: {
+        url: "https://yourproject.vercel.app",
+        align: "center",
+        width: "100%"
+      }
+    },
+    {
+      id: "hackathon-text-2",
+      type: "text",
+      props: {
+        content: "> [Live demo → yourproject.vercel.app](https://yourproject.vercel.app)\n\n## ✨ Features\n\n- [x] Feature 1 — core functionality\n- [x] Feature 2 — what makes it unique\n- [x] Feature 3 — key integration\n- [ ] Feature 4 — planned post-hackathon\n- [ ] Feature 5 — stretch goal"
+      }
+    },
+    {
+      id: "hackathon-tech",
+      type: "techstack",
+      props: {
+        techs: "React, Node.js, TypeScript",
+        layout: "row",
+        iconSize: 40,
+        showLabel: true
+      }
+    },
+    {
+      id: "hackathon-text-3",
+      type: "text",
+      props: {
+        content: "## 🏃 Run Locally\n\n```bash\ngit clone https://github.com/your-username/your-repo\ncd your-repo\ncp .env.example .env.local\npnpm install\npnpm dev\n```\n\n## 👥 Team\n\n| Name | Role | GitHub |\n|------|------|--------|\n| [Your Name] | Full Stack | [@yourhandle](https://github.com/yourhandle) |\n| [Teammate] | Design | [@teammate](https://github.com/teammate) |\n\n## 📄 License\n\nMIT — built at [Hackathon Name] 2025"
+      }
+    }
+  ],
+  "rest-api-2": [
+    {
+      id: "rest-header",
+      type: "header",
+      props: {
+        style: "minimal",
+        title: "your-api",
+        subtitle: "REST API for [what it does]. Built with Node.js, TypeScript, and PostgreSQL.",
+        border: true
+      }
+    },
+    {
+      id: "rest-badges",
+      type: "badges",
+      props: {
+        badgeList: ["license"],
+        badgeStyle: "flat-square"
+      }
+    },
+    {
+      id: "rest-text",
+      type: "text",
+      props: {
+        content: "## Base URL\n\n```\nProduction:  https://api.yourdomain.com/v1\nStaging:     https://staging-api.yourdomain.com/v1\n```\n\n## Authentication\n\nAll endpoints require a Bearer token in the `Authorization` header:\n\n```bash\nAuthorization: Bearer <token>\n```\n\nGenerate an API key at [your dashboard](https://yourdomain.com/dashboard).\n\n## Endpoints\n\n### `GET /items`\n\nReturns a paginated list of items.\n\n```bash\ncurl https://api.yourdomain.com/v1/items \\\n  -H \"Authorization: Bearer YOUR_KEY\"\n```\n\n**Response**\n```json\n{\n  \"data\": [\n    { \"id\": \"item_123\", \"name\": \"Example\", \"created_at\": \"2025-01-01T00:00:00Z\" }\n  ],\n  \"pagination\": { \"page\": 1, \"per_page\": 20, \"total\": 142 }\n}\n```\n\n### `POST /items`\n\nCreate a new item.\n\n```bash\ncurl -X POST https://api.yourdomain.com/v1/items \\\n  -H \"Authorization: Bearer YOUR_KEY\" \\\n  -H \"Content-Type: application/json\" \\\n  -d '{ \"name\": \"New item\", \"type\": \"example\" }'\n```\n\n## Error Codes\n\n| Code | Meaning |\n|------|---------|\n| `400` | Bad request — invalid params |\n| `401` | Unauthorized — missing/invalid token |\n| `404` | Resource not found |\n| `429` | Rate limited — max 100 req/min |\n| `500` | Internal server error |\n\n## Rate Limits\n\n| Plan | Requests/min |\n|------|-------------|\n| Free | 20 |\n| Pro | 200 |\n| Enterprise | Unlimited |\n\n## Local Development\n\n```bash\ngit clone https://github.com/your-username/your-api\ncd your-api\ncp .env.example .env\ndocker compose up -d   # starts postgres + redis\npnpm install\npnpm dev\n```\n\nAPI runs at `http://localhost:3001`\n\n## License\n\nMIT © [Your Name](https://github.com/your-username)"
+      }
+    }
+  ],
+  "npm-package-2": [
+    {
+      id: "npm-header",
+      type: "header",
+      props: {
+        style: "minimal",
+        title: "your-package",
+        subtitle: "One-line description of what this package does.",
+        border: true
+      }
+    },
+    {
+      id: "npm-badges",
+      type: "badges",
+      props: {
+        packageName: "your-package",
+        badgeList: ["npm-v", "license"],
+        badgeStyle: "flat-square"
+      }
+    },
+    {
+      id: "npm-text",
+      type: "text",
+      props: {
+        content: "## Install\n\n```bash\nnpm install your-package\npnpm add your-package\nyarn add your-package\n```\n\n## Usage\n\n```ts\nimport { yourFunction } from 'your-package'\n\nconst result = yourFunction({\n  input: 'value',\n  options: {},\n})\n\nconsole.log(result)\n// → { success: true, data: '...' }\n```\n\n## API\n\n### `yourFunction(options)`\n\n| Parameter | Type | Default | Description |\n|-----------|------|---------|-------------|\n| `input` | `string` | — | Required input value |\n| `timeout` | `number` | `5000` | Timeout in ms |\n| `debug` | `boolean` | `false` | Enable debug logs |\n\nReturns: `Promise`\n\n## Contributing\n\n```bash\ngit clone https://github.com/your-username/your-package\ncd your-package\npnpm install\npnpm test\n```\n\n## License\n\nMIT © [Your Name](https://github.com/your-username)"
+      }
+    }
+  ],
+  "modern-toolkit": [
+    {
+      id: "tk-header",
+      type: "header",
+      props: {
+        style: "gradient",
+        title: "Modern Toolkit",
+        subtitle: "The modern toolkit for teams who ship. Built for speed, designed for scale.",
+        bgGradientStart: "#0ea5e9",
+        bgGradientEnd: "#10b981",
+        border: true
+      }
+    },
+    {
+      id: "tk-badges",
+      type: "badges",
+      props: {
+        packageName: "your-package",
+        githubRepo: "your-username/your-repo",
+        badgeList: ["npm-v", "github-stars", "license", "github-status"],
+        badgeStyle: "flat-square"
+      }
+    },
+    {
+      id: "tk-text",
+      type: "text",
+      props: {
+        content: "## ✦ Features\n\n| Feature | Description |\n|--------|-------------|\n| ⚡ Blazing fast | Optimized for performance from day one |\n| 🔒 Secure by default | End-to-end encryption, zero-trust architecture |\n| 🧩 Modular | Plug in only what you need |\n| 🌐 Global CDN | Sub-50ms response times worldwide |\n| 📊 Analytics built-in | Real-time dashboards, no extra setup |\n| 🤖 AI-powered | Intelligent suggestions, auto-complete, smart search |\n\n## 🚀 Getting Started\n\n### Installation\n\n```bash\nnpm install your-package\n# or\npnpm add your-package\n```\n\n### Quick Setup\n\n```ts\nimport { createClient } from 'your-package'\n\nconst client = createClient({\n  apiKey: process.env.YOUR_API_KEY,\n  region: 'us-east-1',\n})\n\nconst result = await client.run({\n  input: 'Hello world',\n})\n\nconsole.log(result)\n```"
+      }
+    },
+    {
+      id: "tk-tech",
+      type: "techstack",
+      props: {
+        techs: "TypeScript, React, Node.js, PostgreSQL",
+        layout: "grid",
+        iconSize: 40,
+        showLabel: true
+      }
+    },
+    {
+      id: "tk-chart",
+      type: "chart",
+      props: {
+        repo: "your-username/your-repo",
+        theme: "dark"
+      }
+    },
+    {
+      id: "tk-text-2",
+      type: "text",
+      props: {
+        content: "## 🤝 Contributing\n\nContributions are welcome. Please read [CONTRIBUTING.md](./CONTRIBUTING.md) first.\n\n```bash\ngit clone https://github.com/your-username/your-repo.git\ncd your-repo\npnpm install\npnpm dev\n```\n\n## 📄 License\n\nMIT © [Your Name](https://github.com/your-username)\n\n> If this helped you, consider giving it a ⭐"
+      }
+    }
   ]
 };
 
