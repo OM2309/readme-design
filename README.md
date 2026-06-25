@@ -1,4 +1,22 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<div align="center">
+  <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&fit=crop&q=80" alt="logo" height="80" style="border-radius: 12px; margin-bottom: 10px;" />
+  <h1>readme-design</h1>
+</div>
+
+---
+
+
+[![github stars](https://img.shields.io/github/stars/OM2309/readme-design.svg?style=flat)](https://github.com/OM2309/readme-design/stargazers) [![license](https://img.shields.io/github/license/OM2309/readme-design.svg?style=flat)](https://github.com/OM2309/readme-design/blob/main/LICENSE)
+
+<p align="center">
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" alt="TypeScript" width="40" height="40" />
+  &nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css/css-original.svg" alt="CSS" width="40" height="40" />
+  &nbsp;&nbsp;
+  <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg" alt="JavaScript" width="40" height="40" />
+</p>
+
+This project is a Next.js application bootstrapped with `create-next-app`, demonstrating a foundational setup for web development. It leverages Next.js features for page routing, automatic code updates, and optimized font loading with `next/font`. It serves as a starting point for building modern, performant React applications.
 
 ## Getting Started
 
@@ -20,17 +38,10 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+<p align="center">
+  <a href="https://github.com/OM2309/readme-design/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=OM2309/readme-design&max=12" alt="Contributors" />
+  </a>
+</p>
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+![GitHub Stats](https://github-readme-stats.vercel.app/api?username=OM2309&theme=dark&show_icons=true&hide_rank=false)
