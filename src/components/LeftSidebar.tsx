@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useReadmeStore } from "@/store/readmeStore";
 import { Block, BlockType } from "@/store/blockRegistry";
-import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { 
   Heading, 
@@ -13,7 +12,6 @@ import {
   Image, 
   Heart,
   GripVertical,
-  Plus,
   Cpu,
   Users,
   Share2,
@@ -23,7 +21,9 @@ import {
   Code2,
   BarChart2,
   StickyNote,
-  FileText
+  Search,
+  Layers,
+  LayoutGrid
 } from "lucide-react";
 import {
   DndContext,
@@ -42,7 +42,7 @@ import {
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-// Icon mapping per block type (all 16 blocks)
+// Icon mapping per block type
 export const blockIcons: Record<BlockType, React.ComponentType<any>> = {
   header: Heading,
   text: AlignLeft,
@@ -62,7 +62,7 @@ export const blockIcons: Record<BlockType, React.ComponentType<any>> = {
   githubstats: TrendingUp,
 };
 
-// Friendly labels for each block type (all 16 blocks)
+// Friendly labels for each block type
 export const blockLabels: Record<BlockType, string> = {
   header: "Header",
   text: "Text / Markdown",
@@ -141,15 +141,15 @@ function SortableLayerItem({ block, isSelected, onSelect }: SortableLayerItemPro
       ref={setNodeRef}
       style={style}
       onClick={onSelect}
-      className={`group flex items-center justify-between gap-1.5 px-2 py-1.5 rounded-md cursor-pointer transition-all border text-xs select-none ${
-        isNested ? "ml-5 bg-background/50 border-dashed border-neutral-800" : "bg-card border-border"
+      className={`group flex items-center justify-between gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all border text-xs select-none ${
+        isNested ? "ml-5 bg-[#111215]/50 border-dashed border-[#23252a]" : "bg-[#191b1f] border-transparent"
       } ${
         isSelected 
-          ? "border-white bg-neutral-900 text-white" 
-          : "border-transparent text-muted-foreground hover:text-foreground hover:bg-neutral-900/50"
+          ? "border-indigo-500/50 bg-indigo-500/10 text-white" 
+          : "hover:bg-[#23252a] text-[#8a8f98] hover:text-[#f7f8f8]"
       }`}
     >
-      <div className="flex items-center gap-2 min-w-0 flex-1">
+      <div className="flex items-center gap-2.5 min-w-0 flex-1">
         <button
           {...attributes}
           {...listeners}
@@ -158,11 +158,10 @@ function SortableLayerItem({ block, isSelected, onSelect }: SortableLayerItemPro
           <GripVertical className="w-3.5 h-3.5" />
         </button>
         
-        <Icon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? "text-white" : "text-neutral-500"}`} />
+        <Icon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? "text-indigo-400" : "text-neutral-500"}`} />
         <span className="truncate font-medium">{displayName}</span>
       </div>
 
-      {/* Note indicator icon */}
       {block._note && block._note.trim() !== "" && (
         <span title="Has sticky comment note">
           <StickyNote className="w-3.5 h-3.5 text-yellow-500/80 shrink-0" />
@@ -188,9 +187,7 @@ export default function LeftSidebar() {
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
-      activationConstraint: {
-        distance: 8,
-      },
+      activationConstraint: { distance: 8 },
     }),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
@@ -206,31 +203,6 @@ export default function LeftSidebar() {
     reorderBlocks(fromIndex, toIndex);
   };
 
-  const paletteItems: { type: BlockType; label: string; icon: React.ComponentType<any> }[] = [
-    { type: "header", label: "Header", icon: Heading },
-    { type: "text", label: "Text", icon: AlignLeft },
-    { type: "badges", label: "Badges", icon: Award },
-    { type: "group", label: "Group", icon: Folder },
-    { type: "chart", label: "Chart", icon: BarChart2 },
-    { type: "table", label: "Table", icon: Table },
-    { type: "image", label: "Image", icon: Image },
-    { type: "sponsors", label: "Sponsors", icon: Heart },
-    { type: "techstack", label: "Tech Stack", icon: Cpu },
-    { type: "contributors", label: "Contribs", icon: Users },
-    { type: "socials", label: "Socials", icon: Share2 },
-    { type: "roadmap", label: "Roadmap", icon: CheckSquare },
-    { type: "divider", label: "Divider", icon: Minus },
-    { type: "video", label: "Video/GIF", icon: Play },
-    { type: "code", label: "Code Snippet", icon: Code2 },
-    { type: "githubstats", label: "GH Stats", icon: TrendingUp },
-  ];
-
-  const handleAddBlock = (type: BlockType) => {
-    const selectedBlock = blocks.find((b) => b.id === selectedBlockId);
-    const parentId = selectedBlock?.type === "group" ? selectedBlock.id : selectedBlock?.parentId;
-    addBlock(type, parentId);
-  };
-
   const handleSelectBlock = (e: React.MouseEvent, id: string) => {
     e.stopPropagation();
     if (e.shiftKey) {
@@ -240,112 +212,99 @@ export default function LeftSidebar() {
     }
   };
 
+  const filteredBlocks = filterNotesOnly 
+    ? blocks.filter(b => b._note && b._note.trim() !== "")
+    : blocks;
+  const blockIds = filteredBlocks.map((b) => b.id);
+
+  const paletteItems: { type: BlockType; label: string; icon: React.ComponentType<any> }[] = Object.keys(blockLabels).map((key) => ({
+    type: key as BlockType,
+    label: blockLabels[key as BlockType],
+    icon: blockIcons[key as BlockType],
+  }));
+
   const filteredPalette = paletteItems.filter(item => 
     item.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
     item.type.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && filteredPalette.length > 0) {
-      e.preventDefault();
-      handleAddBlock(filteredPalette[0].type);
-      setSearchQuery("");
-      toast.success(`Added ${filteredPalette[0].label} block!`);
-    }
+  const handleAddBlock = (type: BlockType) => {
+    const selectedBlock = blocks.find((b) => b.id === selectedBlockId);
+    const parentId = selectedBlock?.type === "group" ? selectedBlock.id : selectedBlock?.parentId;
+    addBlock(type, parentId);
+    toast.success(`Added ${blockLabels[type]} block!`);
   };
 
-  // Filter blocks if notes-only is toggled
-  const filteredBlocks = filterNotesOnly 
-    ? blocks.filter(b => b._note && b._note.trim() !== "")
-    : blocks;
-
-  const blockIds = filteredBlocks.map((b) => b.id);
-
   return (
-    <aside className="w-[200px] border-r border-border bg-panel flex flex-col h-[calc(100vh-64px)] select-none">
-      {/* Top Section: Add Block Palette */}
-      <div className="p-3 border-b border-border">
-        <h3 className="text-[10px] font-bold text-neutral-400 tracking-wider uppercase mb-2">
-          Add Block
-        </h3>
+    <aside className="flex h-[calc(100vh-64px)] select-none border-r border-[#23252a] shrink-0">
+      
+      {/* 1st Column: Add Block Menu (Darker, slimmer) */}
+      <div className="w-[200px] bg-[#0c0d0f] border-r border-[#23252a] flex flex-col">
+        <div className="p-4 pb-2">
+          <div className="flex items-center gap-2 text-white font-semibold mb-4 text-sm tracking-tight">
+            <LayoutGrid className="w-4 h-4 text-indigo-400" />
+            Add Block
+          </div>
+          <div className="relative mb-3">
+            <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-neutral-500" />
+            <input
+              type="text"
+              placeholder="Search blocks..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full bg-[#191b1f] border border-[#23252a] rounded-md h-8 pl-8 pr-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-indigo-500/50 transition-colors"
+            />
+          </div>
+        </div>
 
-        {/* Block Search Input */}
-        <Input
-          placeholder="Search / Quick Add..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          onKeyDown={handleSearchKeyDown}
-          className="h-7 text-[10px] bg-neutral-900 border-neutral-850 px-2 py-1 mb-2 placeholder-neutral-500 focus-visible:ring-1 focus-visible:ring-indigo-500/50"
-        />
-
-        <div className="grid grid-cols-2 gap-1.5 max-h-[190px] overflow-y-auto pr-1">
+        <div className="flex-1 overflow-y-auto px-2 pb-4 space-y-0.5 custom-scrollbar">
           {filteredPalette.map((item) => {
             const Icon = item.icon;
-            const isMatch = searchQuery.trim() !== "" && (
-              item.label.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              item.type.toLowerCase().includes(searchQuery.toLowerCase())
-            );
             return (
               <button
                 key={item.type}
-                onClick={() => {
-                  handleAddBlock(item.type);
-                  if (searchQuery.trim() !== "") {
-                    setSearchQuery("");
-                  }
-                }}
-                className={`flex flex-col items-center justify-center p-2 rounded-lg border text-center group cursor-pointer transition-all gap-1 ${
-                  isMatch
-                    ? "border-indigo-500/60 bg-indigo-950/20 text-white shadow-[0_0_6px_rgba(99,102,241,0.3)] animate-pulse"
-                    : "border-border bg-card hover:bg-neutral-900 hover:border-neutral-700 text-neutral-400 hover:text-white"
-                }`}
+                onClick={() => handleAddBlock(item.type)}
+                className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-[#8a8f98] hover:text-white hover:bg-[#191b1f] transition-all text-left group"
               >
-                <div className={`p-1 rounded transition-colors ${
-                  isMatch ? "bg-indigo-900/40 text-indigo-300" : "bg-neutral-900 group-hover:bg-neutral-800"
-                }`}>
-                  <Icon className="w-3.5 h-3.5 shrink-0" />
-                </div>
-                <span className="text-[9px] font-semibold leading-tight">{item.label}</span>
+                <Icon className="w-4 h-4 shrink-0 text-neutral-500 group-hover:text-indigo-400 transition-colors" />
+                <span className="text-xs font-medium truncate">{item.label}</span>
               </button>
             );
           })}
         </div>
       </div>
 
-      {/* Bottom Section: Layers Panel */}
-      <div className="flex-1 flex flex-col min-h-0 p-3">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="text-[10px] font-bold text-neutral-400 tracking-wider uppercase">
+      {/* 2nd Column: Layers Panel (Lighter, wider) */}
+      <div className="w-[240px] bg-[#111215] flex flex-col">
+        <div className="p-4 pb-3 flex items-center justify-between border-b border-[#23252a]">
+          <div className="flex items-center gap-2 text-white font-semibold text-sm tracking-tight">
+            <Layers className="w-4 h-4 text-indigo-400" />
             Layers
-          </h3>
+          </div>
           <button
             onClick={() => setFilterNotesOnly(!filterNotesOnly)}
-            className={`p-1 rounded transition-colors ${
+            className={`p-1.5 rounded-md transition-colors ${
               filterNotesOnly 
                 ? "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30" 
-                : "text-neutral-500 hover:text-neutral-300"
+                : "text-neutral-500 hover:text-neutral-300 hover:bg-[#191b1f]"
             }`}
-            title={filterNotesOnly ? "Showing blocks with notes. Click to show all." : "Filter layers by sticky notes"}
+            title="Filter by sticky notes"
           >
             <StickyNote className="w-3.5 h-3.5" />
           </button>
         </div>
         
-        {filteredBlocks.length === 0 ? (
-          <div className="flex-1 flex items-center justify-center border border-dashed border-border rounded-lg text-[10px] text-muted-foreground p-3 text-center">
-            {filterNotesOnly ? "No blocks have comments." : "No blocks added. Add above!"}
-          </div>
-        ) : (
-          <div className="flex-1 overflow-y-auto pr-1">
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCenter}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext
-                items={blockIds}
-                strategy={verticalListSortingStrategy}
-              >
+        <div className="flex-1 overflow-y-auto p-3 custom-scrollbar">
+          {filteredBlocks.length === 0 ? (
+            <div className="h-full flex flex-col items-center justify-center text-center p-4 border border-dashed border-[#23252a] rounded-lg">
+              <Layers className="w-8 h-8 text-neutral-700 mb-2" />
+              <p className="text-xs text-[#8a8f98]">
+                {filterNotesOnly ? "No blocks have comments." : "Your canvas is empty. Add a block from the left menu."}
+              </p>
+            </div>
+          ) : (
+            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+              <SortableContext items={blockIds} strategy={verticalListSortingStrategy}>
                 <div className="space-y-1.5">
                   {filteredBlocks.map((block) => (
                     <SortableLayerItem
@@ -358,9 +317,10 @@ export default function LeftSidebar() {
                 </div>
               </SortableContext>
             </DndContext>
-          </div>
-        )}
+          )}
+        </div>
       </div>
+
     </aside>
   );
 }

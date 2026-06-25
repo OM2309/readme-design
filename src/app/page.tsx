@@ -117,7 +117,7 @@ export default function LandingPage() {
           {/* LEFT COLUMN: Hero content */}
           <div className="lg:col-span-6 space-y-6 text-left flex flex-col items-start">
             {/* Top pill badge */}
-            <div className={`flex justify-start ${mounted ? "fade-in-up fade-in-up-delay-1" : "opacity-0"}`}>
+            {/* <div className={`flex justify-start ${mounted ? "fade-in-up fade-in-up-delay-1" : "opacity-0"}`}>
               <Link
                 href="/studio"
                 className="inline-flex items-center gap-2 text-[12px] pr-3.5 pl-1.5 py-1 rounded-full transition-all duration-150 border border-white/5 hover:border-white/10"
@@ -138,7 +138,7 @@ export default function LandingPage() {
                 </span>
                 <span className="text-[12px] tracking-tight">Interactive layouts & custom block sections →</span>
               </Link>
-            </div>
+            </div> */}
 
             {/* Display headline */}
             <h1
