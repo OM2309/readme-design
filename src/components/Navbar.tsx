@@ -15,8 +15,7 @@ import {
   Globe,
   ImageIcon,
   FileText,
-  ChevronDown,
-  Share2
+  ChevronDown
 } from "lucide-react";
 import GithubIcon from "@/components/GithubIcon";
 import { Button } from "@/components/ui/button";
@@ -32,7 +31,6 @@ interface NavbarProps {
   viewMode: "design" | "markdown" | "adaptive";
   setViewMode: (mode: "design" | "markdown" | "adaptive") => void;
   openTemplateLibrary: () => void;
-  openProjectsModal: () => void;
   openImportModal: () => void;
   openPublishModal: () => void;
   openExportModal: () => void;
@@ -43,7 +41,6 @@ export default function Navbar({
   viewMode, 
   setViewMode, 
   openTemplateLibrary,
-  openProjectsModal,
   openImportModal,
   openPublishModal,
   openExportModal,
@@ -57,8 +54,7 @@ export default function Navbar({
     undo, 
     redo, 
     canUndo, 
-    canRedo,
-    activeProjectId
+    canRedo
   } = useReadmeStore();
 
   const [isEditingName, setIsEditingName] = useState(false);
@@ -100,28 +96,6 @@ export default function Navbar({
     }
   };
 
-  const handleShare = async () => {
-    if (!activeProjectId) {
-      toast.info("Please save your project to the cloud first to generate a shareable link.", {
-        description: "Save it using the 'Projects' button, then click Share.",
-        action: {
-          label: "Open Projects",
-          onClick: openProjectsModal
-        }
-      });
-      return;
-    }
-    
-    try {
-      const shareUrl = `${window.location.origin}/view/${activeProjectId}`;
-      await navigator.clipboard.writeText(shareUrl);
-      toast.success("Shareable preview link copied to clipboard!", {
-        description: "Anyone can view this preview without logging in."
-      });
-    } catch (err) {
-      toast.error("Failed to copy share link.");
-    }
-  };
 
   const saveProjectName = () => {
     setIsEditingName(false);
@@ -241,17 +215,6 @@ export default function Navbar({
           </Button>
         </div>
 
-        {/* My Projects */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={openProjectsModal}
-          className="flex items-center gap-1 border-border hover:bg-accent text-xs h-8 px-2.5"
-          title="Browse Saved Cloud Projects"
-        >
-          <FolderOpen className="w-3.5 h-3.5 text-indigo-400" />
-          Projects
-        </Button>
 
         {/* Templates */}
         <Button
@@ -288,17 +251,6 @@ export default function Navbar({
           Publish
         </Button>
 
-        {/* Share */}
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={handleShare}
-          className="flex items-center gap-1 border-border hover:bg-accent text-xs h-8 px-2.5"
-          title="Get a shareable public preview link"
-        >
-          <Share2 className="w-3.5 h-3.5 text-indigo-400" />
-          Share
-        </Button>
 
         {/* Copy */}
         <Button

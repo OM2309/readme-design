@@ -12,7 +12,6 @@ import GitHubPreview from "@/components/GitHubPreview";
 import TemplateLibrary from "@/components/TemplateLibrary";
 
 // Advanced feature components
-import ProjectsModal from "@/components/ProjectsModal";
 import ImportModal from "@/components/ImportModal";
 import PublishModal from "@/components/PublishModal";
 import ExportModal from "@/components/ExportModal";
@@ -22,7 +21,6 @@ import LintPanel from "@/components/LintPanel";
 
 // Utilities & hooks
 import { useKeyboardShortcuts } from "@/hooks/useKeyboardShortcuts";
-import { supabase, hasSupabase } from "@/lib/supabaseClient";
 import { toast } from "sonner";
 import { Sparkles } from "lucide-react";
 
@@ -30,7 +28,6 @@ export default function StudioHome() {
   const { 
     blocks, 
     projectName,
-    activeProjectId,
     undo, 
     redo, 
     canUndo, 
@@ -52,7 +49,6 @@ export default function StudioHome() {
   
   // Modals & Panels open states
   const [isTemplateOpen, setIsTemplateOpen] = useState(false);
-  const [isProjectsOpen, setIsProjectsOpen] = useState(false);
   const [isImportOpen, setIsImportOpen] = useState(false);
   const [isPublishOpen, setIsPublishOpen] = useState(false);
   const [isExportOpen, setIsExportOpen] = useState(false);
@@ -96,122 +92,8 @@ export default function StudioHome() {
     }
   }, []);
 
-  // Remix Project Handler
-  useEffect(() => {
-    if (typeof window === "undefined" || !hasSupabase()) return;
-    const params = new URLSearchParams(window.location.search);
-    const remixId = params.get("remix");
-    if (!remixId) return;
-
-    async function fetchAndRemix() {
-      const toastId = toast.loading("Remixing project blocks...");
-      try {
-        const { data, error } = await supabase!
-          .from("projects")
-          .select("*")
-          .eq("id", remixId)
-          .single();
-
-        if (data) {
-          const parsedBlocks = typeof data.blocks === "string"
-            ? JSON.parse(data.blocks)
-            : data.blocks;
-          
-          // Clear activeProjectId to clone it as a new draft
-          useReadmeStore.setState({ activeProjectId: null });
-          setBlocks(parsedBlocks);
-          setProjectName(`${data.name} (Remix)`);
-
-          // Remove remix param from URL
-          const newParams = new URLSearchParams(window.location.search);
-          newParams.delete("remix");
-          const qs = newParams.toString();
-          window.history.replaceState({}, "", `/studio${qs ? `?${qs}` : ""}`);
-          
-          toast.success("README loaded! You are now editing a copy.", { id: toastId });
-        } else {
-          toast.error("Failed to load project for remixing.", { id: toastId });
-        }
-      } catch (err) {
-        toast.error("An error occurred during remix.", { id: toastId });
-      }
-    }
-
-    fetchAndRemix();
-  }, [setBlocks, setProjectName]);
-
   // Compute active markdown on the fly during render to avoid cascading renders
   const markdownText = customMarkdown !== null ? customMarkdown : generateReadmeMarkdown(blocks);
-
-  // Debounced Autosave to Supabase cloud projects
-  useEffect(() => {
-    if (!activeProjectId || !hasSupabase()) return;
-    
-    const saveTimeout = setTimeout(async () => {
-      const { data: { session } } = await supabase!.auth.getSession();
-      if (!session) return;
-      
-      const { error } = await supabase!
-        .from("projects")
-        .update({
-          name: projectName,
-          blocks: blocks,
-          updated_at: new Date().toISOString()
-        })
-        .eq("id", activeProjectId);
-        
-      if (error) {
-        console.error("Autosave error:", error);
-      }
-    }, 2000); // 2 second debounce
-
-    return () => clearTimeout(saveTimeout);
-  }, [blocks, projectName, activeProjectId]);
-
-  // Manual save handler for Ctrl+S
-  const handleSave = async () => {
-    if (!hasSupabase()) {
-      toast.error("Cloud database is not configured.");
-      return;
-    }
-    const { data: { session } } = await supabase!.auth.getSession();
-    if (!session) {
-      toast.info("Please sign in to save projects to the cloud.", {
-        action: {
-          label: "Sign In",
-          onClick: () => setIsProjectsOpen(true)
-        }
-      });
-      setIsProjectsOpen(true);
-      return;
-    }
-
-    if (activeProjectId) {
-      const savePromise = (async () => {
-        const { data, error } = await supabase!
-          .from("projects")
-          .update({
-            name: projectName,
-            blocks: blocks,
-            updated_at: new Date().toISOString()
-          })
-          .eq("id", activeProjectId);
-        if (error) throw error;
-        return data;
-      })();
-
-      toast.promise(
-        savePromise,
-        {
-          loading: "Saving project...",
-          success: "Project saved successfully!",
-          error: "Failed to save project."
-        }
-      );
-    } else {
-      setIsProjectsOpen(true);
-    }
-  };
 
   // Keyboard Shortcuts callback binding
   useKeyboardShortcuts({
@@ -247,7 +129,7 @@ export default function StudioHome() {
     onTogglePalette: () => {
       setIsPaletteOpen(prev => !prev);
     },
-    onSave: handleSave,
+    onSave: () => toast.success("Project saved to browser localStorage automatically!"),
     onCopy: () => {
       copySelectedBlocks();
       toast.success("Copied to clipboard");
@@ -275,7 +157,6 @@ export default function StudioHome() {
         viewMode={viewMode} 
         setViewMode={handleSetViewMode} 
         openTemplateLibrary={() => setIsTemplateOpen(true)}
-        openProjectsModal={() => setIsProjectsOpen(true)}
         openImportModal={() => setIsImportOpen(true)}
         openPublishModal={() => setIsPublishOpen(true)}
         openExportModal={() => setIsExportOpen(true)}
@@ -339,10 +220,7 @@ export default function StudioHome() {
         onClose={() => setIsTemplateOpen(false)} 
       />
 
-      <ProjectsModal 
-        isOpen={isProjectsOpen}
-        onClose={() => setIsProjectsOpen(false)}
-      />
+
 
       <ImportModal 
         isOpen={isImportOpen}
@@ -392,7 +270,7 @@ export default function StudioHome() {
         }}
         onPushGithub={() => setIsPublishOpen(true)}
         onImportGithub={() => setIsImportOpen(true)}
-        onSaveProject={handleSave}
+        onSaveProject={() => toast.success("Project saved to browser localStorage automatically!")}
         onOpenHelp={() => setIsShortcutsOpen(true)}
       />
     </div>

@@ -2,10 +2,10 @@ import { create } from "zustand";
 import { Block, BlockType } from "./blockRegistry";
 import { DEFAULT_BLOCK_PROPS } from "./defaultProps";
 
-export type TemplateType = 
-  | "npm-package" 
-  | "react-component" 
-  | "cli-tool" 
+export type TemplateType =
+  | "npm-package"
+  | "react-component"
+  | "cli-tool"
   | "profile-readme"
   | "web3-solana"
   | "saas-landing"
@@ -32,12 +32,12 @@ type ReadmeState = {
   copiedBlocks: Block[]; // clipboard
   history: Block[][];
   future: Block[][];
-  
+
   // Project Management
   projectName: string;
   activeProjectId: string | null;
   projects: Project[];
-  
+
   // Actions
   addBlock: (type: BlockType, parentId?: string) => void;
   removeBlock: (id: string) => void;
@@ -47,7 +47,7 @@ type ReadmeState = {
   selectBlock: (id: string | null) => void;
   setBlocks: (blocks: Block[]) => void;
   resetStore: () => void;
-  
+
   // Block notes
   updateBlockNote: (id: string, note: string) => void;
 
@@ -72,10 +72,10 @@ type ReadmeState = {
   redo: () => void;
   canUndo: () => boolean;
   canRedo: () => boolean;
-  
+
   // Templates
   loadTemplate: (template: TemplateType) => void;
-  
+
   // Initialization
   initFromStorage: () => void;
 };
@@ -351,9 +351,45 @@ Consider sponsoring my work to keep open source sustainable:
 };
 
 const INITIAL_BLOCKS: Block[] = [
-  { id: "header-init", type: "header", props: { ...DEFAULT_BLOCK_PROPS.header } },
-  { id: "badges-init", type: "badges", props: { ...DEFAULT_BLOCK_PROPS.badges } },
-  { id: "text-init", type: "text", props: { ...DEFAULT_BLOCK_PROPS.text } },
+  {
+    id: "header-3",
+    type: "header",
+    props: {
+      style: "minimal",
+      title: "⚡ FAST-CLI",
+      subtitle: "A super-fast developer terminal tool that automates environment setup, git hooks, and docker configs in under 2 seconds.",
+      logoType: "none",
+      theme: "dark",
+      align: "center",
+      font: "mono",
+      border: true,
+      watermark: false,
+    },
+  },
+  {
+    id: "text-3",
+    type: "text",
+    props: {
+      content: `## 🚀 Quick Start
+
+\`\`\`bash
+npx fast-cli-tool create --template fullstack
+\`\`\`
+
+## 📊 Star History
+
+Thank you to all contributors who have starred the repository!
+`,
+    },
+  },
+  {
+    id: "chart-1",
+    type: "chart",
+    props: {
+      repo: "shadcn/ui",
+      theme: "dark",
+    },
+  },
 ];
 
 export const useReadmeStore = create<ReadmeState>((set, get) => {
@@ -371,8 +407,8 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
 
   return {
     blocks: INITIAL_BLOCKS,
-    selectedBlockId: "header-init",
-    selectedBlockIds: ["header-init"], // default selection includes active
+    selectedBlockId: "header-3",
+    selectedBlockIds: ["header-3"], // default selection includes active
     copiedBlocks: [],
     history: [],
     future: [],
@@ -418,7 +454,7 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
         props: JSON.parse(JSON.stringify(DEFAULT_BLOCK_PROPS[type] || {})),
         parentId,
       };
-      
+
       const newBlocks = [...get().blocks, newBlock];
       saveStateToHistory(newBlocks);
       set({ selectedBlockId: id, selectedBlockIds: [id] });
@@ -499,7 +535,7 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
       const targetBlocks = blocks.filter((b) => b.parentId === parentId);
       const fromBlock = targetBlocks[fromIndex];
       const toBlock = targetBlocks[toIndex];
-      
+
       if (!fromBlock || !toBlock) return;
 
       const absFrom = blocks.findIndex((b) => b.id === fromBlock.id);
@@ -513,9 +549,9 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
     },
 
     selectBlock: (id) => {
-      set({ 
-        selectedBlockId: id, 
-        selectedBlockIds: id ? [id] : [] 
+      set({
+        selectedBlockId: id,
+        selectedBlockIds: id ? [id] : []
       });
     },
 
@@ -528,9 +564,9 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
       } else {
         newIds.push(id);
       }
-      set({ 
-        selectedBlockIds: newIds, 
-        selectedBlockId: newIds.length > 0 ? newIds[newIds.length - 1] : null 
+      set({
+        selectedBlockIds: newIds,
+        selectedBlockId: newIds.length > 0 ? newIds[newIds.length - 1] : null
       });
     },
 
@@ -540,12 +576,12 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
 
     copySelectedBlocks: () => {
       const { blocks, selectedBlockIds, selectedBlockId } = get();
-      const ids = selectedBlockIds.length > 0 
-        ? selectedBlockIds 
-        : selectedBlockId 
-          ? [selectedBlockId] 
+      const ids = selectedBlockIds.length > 0
+        ? selectedBlockIds
+        : selectedBlockId
+          ? [selectedBlockId]
           : [];
-      
+
       if (ids.length === 0) return;
       const copied = blocks.filter(b => ids.includes(b.id)).map(b => JSON.parse(JSON.stringify(b)));
       set({ copiedBlocks: copied });
@@ -586,7 +622,7 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
       }
 
       saveStateToHistory(newBlocks);
-      set({ 
+      set({
         selectedBlockId: pastedList[0].id,
         selectedBlockIds: pastedList.map(b => b.id)
       });
@@ -723,8 +759,8 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
 
     resetStore: () => {
       saveStateToHistory(INITIAL_BLOCKS);
-      set({ 
-        selectedBlockId: INITIAL_BLOCKS[0].id, 
+      set({
+        selectedBlockId: INITIAL_BLOCKS[0].id,
         selectedBlockIds: [INITIAL_BLOCKS[0].id],
         projectName: "Untitled README",
         activeProjectId: null

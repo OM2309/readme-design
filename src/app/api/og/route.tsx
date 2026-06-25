@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 import { NextRequest } from "next/server";
-import { supabase } from "@/lib/supabaseClient";
+
 
 export const runtime = "edge";
 
@@ -13,26 +13,7 @@ export async function GET(req: NextRequest) {
     let subtitle = searchParams.get("subtitle") || "Visual block-based README builder for GitHub.";
     let blocksCount = 3;
 
-    // If projectId is provided and Supabase is configured, fetch details
-    if (projectId && supabase) {
-      const { data, error } = await supabase
-        .from("projects")
-        .select("name, blocks")
-        .eq("id", projectId)
-        .single();
-      
-      if (data) {
-        title = data.name;
-        const parsedBlocks = typeof data.blocks === "string" ? JSON.parse(data.blocks) : data.blocks;
-        blocksCount = Array.isArray(parsedBlocks) ? parsedBlocks.length : 0;
-        
-        // Find header block subtitle
-        const headerBlock = parsedBlocks.find((b: any) => b.type === "header");
-        if (headerBlock?.props?.subtitle) {
-          subtitle = headerBlock.props.subtitle;
-        }
-      }
-    }
+
 
     return new ImageResponse(
       (
