@@ -3,6 +3,7 @@ import { Inter, Outfit } from "next/font/google";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+import { Analytics } from "@vercel/analytics/next"
 
 const inter = Inter({
   variable: "--font-sans",
@@ -73,6 +74,7 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${outfit.variable} dark h-full antialiased`}
     >
+      <Analytics />
       <body
         className="min-h-full bg-background text-foreground flex flex-col font-sans"
         style={{ fontFeatureSettings: '"calt", "kern", "liga", "ss03"' }}
