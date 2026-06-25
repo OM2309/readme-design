@@ -226,7 +226,7 @@ export default function Page() {
 
               <div className="mt-8 flex flex-col items-center gap-3 sm:flex-row">
                 <Button size="lg" className="w-full rounded-full bg-emerald-400 px-6 text-emerald-950 hover:bg-emerald-400/90 sm:w-auto" render={<Link href="/studio" />}>
-                  Start building — it&apos;s free
+                  Start building
                   <ArrowRight className="size-4" />
                 </Button>
                 <Button
@@ -327,49 +327,9 @@ export default function Page() {
             </Button>
           </div>
 
-          <div className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-            {TEMPLATES.map((template) => (
-              <Link
-                key={template.name}
-                href="/studio"
-                className="group rounded-2xl border border-border bg-card p-3 shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg hover:shadow-foreground/[0.06]"
-              >
-                <TemplatePreview kind={template.kind} />
-                <div className="flex items-center justify-between px-1.5 pt-3.5 pb-1">
-                  <span className="text-sm font-medium">{template.name}</span>
-                  <span className="rounded-full border border-border px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-muted-foreground">
-                    {template.tag}
-                  </span>
-                </div>
-              </Link>
-            ))}
-          </div>
         </section>
 
-        <section className="mx-auto max-w-6xl px-4 pb-24 sm:px-6">
-          <div className="relative overflow-hidden rounded-3xl border border-border bg-card px-6 py-16 text-center shadow-sm sm:px-12 sm:py-20">
-            <div
-              aria-hidden
-              className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(circle_at_1px_1px,var(--color-border)_1px,transparent_0)] [background-size:22px_22px] opacity-50 [mask-image:radial-gradient(ellipse_60%_80%_at_50%_50%,#000,transparent)]"
-            />
-            <h2 className="mx-auto max-w-2xl text-balance text-3xl font-semibold tracking-tight sm:text-4xl">
-              Ship a README people actually read.
-            </h2>
-            <p className="mx-auto mt-4 max-w-md text-pretty text-muted-foreground">
-              Open the studio and design your first README in minutes — free, no markdown required.
-            </p>
-            <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-              <Button size="lg" className="w-full rounded-full bg-emerald-400 px-6 text-emerald-950 hover:bg-emerald-400/90 sm:w-auto" render={<Link href="/studio" />}>
-                Open Studio
-                <ArrowRight className="size-4" />
-              </Button>
-              <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                <Check className="size-4 text-foreground" />
-                No credit card required
-              </div>
-            </div>
-          </div>
-        </section>
+
       </main>
 
       <footer className="border-t border-border">
@@ -387,7 +347,7 @@ export default function Page() {
 
           <nav className="flex items-center gap-6 text-sm text-muted-foreground">
             <Link href="#features" className="transition-colors hover:text-foreground">Features</Link>
-            <Link href="#templates" className="transition-colors hover:text-foreground">Templates</Link>
+
             <Link href="/studio" className="transition-colors hover:text-foreground">Studio</Link>
             <Link
               href="https://github.com/OM2309/readme-design"

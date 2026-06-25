@@ -9,7 +9,7 @@ import GithubIcon from "@/components/GithubIcon";
 
 const NAV_LINKS = [
   { label: "Features", href: "#features" },
-  { label: "Templates", href: "#templates" },
+  // { label: "Templates", href: "#templates" },
   { label: "GitHub", href: "https://github.com/OM2309/readme-design" },
 ];
 
