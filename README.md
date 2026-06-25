@@ -1,6 +1,6 @@
 <div align="center">
   <h1>⚡ FAST-CLI</h1>
-  <p><em>A super-fast developer terminal tool that automates environment setup, git hooks, and docker configs in under 2 seconds.</em></p>
+  <p><em>dsfsfdfdegrde</em></p>
 </div>
 
 ---
