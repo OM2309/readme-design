@@ -14,6 +14,8 @@ const outfit = Outfit({
   subsets: ["latin"],
 });
 
+
+
 const APP_URL = "https://readme-studio.vercel.app";
 
 export const metadata: Metadata = {
