@@ -29,7 +29,10 @@ export default function RootLayout({
       lang="en"
       className={`${inter.variable} ${outfit.variable} dark h-full antialiased`}
     >
-      <body className="min-h-full bg-background text-foreground flex flex-col font-sans">
+      <body
+        className="min-h-full bg-background text-foreground flex flex-col font-sans"
+        style={{ fontFeatureSettings: '"calt", "kern", "liga", "ss03"' }}
+      >
         <TooltipProvider>
           {children}
           <Toaster theme="dark" position="bottom-right" closeButton />

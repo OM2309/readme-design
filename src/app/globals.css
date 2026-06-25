@@ -264,3 +264,106 @@
   opacity: 0;
   animation: fadeInBlock 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* ──────────────────────────────────────────────────
+   Raycast-style Landing Page Tokens
+   ────────────────────────────────────────────────── */
+
+/* Hero red diagonal stripe gradient */
+.hero-stripe-band {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-stripe-band::before {
+  content: "";
+  position: absolute;
+  top: -60%;
+  left: -20%;
+  right: -20%;
+  bottom: 40%;
+  background:
+    linear-gradient(
+      125deg,
+      transparent 0%,
+      transparent 30%,
+      rgba(255, 87, 87, 0.07) 31%,
+      rgba(161, 19, 26, 0.04) 38%,
+      transparent 39%,
+      transparent 44%,
+      rgba(255, 87, 87, 0.05) 45%,
+      rgba(161, 19, 26, 0.03) 52%,
+      transparent 53%,
+      transparent 58%,
+      rgba(255, 87, 87, 0.03) 59%,
+      rgba(161, 19, 26, 0.02) 66%,
+      transparent 67%
+    );
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Keycap glyph */
+.keycap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1px 6px;
+  height: 20px;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1px;
+  line-height: 1;
+  color: #cdcdcd;
+  background: linear-gradient(180deg, #121212 0%, #0d0d0d 100%);
+  border: 1px solid #242728;
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+/* Fade in up animation for hero content */
+@keyframes fadeInUp {
+  0% { opacity: 0; transform: translateY(12px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up {
+  opacity: 0;
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.fade-in-up-delay-1 { animation-delay: 0.08s; }
+.fade-in-up-delay-2 { animation-delay: 0.16s; }
+.fade-in-up-delay-3 { animation-delay: 0.24s; }
+.fade-in-up-delay-4 { animation-delay: 0.4s; }
+
+/* Command palette row styling */
+.cmd-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  color: #f4f4f6;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0;
+  transition: background 0.1s;
+}
+
+.cmd-row-active {
+  background: #121212;
+}
+
+/* App icon tile */
+.app-icon-tile {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: #121212;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}

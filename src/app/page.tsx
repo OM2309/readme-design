@@ -1,22 +1,52 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import {
   FileText,
   ArrowRight,
-  Menu,
-  X,
-  Moon,
-  Sun
+  Search,
+  Command,
+  CornerDownLeft,
+  Type,
+  Image,
+  BarChart3,
+  Table,
+  Code,
+  Users,
 } from "lucide-react";
-import GithubIcon from "@/components/GithubIcon";
 import { toast } from "sonner";
+
+/* ═══════════════════════════════════════════════════
+   Raycast Design System Tokens (inline constants)
+   ═══════════════════════════════════════════════════ */
+const C = {
+  canvas:           "#07080a",
+  surface:          "#0d0d0d",
+  surfaceElevated:  "#101111",
+  surfaceCard:      "#121212",
+  hairline:         "#242728",
+  hairlineSoft:     "rgba(255,255,255,0.08)",
+  hairlineStrong:   "rgba(255,255,255,0.16)",
+  ink:              "#f4f4f6",
+  body:             "#cdcdcd",
+  mute:             "#9c9c9d",
+  ash:              "#6a6b6c",
+  stone:            "#434345",
+  primary:          "#ffffff",
+  primaryPressed:   "#e8e8e8",
+  onPrimary:        "#000000",
+};
 
 export default function LandingPage() {
   const router = useRouter();
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleStartBuilding = () => {
     toast.success("Opening studio workspace");
@@ -24,173 +54,340 @@ export default function LandingPage() {
   };
 
   return (
-    <div className="bg-[#010102] text-[#f7f8f8] font-sans antialiased min-h-screen flex flex-col selection:bg-[#5e6ad2]/30 selection:text-[#5e6ad2]">
-      
-      {/* 1. NAVBAR */}
-      <header className="sticky top-0 z-50 h-[56px] border-b border-[#23252a] bg-[#010102]/90 backdrop-blur-md select-none">
-        <div className="max-w-7xl mx-auto px-6 h-full flex items-center justify-between">
-          <Link href="/" className="flex items-center gap-2 group">
-            <FileText className="w-4 h-4 text-[#f7f8f8]" />
-            <span className="font-semibold text-sm tracking-tight text-white">
+    <div
+      className="min-h-screen flex flex-col overflow-x-hidden"
+      style={{
+        backgroundColor: C.canvas,
+        color: C.ink,
+      }}
+    >
+      {/* ═══════ PRIMARY NAV ═══════ */}
+      <header
+        className="fixed top-0 left-0 right-0 z-50 h-[56px] select-none"
+        style={{
+          backgroundColor: `${C.canvas}e6`,
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          borderBottom: `1px solid ${C.hairline}`,
+        }}
+      >
+        <div className="max-w-[1240px] mx-auto px-6 h-full flex items-center justify-between">
+          {/* Wordmark */}
+          <Link href="/" className="flex items-center gap-2.5">
+            <div
+              className="w-[24px] h-[24px] rounded-[6px] flex items-center justify-center"
+              style={{ backgroundColor: C.surfaceCard }}
+            >
+              <FileText className="w-3.5 h-3.5" style={{ color: C.ink }} />
+            </div>
+            <span
+              className="text-[14px] font-medium tracking-[0.2px]"
+              style={{ color: C.primary }}
+            >
               README Studio
             </span>
           </Link>
 
-          <nav className="hidden md:flex items-center gap-6 text-[13px] font-medium text-[#8a8f98]">
-            <a href="/studio" className="hover:text-[#f7f8f8] transition-colors">Features</a>
-            <a href="/studio" className="hover:text-[#f7f8f8] transition-colors">Templates</a>
-            <a href="/studio" className="hover:text-[#f7f8f8] transition-colors">Pricing</a>
-            <a href="/studio" className="hover:text-[#f7f8f8] transition-colors">Changelog</a>
-          </nav>
-
-          <div className="hidden md:flex items-center gap-3">
-            <Link href="/studio" className="text-[13px] font-medium text-[#8a8f98] hover:text-[#f7f8f8] px-3 py-1.5 transition-colors">
+          {/* Right: Star on GitHub + Sign in */}
+          <div className="flex items-center gap-3">
+            <a
+              href="https://github.com/OM2309/readme-design"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-[13px] px-3 py-1 rounded-[8px] transition-all duration-100"
+              style={{
+                color: C.body,
+                border: `1px solid ${C.hairline}`,
+                backgroundColor: C.surfaceElevated,
+                fontWeight: 500,
+                letterSpacing: "0.2px",
+              }}
+            >
+              <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+              </svg>
+              Star on GitHub
+            </a>
+            <Link
+              href="/studio"
+              className="text-[13px] px-3 py-1.5 rounded-[8px] transition-colors duration-100"
+              style={{ color: C.mute, fontWeight: 500, letterSpacing: "0.2px" }}
+            >
               Sign in
             </Link>
-            <button 
-              onClick={handleStartBuilding}
-              className="text-[13px] font-medium px-3.5 py-1.5 rounded-[8px] bg-[#5e6ad2] text-[#ffffff] hover:bg-[#828fff] transition-all flex items-center gap-1 active:scale-95 border border-[#5e69d1]"
-            >
-              Start free <ArrowRight className="w-3 h-3" />
-            </button>
           </div>
-
-          <button 
-            onClick={() => setMobileMenuOpen((prev) => !prev)}
-            className="md:hidden p-1 text-[#8a8f98] hover:text-[#f7f8f8] transition-colors"
-          >
-            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-          </button>
         </div>
-
-        {/* Mobile Navigation Drawer */}
-        {mobileMenuOpen && (
-          <div className="md:hidden absolute top-[56px] left-0 w-full bg-[#010102] border-b border-[#23252a] px-6 py-4 flex flex-col gap-4 text-sm font-medium text-[#8a8f98] z-50">
-            <Link href="/studio" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#f7f8f8] py-1">Features</Link>
-            <Link href="/studio" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#f7f8f8] py-1">Templates</Link>
-            <Link href="/studio" onClick={() => setMobileMenuOpen(false)} className="hover:text-[#f7f8f8] py-1">Pricing</Link>
-            <hr className="border-[#23252a]" />
-            <div className="flex items-center justify-between pt-2">
-              <Link href="/studio" onClick={() => setMobileMenuOpen(false)} className="text-xs hover:text-[#f7f8f8]">Sign in</Link>
-              <button 
-                onClick={() => {
-                  setMobileMenuOpen(false);
-                  handleStartBuilding();
-                }}
-                className="text-xs font-semibold px-4 py-2 rounded-[8px] bg-[#5e6ad2] text-[#ffffff] hover:bg-[#828fff]"
-              >
-                Start free →
-              </button>
-            </div>
-          </div>
-        )}
       </header>
 
-      {/* 2. HERO SECTION */}
-      <section className="relative overflow-hidden min-h-[90vh] flex flex-col items-center justify-center pt-24 pb-16 px-6 select-none">
-        
-        {/* Subtle dot grid behind mockup only - placed as absolute layer */}
-        <div className="absolute inset-0 bg-dot-grid pointer-events-none opacity-[0.15] z-0" />
+      {/* ═══════ HERO SECTION with red stripe band ═══════ */}
+      <section className="hero-stripe-band relative flex flex-col items-center pt-[136px] sm:pt-[152px] lg:pt-[176px] pb-[96px] px-6">
 
-        <div className="max-w-5xl mx-auto text-left space-y-8 z-10 relative">
-          
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-semibold tracking-[-3.0px] text-[#f7f8f8] max-w-4xl leading-[1.05] font-sans">
-            The visual editor for developer portfolios and readme files
-          </h1>
+        <div className="relative z-10 max-w-[800px] mx-auto text-center">
+          {/* Staggered fade-in content */}
+          <div className={`space-y-6 ${mounted ? "" : "opacity-0"}`}>
 
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-[#23252a]/40 pb-6">
-            <p className="text-sm sm:text-base text-[#d0d6e0] max-w-2xl leading-relaxed">
-              Drag blocks, customize in clicks, push directly to GitHub. Designed for open source maintainers.
-            </p>
-            
-            <div className="flex items-center gap-2">
-              <Link 
-                href="/studio" 
-                className="text-xs font-mono text-[#8a8f98] hover:text-[#f7f8f8] transition-colors flex items-center gap-1 bg-[#111215] border border-[#23252a] px-2.5 py-1 rounded-[6px]"
+            {/* Badge pill */}
+            <div className={`flex justify-center ${mounted ? "fade-in-up fade-in-up-delay-1" : ""}`}>
+              <Link
+                href="/studio"
+                className="inline-flex items-center gap-2 text-[12px] px-3 py-1 rounded-full transition-all duration-150"
+                style={{
+                  backgroundColor: C.surfaceElevated,
+                  color: C.mute,
+                  border: `1px solid ${C.hairline}`,
+                  fontWeight: 400,
+                  letterSpacing: "0.4px",
+                }}
               >
-                Now in Beta <span className="text-[#5e6ad2]">→</span>
+                <span
+                  className="inline-block w-[6px] h-[6px] rounded-full"
+                  style={{ backgroundColor: "#59d499" }}
+                />
+                Now in public beta
+                <ArrowRight className="w-3 h-3" style={{ color: C.ash }} />
               </Link>
             </div>
-          </div>
 
-          {/* Product UI Mockup (Enriched with uploaded screenshot) */}
-          <div className="pt-8 w-full animate-float">
-            <div className="border border-[#23252a] bg-[#111215] rounded-[16px] p-3 overflow-hidden shadow-2xl relative">
-              {/* Render high-fidelity mockup image */}
-              <img 
-                src="/app-mockup.png" 
-                alt="README Studio Visual Editor Workspace Mockup" 
-                className="w-full h-auto rounded-[12px] border border-[#23252a] bg-[#010102]"
-                loading="eager"
-              />
+            {/* Display headline */}
+            <h1
+              className={`text-[36px] sm:text-[48px] lg:text-[64px] leading-[1.1] ${mounted ? "fade-in-up fade-in-up-delay-2" : ""}`}
+              style={{
+                color: C.ink,
+                fontWeight: 600,
+                letterSpacing: 0,
+                fontFeatureSettings: '"calt", "kern", "ss02", "ss03", "ss08"',
+              }}
+            >
+              The visual editor for
+              <br />
+              readme files
+            </h1>
+
+            {/* Subhead */}
+            <p
+              className={`text-[16px] sm:text-[18px] leading-[1.6] max-w-[520px] mx-auto ${mounted ? "fade-in-up fade-in-up-delay-3" : ""}`}
+              style={{ color: C.body, fontWeight: 400 }}
+            >
+              Drag blocks, customize in clicks, push directly to GitHub.
+              Designed for developers who ship fast.
+            </p>
+
+            {/* CTA pair */}
+            <div className={`flex flex-col sm:flex-row items-center justify-center gap-3 pt-2 ${mounted ? "fade-in-up fade-in-up-delay-3" : ""}`}>
+              {/* Primary white pill */}
+              <button
+                onClick={handleStartBuilding}
+                className="text-[14px] px-5 py-2.5 rounded-[8px] transition-all duration-100 active:scale-[0.97] flex items-center gap-2 w-full sm:w-auto justify-center"
+                style={{
+                  backgroundColor: C.primary,
+                  color: C.onPrimary,
+                  fontWeight: 500,
+                  letterSpacing: "0.2px",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = C.primaryPressed)}
+                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = C.primary)}
+              >
+                Start building
+                <ArrowRight className="w-4 h-4" />
+              </button>
+
+              {/* Secondary transparent */}
+              <a
+                href="https://github.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-[14px] px-5 py-2.5 rounded-[8px] transition-all duration-100 flex items-center gap-2 w-full sm:w-auto justify-center"
+                style={{
+                  color: C.primary,
+                  fontWeight: 500,
+                  letterSpacing: "0.2px",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+                View on GitHub
+              </a>
             </div>
           </div>
+        </div>
 
+        {/* ═══════ COMMAND PALETTE MOCKUP ═══════ */}
+        <div
+          className={`relative mt-16 sm:mt-20 w-full max-w-[1080px] mx-auto z-10 ${
+            mounted ? "fade-in-up fade-in-up-delay-4" : "opacity-0"
+          }`}
+        >
+          <div
+            className="rounded-[16px] overflow-hidden"
+            style={{
+              backgroundColor: C.surface,
+              border: `1px solid ${C.hairline}`,
+            }}
+          >
+            {/* macOS traffic lights + search bar */}
+            <div
+              className="flex items-center gap-3 px-4 py-3"
+              style={{ borderBottom: `1px solid ${C.hairline}` }}
+            >
+              {/* Traffic dots */}
+              <div className="flex gap-[7px]">
+                <div className="w-[12px] h-[12px] rounded-full bg-[#ff5f57]" />
+                <div className="w-[12px] h-[12px] rounded-full bg-[#febc2e]" />
+                <div className="w-[12px] h-[12px] rounded-full bg-[#28c840]" />
+              </div>
+
+              {/* Command palette search bar */}
+              <div
+                className="flex-1 flex items-center gap-2 px-3 py-1.5 rounded-[8px]"
+                style={{
+                  backgroundColor: C.surfaceElevated,
+                  border: `1px solid ${C.hairline}`,
+                }}
+              >
+                <Search className="w-3.5 h-3.5" style={{ color: C.ash }} />
+                <span className="text-[13px]" style={{ color: C.mute, letterSpacing: "0.1px" }}>
+                  Search blocks, templates, actions...
+                </span>
+              </div>
+
+              {/* Keycaps */}
+              <div className="hidden sm:flex items-center gap-1.5">
+                <span className="keycap"><Command className="w-3 h-3" /></span>
+                <span className="keycap" style={{ fontSize: "11px" }}>K</span>
+              </div>
+            </div>
+
+            {/* Command palette body */}
+            <div className="p-2">
+              {/* Section label */}
+              <div
+                className="px-3 py-1.5 text-[12px] uppercase tracking-[0.4px]"
+                style={{ color: C.ash, fontWeight: 500 }}
+              >
+                Blocks
+              </div>
+
+              {/* Rows */}
+              {[
+                { icon: <Type className="w-4 h-4" />, label: "Header block", desc: "Title, subtitle, logo", color: "#ff6161", shortcut: "H" },
+                { icon: <FileText className="w-4 h-4" />, label: "Text block", desc: "Rich markdown content", color: "#57c1ff", shortcut: "T" },
+                { icon: <Image className="w-4 h-4" />, label: "Image block", desc: "Screenshots, diagrams", color: "#59d499", shortcut: "I" },
+                { icon: <Code className="w-4 h-4" />, label: "Code snippet", desc: "Syntax highlighted code", color: "#ffc533", shortcut: "C" },
+                { icon: <BarChart3 className="w-4 h-4" />, label: "Chart block", desc: "Star history, analytics", color: "#57c1ff", shortcut: null },
+                { icon: <Table className="w-4 h-4" />, label: "Table block", desc: "Structured data rows", color: "#9c9c9d", shortcut: null },
+                { icon: <Users className="w-4 h-4" />, label: "Contributors", desc: "Team and contributor grid", color: "#59d499", shortcut: null },
+              ].map((row, i) => (
+                <div
+                  key={row.label}
+                  className={`cmd-row ${i === 0 ? "cmd-row-active" : ""}`}
+                  style={i === 0 ? { backgroundColor: C.surfaceCard } : {}}
+                >
+                  <div
+                    className="app-icon-tile"
+                    style={{
+                      backgroundColor: `${row.color}15`,
+                    }}
+                  >
+                    <span style={{ color: row.color }}>{row.icon}</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <div className="text-[14px]" style={{ color: C.ink, fontWeight: 500, letterSpacing: "0.2px" }}>
+                      {row.label}
+                    </div>
+                    <div className="text-[12px]" style={{ color: C.mute, letterSpacing: "0.1px" }}>
+                      {row.desc}
+                    </div>
+                  </div>
+                  {row.shortcut && (
+                    <span className="keycap hidden sm:inline-flex">{row.shortcut}</span>
+                  )}
+                </div>
+              ))}
+
+              {/* Divider */}
+              <div className="my-2" style={{ borderTop: `1px solid ${C.hairline}` }} />
+
+              {/* Actions section */}
+              <div
+                className="px-3 py-1.5 text-[12px] uppercase tracking-[0.4px]"
+                style={{ color: C.ash, fontWeight: 500 }}
+              >
+                Actions
+              </div>
+              {[
+                { label: "Push to GitHub", shortcut: "⌘ ⇧ P" },
+                { label: "Copy as markdown", shortcut: "⌘ ⇧ C" },
+                { label: "Load template", shortcut: "⌘ T" },
+              ].map((row) => (
+                <div key={row.label} className="cmd-row">
+                  <div className="app-icon-tile" style={{ backgroundColor: C.surfaceCard }}>
+                    <CornerDownLeft className="w-3.5 h-3.5" style={{ color: C.ash }} />
+                  </div>
+                  <div className="flex-1">
+                    <span className="text-[14px]" style={{ color: C.body, fontWeight: 400, letterSpacing: "0.2px" }}>
+                      {row.label}
+                    </span>
+                  </div>
+                  <span className="keycap hidden sm:inline-flex text-[10px]">{row.shortcut}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Bottom bar */}
+            <div
+              className="flex items-center justify-between px-4 py-2.5"
+              style={{ borderTop: `1px solid ${C.hairline}` }}
+            >
+              <div className="flex items-center gap-3">
+                <span className="text-[12px]" style={{ color: C.stone, letterSpacing: "0.4px" }}>
+                  readme.studio
+                </span>
+              </div>
+              <div className="hidden sm:flex items-center gap-2">
+                <span className="keycap text-[10px]">↑↓</span>
+                <span className="text-[11px]" style={{ color: C.stone }}>Navigate</span>
+                <span className="keycap text-[10px]"><CornerDownLeft className="w-2.5 h-2.5" /></span>
+                <span className="text-[11px]" style={{ color: C.stone }}>Select</span>
+                <span className="keycap text-[10px]">esc</span>
+                <span className="text-[11px]" style={{ color: C.stone }}>Close</span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* 14. FOOTER */}
-      <footer className="bg-[#010102] py-16 border-t border-[#23252a] select-none text-neutral-500 text-xs w-full text-left mt-auto">
-        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-8 pb-12">
-          
-          <div className="space-y-3 col-span-2 md:col-span-1">
-            <div className="flex items-center gap-2 text-white font-semibold">
-              <FileText className="w-4 h-4 text-white" />
-              <span>README Studio</span>
-            </div>
-            <p className="text-[10px] text-neutral-600 leading-relaxed">
-              Beautiful READMEs in minutes, not hours. Built by developers, for developers.
-            </p>
-          </div>
+      {/* Spacer */}
+      <div className="flex-1" />
 
-          <div className="space-y-3">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-[#8a8f98]">Product</span>
-            <ul className="space-y-2 text-[10px]">
-              <li><Link href="/studio" className="hover:text-neutral-300">Features</Link></li>
-              <li><Link href="/studio" className="hover:text-neutral-300">Templates</Link></li>
-              <li><Link href="/studio" className="hover:text-neutral-300">Pricing</Link></li>
-              <li><Link href="/studio" className="hover:text-neutral-300">Changelog</Link></li>
-              <li><Link href="/studio" className="hover:text-neutral-300">Roadmap</Link></li>
-            </ul>
-          </div>
+      {/* ═══════ FOOTER ═══════ */}
+      <footer
+        className="select-none mt-auto"
+        style={{
+          backgroundColor: C.canvas,
+          borderTop: `1px solid ${C.hairline}`,
+        }}
+      >
+        <div className="max-w-[1240px] mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          {/* Left: product + year */}
+          <span className="text-[13px]" style={{ color: C.mute, letterSpacing: "0.1px" }}>
+            © 2025 README Studio
+          </span>
 
-          <div className="space-y-3">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-[#8a8f98]">Resources</span>
-            <ul className="space-y-2 text-[10px]">
-              <li><Link href="/studio" className="hover:text-neutral-300">Docs</Link></li>
-              <li><a href="https://github.com" className="hover:text-neutral-300">GitHub</a></li>
-              <li><a href="https://discord.com" className="hover:text-neutral-300">Discord</a></li>
-              <li><a href="https://twitter.com" className="hover:text-neutral-300">Twitter/X</a></li>
-              <li><Link href="/studio" className="hover:text-neutral-300">Blog</Link></li>
-            </ul>
-          </div>
-
-          <div className="space-y-3">
-            <span className="text-[10px] font-mono uppercase tracking-wider text-[#8a8f98]">Legal</span>
-            <ul className="space-y-2 text-[10px]">
-              <li><Link href="/studio" className="hover:text-neutral-300">Privacy</Link></li>
-              <li><Link href="/studio" className="hover:text-neutral-300">Terms</Link></li>
-              <li><Link href="/studio" className="hover:text-neutral-300">Cookie policy</Link></li>
-            </ul>
-          </div>
-
-        </div>
-
-        <div className="border-t border-[#23252a] pt-8 max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-[10px] text-neutral-600 font-mono">
-          <span>© 2025 README Studio · Open source on GitHub</span>
-          
-          {/* Decorative switch */}
-          <div className="flex items-center gap-2 border border-[#23252a] rounded-full p-0.5 bg-[#111215]">
-            <span className="p-1 rounded-full text-white bg-[#010102]">
-              <Moon className="w-3 h-3" />
-            </span>
-            <span className="p-1 text-neutral-600 hover:text-neutral-300 cursor-pointer">
-              <Sun className="w-3 h-3" />
-            </span>
-          </div>
+          {/* Right: X handle */}
+          <a
+            href="https://x.com/_whyom"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-1.5 text-[13px] transition-colors duration-100"
+            style={{ color: C.mute, letterSpacing: "0.1px" }}
+          >
+            <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+            @_whyom
+          </a>
         </div>
       </footer>
-
     </div>
   );
 }
