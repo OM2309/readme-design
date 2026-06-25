@@ -1,4 +1,4 @@
-import { Block } from "@/store/readmeStore";
+import { Block } from "@/store/blockRegistry";
 
 export function blockToMarkdown(block: Block, allBlocks: Block[]): string {
   const { type, props } = block;
@@ -11,32 +11,15 @@ export function blockToMarkdown(block: Block, allBlocks: Block[]): string {
       
       let content = "";
 
-      // Render Banner Image if configured
       if (props.bgType === "image" && props.bgImage) {
         content += `<p${alignHtml}><img src="${props.bgImage}" alt="${props.altText || "banner"}" width="100%" /></p>\n\n`;
-      } else if (props.bgType === "color" && props.style === "gradient") {
-        // Generate a beautiful gradient SVG banner inline!
-        const startColor = encodeURIComponent(props.bgGradientStart || "#4f46e5");
-        const endColor = encodeURIComponent(props.bgGradientEnd || "#ec4899");
-        const titleText = encodeURIComponent(props.title || "");
-        const subText = encodeURIComponent(props.subtitle || "");
-        const height = props.size === "compact" ? 120 : 200;
-        
-        // We can use shields.io or custom dynamic SVG generator or standard gradient banner
-        const svgBannerUrl = `https://kroppy.github.io/readme-studio-banners/gradient.svg?start=${startColor}&end=${endColor}&title=${titleText}&subtitle=${subText}&height=${height}&font=${font}`;
-        
-        // As a fallback or standard, let's use a nice shields banner or typing svg
-        // Actually, let's write a standard HTML table/banner block or just use text if Kroppy doesn't resolve.
-        // Let's use a standard HTML gradient banner or text.
-        // Wait, dynamic SVGs might fail if host goes down, so we can generate a beautiful centered HTML block with title/subtitle:
       }
 
-      const hasLogo = props.logoType !== "none" && (props.logoType === "auto" || props.logoUrl);
+      const hasLogo = props.logoType !== "none";
       const logoUrl = props.logoType === "auto" 
         ? "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=100&fit=crop&q=80" 
         : props.logoUrl;
 
-      // Wrap in align div
       if (align === "center" || align === "right") {
         content += `<div${alignHtml}>\n`;
         if (hasLogo && logoUrl) {
@@ -48,7 +31,6 @@ export function blockToMarkdown(block: Block, allBlocks: Block[]): string {
         }
         content += `</div>\n`;
       } else {
-        // Left alignment (minimal/standard markdown)
         if (hasLogo && logoUrl) {
           content += `<img src="${logoUrl}" alt="${props.altText || "logo"}" height="60" style="border-radius: 8px; float: left; margin-right: 15px; margin-bottom: 10px;" />\n\n`;
         }
@@ -104,7 +86,6 @@ export function blockToMarkdown(block: Block, allBlocks: Block[]): string {
     }
 
     case "group": {
-      // Find all blocks that belong to this group
       const children = allBlocks.filter((b) => b.parentId === block.id);
       if (children.length === 0) return "";
       
@@ -163,10 +144,194 @@ export function blockToMarkdown(block: Block, allBlocks: Block[]): string {
         content += `</p>`;
         return content;
       } else {
-        // List layout
         return sponsors
           .map((sp: any) => `- **[${sp.name}](${sp.link || "https://github.com"})**`)
           .join("\n");
+      }
+    }
+
+    // --- 8 NEW BLOCKS SERIALIZATION ---
+    
+    case "techstack": {
+      const { techs = "", layout = "row", iconSize = 40, showLabel = true } = props;
+      const techNames = techs.split(",").map((t: string) => t.trim()).filter(Boolean);
+      
+      if (techNames.length === 0) return "";
+
+      const getIconUrl = (name: string) => {
+        // Map common devicon names that don't match slug exactly
+        const mapped = name.toLowerCase()
+          .replace("node.js", "nodejs")
+          .replace("nodejs", "nodejs")
+          .replace("c++", "cplusplus")
+          .replace("c#", "csharp")
+          .replace("css3", "css3")
+          .replace("html5", "html5")
+          .replace("postgresql", "postgresql")
+          .replace("sql", "mysql");
+        return `https://cdn.jsdelivr.net/gh/devicons/devicon/icons/${mapped}/${mapped}-original.svg`;
+      };
+
+      if (layout === "grid") {
+        // Render as HTML table
+        let md = `<table align="center">\n  <tr>\n`;
+        techNames.forEach((tech: string, i: number) => {
+          const icon = getIconUrl(tech);
+          md += `    <td align="center" valign="top" width="${iconSize + 20}">\n`;
+          md += `      <img src="${icon}" alt="${tech}" width="${iconSize}" height="${iconSize}" />\n`;
+          if (showLabel) {
+            md += `      <br/><sub>${tech}</sub>\n`;
+          }
+          md += `    </td>\n`;
+          // Split into rows of 6
+          if ((i + 1) % 6 === 0 && i !== techNames.length - 1) {
+            md += `  </tr>\n  <tr>\n`;
+          }
+        });
+        md += `  </tr>\n</table>`;
+        return md;
+      } else {
+        // Row layout
+        let md = `<p align="center">\n`;
+        techNames.forEach((tech: string, i: number) => {
+          const icon = getIconUrl(tech);
+          md += `  <img src="${icon}" alt="${tech}" width="${iconSize}" height="${iconSize}" />\n`;
+          if (i < techNames.length - 1) {
+            md += `  &nbsp;&nbsp;\n`;
+          }
+        });
+        md += `</p>`;
+        return md;
+      }
+    }
+
+    case "contributors": {
+      const { repo = "vercel/next.js", maxCount = 12 } = props;
+      if (!repo) return "";
+      return `<p align="center">\n  <a href="https://github.com/${repo}/graphs/contributors">\n    <img src="https://contrib.rocks/image?repo=${repo}&max=${maxCount}" alt="Contributors" />\n  </a>\n</p>`;
+    }
+
+    case "socials": {
+      const { items = [], layout = "row" } = props;
+      if (items.length === 0) return "";
+
+      const platformColors: Record<string, string> = {
+        "Twitter/X": "%231DA1F2",
+        "LinkedIn": "%230077B5",
+        "Discord": "%235865F2",
+        "YouTube": "%23FF0000",
+        "Dev.to": "%230A0A0A",
+        "Portfolio": "%230190FF",
+        "Email": "D14836",
+        "GitHub": "%23121011"
+      };
+
+      const platformLogos: Record<string, string> = {
+        "Twitter/X": "x",
+        "LinkedIn": "linkedin",
+        "Discord": "discord",
+        "YouTube": "youtube",
+        "Dev.to": "devto",
+        "Portfolio": "about.me",
+        "Email": "gmail",
+        "GitHub": "github"
+      };
+
+      const badgeList = items.map((item: any) => {
+        const logo = platformLogos[item.platform] || "github";
+        const color = platformColors[item.platform] || "%2324292e";
+        const badgeUrl = `https://img.shields.io/badge/${encodeURIComponent(item.label || item.platform)}-${color}.svg?style=for-the-badge&logo=${logo}&logoColor=white`;
+        return `[![${item.label || item.platform}](${badgeUrl})](${item.url || "#"})`;
+      });
+
+      return layout === "column" ? badgeList.join("\n") : badgeList.join(" ");
+    }
+
+    case "roadmap": {
+      const { items = [] } = props;
+      if (items.length === 0) return "";
+      return items
+        .map((item: any) => `- [${item.done ? "x" : " "}] ${item.text}`)
+        .join("\n");
+    }
+
+    case "divider": {
+      const { style = "line", height = 24, color = "#262626" } = props;
+      if (style === "line") {
+        return `\n<hr style="height: 2px; border: none; background-color: ${color}; margin: 20px 0;" />\n`;
+      }
+      if (style === "dots") {
+        return `\n<p align="center" style="color: ${color}; letter-spacing: 12px; font-weight: bold; font-size: 18px; margin: 15px 0;">••••••••••••</p>\n`;
+      }
+      if (style === "space") {
+        return `\n<div style="height: ${height}px"></div>\n`;
+      }
+      if (style === "wave") {
+        // Standard embedded wave SVG banner URL or custom Kroppy Wave banner
+        return `\n<p align="center"><img src="https://kroppy.github.io/readme-studio-banners/wave.svg?color=${encodeURIComponent(color)}" alt="wave divider" width="100%" /></p>\n`;
+      }
+      return "---";
+    }
+
+    case "video": {
+      const { url = "", caption = "", width = 100, align = "center" } = props;
+      if (!url) return "";
+
+      const getYoutubeId = (youtubeUrl: string) => {
+        const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+        const match = youtubeUrl.match(regExp);
+        return (match && match[2].length === 11) ? match[2] : null;
+      };
+
+      const ytId = getYoutubeId(url);
+      const alignHtml = align === "center" ? ' align="center"' : align === "right" ? ' align="right"' : "";
+
+      if (ytId) {
+        const thumb = `https://img.youtube.com/vi/${ytId}/maxresdefault.jpg`;
+        let md = `<div${alignHtml}>\n  <a href="${url}">\n    <img src="${thumb}" alt="${caption || "Watch video"}" width="${width}%" />\n  </a>\n`;
+        if (caption) {
+          md += `  <p><em>${caption}</em></p>\n`;
+        }
+        md += `</div>`;
+        return md;
+      } else {
+        // Generic video/GIF
+        let md = `<div${alignHtml}>\n  <img src="${url}" alt="${caption || "Demo"}" width="${width}%" />\n`;
+        if (caption) {
+          md += `  <p><em>${caption}</em></p>\n`;
+        }
+        md += `</div>`;
+        return md;
+      }
+    }
+
+    case "code": {
+      const { language = "typescript", filename = "", code = "", showLineNumbers = true } = props;
+      let md = "";
+      if (filename) {
+        md += `\`${filename}\`\n`;
+      }
+      md += `\`\`\`${language}\n${code}\n\`\`\``;
+      return md;
+    }
+
+    case "githubstats": {
+      const { username = "username", theme = "dark", statsType = "general", showIcons = true, hideRank = false } = props;
+      if (!username) return "";
+
+      const t = theme.toLowerCase();
+
+      switch (statsType) {
+        case "general":
+          return `![GitHub Stats](https://github-readme-stats.vercel.app/api?username=${username}&theme=${t}&show_icons=${showIcons}&hide_rank=${hideRank})`;
+        case "streak":
+          return `![GitHub Streak](https://streak-stats.demolab.com?user=${username}&theme=${t})`;
+        case "languages":
+          return `![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=${username}&theme=${t}&layout=compact)`;
+        case "trophy":
+          return `![GitHub Trophies](https://github-profile-trophy.vercel.app/?username=${username}&theme=${t})`;
+        default:
+          return "";
       }
     }
 
@@ -176,8 +341,6 @@ export function blockToMarkdown(block: Block, allBlocks: Block[]): string {
 }
 
 export function generateReadmeMarkdown(blocks: Block[]): string {
-  // Only process root blocks (blocks with no parentId)
-  // Group block's toMarkdown recursively processes its children
   const rootBlocks = blocks.filter((b) => !b.parentId);
   return rootBlocks.map((b) => blockToMarkdown(b, blocks)).join("\n\n");
 }

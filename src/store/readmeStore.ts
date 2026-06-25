@@ -1,29 +1,42 @@
 import { create } from "zustand";
+import { Block, BlockType } from "./blockRegistry";
+import { DEFAULT_BLOCK_PROPS } from "./defaultProps";
 
-export type BlockType =
-  | "header"
-  | "text"
-  | "badges"
-  | "group"
-  | "chart"
-  | "table"
-  | "image"
-  | "sponsors";
+export type TemplateType = 
+  | "npm-package" 
+  | "react-component" 
+  | "cli-tool" 
+  | "profile-readme"
+  | "web3-solana"
+  | "saas-landing"
+  | "mobile-app"
+  | "rest-api"
+  | "monorepo"
+  | "hackathon"
+  | "portfolio"
+  | "browser-ext"
+  | "vscode-ext"
+  | "discord-bot";
 
-export type Block = {
+export interface Project {
   id: string;
-  type: BlockType;
-  props: Record<string, any>;
-  parentId?: string;
-};
-
-export type TemplateType = "npm-package" | "react-component" | "cli-tool" | "profile-readme";
+  name: string;
+  blocks: Block[];
+  updated_at: string;
+}
 
 type ReadmeState = {
   blocks: Block[];
   selectedBlockId: string | null;
+  selectedBlockIds: string[]; // multi-select support
+  copiedBlocks: Block[]; // clipboard
   history: Block[][];
   future: Block[][];
+  
+  // Project Management
+  projectName: string;
+  activeProjectId: string | null;
+  projects: Project[];
   
   // Actions
   addBlock: (type: BlockType, parentId?: string) => void;
@@ -32,8 +45,28 @@ type ReadmeState = {
   updateBlock: (id: string, props: Partial<Record<string, any>>) => void;
   reorderBlocks: (fromIndex: number, toIndex: number, parentId?: string) => void;
   selectBlock: (id: string | null) => void;
+  setBlocks: (blocks: Block[]) => void;
   resetStore: () => void;
   
+  // Block notes
+  updateBlockNote: (id: string, note: string) => void;
+
+  // Multi-select & Advanced arrangement actions
+  toggleMultiSelectBlock: (id: string) => void;
+  clearMultiSelect: () => void;
+  copySelectedBlocks: () => void;
+  pasteBlocks: () => void;
+  groupSelectedBlocks: () => void;
+  deleteSelectedBlocks: () => void;
+  moveSelectedBlocks: (direction: "up" | "down") => void;
+  duplicateSelectedBlocks: () => void;
+
+  // Project Actions
+  setProjectName: (name: string) => void;
+  setActiveProjectId: (id: string | null) => void;
+  setProjects: (projects: Project[]) => void;
+  loadProject: (id: string) => void;
+
   // Undo/Redo
   undo: () => void;
   redo: () => void;
@@ -43,87 +76,8 @@ type ReadmeState = {
   // Templates
   loadTemplate: (template: TemplateType) => void;
   
-  // Initialization from localStorage (client-side)
+  // Initialization
   initFromStorage: () => void;
-};
-
-const DEFAULT_BLOCK_PROPS: Record<BlockType, Record<string, any>> = {
-  header: {
-    style: "gradient",
-    title: "My Awesome Project",
-    subtitle: "A modern developer tool built to make documentation visual, elegant, and fast.",
-    logoType: "auto",
-    logoUrl: "",
-    bgType: "color",
-    bgImage: "",
-    bgGradientStart: "#4f46e5",
-    bgGradientEnd: "#ec4899",
-    bgColor: "#111827",
-    size: "banner",
-    theme: "dark",
-    align: "center",
-    font: "inter",
-    border: true,
-    watermark: false,
-    altText: "Logo",
-  },
-  text: {
-    content: `## 🚀 Features
-
-- **Visual Editor**: Easily edit each section with dedicated forms.
-- **Instant Preview**: Toggle between design preview, compiled HTML, and markdown modes.
-- **Templates**: Get started quickly with specialized configurations.
-- **Copy & Download**: Export your README with a single click.
-
-## 🛠️ Installation
-
-\`\`\`bash
-npm install readme-studio
-\`\`\`
-`,
-  },
-  badges: {
-    packageName: "readme-studio",
-    githubRepo: "lucide-react/lucide",
-    badgeList: ["npm-v", "github-stars", "license", "github-status"],
-    badgeStyle: "flat",
-  },
-  group: {
-    title: "Layout Container",
-  },
-  chart: {
-    repo: "tailwindlabs/tailwindcss",
-    theme: "dark",
-  },
-  table: {
-    headers: ["Option", "Description", "Default"],
-    rows: [
-      ["`theme`", "Visual theme (dark / light)", "`dark`"],
-      ["`align`", "Alignment (left / center / right)", "`center`"],
-      ["`border`", "Show top visual divider border", "`true`"],
-    ],
-  },
-  image: {
-    url: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=800&auto=format&fit=crop&q=60",
-    caption: "A premium header design built with README Studio.",
-    align: "center",
-    width: "100%",
-  },
-  sponsors: {
-    layout: "grid",
-    sponsors: [
-      {
-        name: "Acme Corp",
-        logo: "https://images.unsplash.com/photo-1560179707-f14e90ef3623?w=100&fit=crop&q=80",
-        link: "https://github.com",
-      },
-      {
-        name: "Stark Industries",
-        logo: "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=100&fit=crop&q=80",
-        link: "https://github.com",
-      },
-    ],
-  },
 };
 
 const TEMPLATE_BLOCKS: Record<TemplateType, Block[]> = {
@@ -348,24 +302,58 @@ Consider sponsoring my work to keep open source sustainable:
       },
     },
   ],
+  // 10 new template block configurations
+  "web3-solana": [
+    { id: "ws-h", type: "header", props: { style: "gradient", title: "Solana Pay Portal", subtitle: "Decentralized visual payment gateway for web3 checkout screens.", bgGradientStart: "#9945FF", bgGradientEnd: "#14F195", logoType: "auto", border: true } },
+    { id: "ws-b", type: "badges", props: { githubRepo: "solana-labs/solana", badgeList: ["github-stars", "license"], badgeStyle: "flat" } },
+    { id: "ws-t", type: "techstack", props: { techs: "Solana, Rust, TypeScript, React", layout: "row", iconSize: 40, showLabel: true } },
+    { id: "ws-txt", type: "text", props: { content: "## Web3 Payment Protocol\nSecure, instant payment configurations using Solana Pay." } }
+  ],
+  "saas-landing": [
+    { id: "saas-h", type: "header", props: { style: "gradient", title: "MetricsFlow SaaS", subtitle: "SaaS analytics platform to measure cohort retention and pipeline values in real-time.", bgGradientStart: "#4f46e5", bgGradientEnd: "#06b6d4", logoType: "auto", border: true } },
+    { id: "saas-t", type: "techstack", props: { techs: "React, Next.js, Tailwind CSS, Prisma, PostgreSQL", layout: "row", iconSize: 40, showLabel: true } },
+    { id: "saas-txt", type: "text", props: { content: "## Features\n- Real-time Pipeline Tracking\n- Custom Funnels\n- Automated Email Summaries" } }
+  ],
+  "mobile-app": [
+    { id: "mob-h", type: "header", props: { style: "solid", title: "FitTrack Mobile", subtitle: "Cross-platform mobile app for workout planning and nutrition tracking.", bgColor: "#3b82f6", logoType: "auto", border: true } },
+    { id: "mob-t", type: "techstack", props: { techs: "React Native, Flutter, Firebase, Node.js", layout: "row", iconSize: 40, showLabel: true } },
+    { id: "mob-txt", type: "text", props: { content: "## Setup\nRun `npm install` and then `npx react-native run-ios`." } }
+  ],
+  "rest-api": [
+    { id: "api-h", type: "header", props: { style: "minimal", title: "GeoLocation REST API", subtitle: "Ultra-fast geolocation microservice written in Go.", border: true } },
+    { id: "api-c", type: "code", props: { language: "go", filename: "main.go", code: "package main\nimport \"fmt\"\nfunc main() {\n  fmt.Println(\"API Listening on :8080\")\n}", showLineNumbers: true } },
+    { id: "api-txt", type: "text", props: { content: "## Endpoints\n- `GET /api/v1/locate?ip=...` returns coordinates.\n- `GET /api/v1/health` status check." } }
+  ],
+  "monorepo": [
+    { id: "mono-h", type: "header", props: { style: "gradient", title: "Workspace Monorepo", subtitle: "Turborepo-powered monorepo for SaaS operations, admin portals, and API services.", bgGradientStart: "#ef4444", bgGradientEnd: "#f59e0b", logoType: "auto", border: true } },
+    { id: "mono-t", type: "techstack", props: { techs: "TypeScript, Turborepo, Next.js, Docker", layout: "row", iconSize: 40, showLabel: true } }
+  ],
+  "hackathon": [
+    { id: "hack-h", type: "header", props: { style: "gradient", title: "EcoSnap Hackathon Project", subtitle: "AI-driven recycling companion that classifies trash via camera uploads.", bgGradientStart: "#10b981", bgGradientEnd: "#059669", logoType: "auto", border: true } },
+    { id: "hack-t", type: "techstack", props: { techs: "Python, PyTorch, React, Tailwind CSS", layout: "row", iconSize: 40, showLabel: true } }
+  ],
+  "portfolio": [
+    { id: "port-h", type: "header", props: { style: "gradient", title: "Jane Dev - Software Engineer", subtitle: "Welcome to my portfolio! Building visual systems and high-throughput databases.", bgGradientStart: "#ec4899", bgGradientEnd: "#8b5cf6", logoType: "none", border: false } },
+    { id: "port-stats", type: "githubstats", props: { username: "username", theme: "dark", statsType: "general", showIcons: true, hideRank: false } }
+  ],
+  "browser-ext": [
+    { id: "ext-h", type: "header", props: { style: "solid", title: "FocusShield Extension", subtitle: "Chrome extension to block distracting feeds and set focus timers.", bgColor: "#4b5563", logoType: "auto", border: true } },
+    { id: "ext-txt", type: "text", props: { content: "## Installation\nLoad unpacked folder inside chrome://extensions." } }
+  ],
+  "vscode-ext": [
+    { id: "vsc-h", type: "header", props: { style: "minimal", title: "GitNotes VS Code Extension", subtitle: "Inline visual developer notes linked to git branches and git commits.", border: true } },
+    { id: "vsc-txt", type: "text", props: { content: "## Install\nSearch for 'GitNotes' in the VS Code Marketplace." } }
+  ],
+  "discord-bot": [
+    { id: "bot-h", type: "header", props: { style: "gradient", title: "ModeratorBot Discord", subtitle: "Auto-moderation bot keeping communities safe and rewarding contributions.", bgGradientStart: "#7289da", bgGradientEnd: "#23272a", logoType: "auto", border: true } },
+    { id: "bot-t", type: "techstack", props: { techs: "Node.js, Discord.js, MongoDB", layout: "row", iconSize: 40, showLabel: true } }
+  ]
 };
 
 const INITIAL_BLOCKS: Block[] = [
-  {
-    id: "header-init",
-    type: "header",
-    props: { ...DEFAULT_BLOCK_PROPS.header },
-  },
-  {
-    id: "badges-init",
-    type: "badges",
-    props: { ...DEFAULT_BLOCK_PROPS.badges },
-  },
-  {
-    id: "text-init",
-    type: "text",
-    props: { ...DEFAULT_BLOCK_PROPS.text },
-  },
+  { id: "header-init", type: "header", props: { ...DEFAULT_BLOCK_PROPS.header } },
+  { id: "badges-init", type: "badges", props: { ...DEFAULT_BLOCK_PROPS.badges } },
+  { id: "text-init", type: "text", props: { ...DEFAULT_BLOCK_PROPS.text } },
 ];
 
 export const useReadmeStore = create<ReadmeState>((set, get) => {
@@ -384,12 +372,21 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
   return {
     blocks: INITIAL_BLOCKS,
     selectedBlockId: "header-init",
+    selectedBlockIds: ["header-init"], // default selection includes active
+    copiedBlocks: [],
     history: [],
     future: [],
+    projectName: "Untitled README",
+    activeProjectId: null,
+    projects: [],
 
     initFromStorage: () => {
       if (typeof window !== "undefined") {
         const stored = localStorage.getItem("readme-studio-blocks");
+        const storedProjectName = localStorage.getItem("readme-studio-project-name");
+        if (storedProjectName) {
+          set({ projectName: storedProjectName });
+        }
         if (stored) {
           try {
             const parsed = JSON.parse(stored) as Block[];
@@ -397,6 +394,7 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
               set({
                 blocks: parsed,
                 selectedBlockId: parsed[0]?.id || null,
+                selectedBlockIds: parsed[0] ? [parsed[0].id] : [],
                 history: [],
                 future: [],
               });
@@ -406,6 +404,10 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
           }
         }
       }
+    },
+
+    setBlocks: (newBlocks) => {
+      saveStateToHistory(newBlocks);
     },
 
     addBlock: (type, parentId) => {
@@ -419,20 +421,15 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
       
       const newBlocks = [...get().blocks, newBlock];
       saveStateToHistory(newBlocks);
-      set({ selectedBlockId: id });
+      set({ selectedBlockId: id, selectedBlockIds: [id] });
     },
 
     removeBlock: (id) => {
-      // Find block
       const blocks = get().blocks;
-      // Also remove children if it's a group
       const newBlocks = blocks.filter((b) => b.id !== id && b.parentId !== id);
-      
       saveStateToHistory(newBlocks);
-      
-      // If deleted block was selected, select the first remaining block
       if (get().selectedBlockId === id) {
-        set({ selectedBlockId: newBlocks[0]?.id || null });
+        set({ selectedBlockId: newBlocks[0]?.id || null, selectedBlockIds: newBlocks[0] ? [newBlocks[0].id] : [] });
       }
     },
 
@@ -448,12 +445,13 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
         type: target.type,
         props: JSON.parse(JSON.stringify(target.props)),
         parentId: target.parentId,
+        _note: target._note
       };
 
       const newBlocks = [...blocks];
       newBlocks.splice(targetIndex + 1, 0, duplicate);
 
-      // If duplicating a group, we might duplicate its children too
+      // If duplicating a group, duplicate its children too
       if (target.type === "group") {
         const children = blocks.filter((b) => b.parentId === id);
         children.forEach((child, childIdx) => {
@@ -463,13 +461,14 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
             type: child.type,
             props: JSON.parse(JSON.stringify(child.props)),
             parentId: newId,
+            _note: child._note
           };
           newBlocks.splice(targetIndex + 2 + childIdx, 0, childDuplicate);
         });
       }
 
       saveStateToHistory(newBlocks);
-      set({ selectedBlockId: newId });
+      set({ selectedBlockId: newId, selectedBlockIds: [newId] });
     },
 
     updateBlock: (id, props) => {
@@ -479,19 +478,24 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
         }
         return b;
       });
-      
-      // Update state and save
       set({ blocks: newBlocks });
       if (typeof window !== "undefined") {
         localStorage.setItem("readme-studio-blocks", JSON.stringify(newBlocks));
       }
     },
 
+    updateBlockNote: (id, note) => {
+      const newBlocks = get().blocks.map((b) => {
+        if (b.id === id) {
+          return { ...b, _note: note };
+        }
+        return b;
+      });
+      saveStateToHistory(newBlocks);
+    },
+
     reorderBlocks: (fromIndex, toIndex, parentId) => {
       const blocks = get().blocks;
-      
-      // If we are filtering by parentId, the drag & drop indices are relative to the filtered lists
-      // So we map them back to the absolute indexes in the state
       const targetBlocks = blocks.filter((b) => b.parentId === parentId);
       const fromBlock = targetBlocks[fromIndex];
       const toBlock = targetBlocks[toIndex];
@@ -509,12 +513,225 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
     },
 
     selectBlock: (id) => {
-      set({ selectedBlockId: id });
+      set({ 
+        selectedBlockId: id, 
+        selectedBlockIds: id ? [id] : [] 
+      });
+    },
+
+    // Multi-select actions
+    toggleMultiSelectBlock: (id) => {
+      const currentIds = get().selectedBlockIds;
+      let newIds = [...currentIds];
+      if (currentIds.includes(id)) {
+        newIds = newIds.filter(x => x !== id);
+      } else {
+        newIds.push(id);
+      }
+      set({ 
+        selectedBlockIds: newIds, 
+        selectedBlockId: newIds.length > 0 ? newIds[newIds.length - 1] : null 
+      });
+    },
+
+    clearMultiSelect: () => {
+      set({ selectedBlockIds: [], selectedBlockId: null });
+    },
+
+    copySelectedBlocks: () => {
+      const { blocks, selectedBlockIds, selectedBlockId } = get();
+      const ids = selectedBlockIds.length > 0 
+        ? selectedBlockIds 
+        : selectedBlockId 
+          ? [selectedBlockId] 
+          : [];
+      
+      if (ids.length === 0) return;
+      const copied = blocks.filter(b => ids.includes(b.id)).map(b => JSON.parse(JSON.stringify(b)));
+      set({ copiedBlocks: copied });
+    },
+
+    pasteBlocks: () => {
+      const { blocks, copiedBlocks, selectedBlockId } = get();
+      if (copiedBlocks.length === 0) return;
+
+      const newBlocks = [...blocks];
+      const targetId = selectedBlockId || (blocks.length > 0 ? blocks[blocks.length - 1].id : null);
+      const targetIdx = targetId ? blocks.findIndex(b => b.id === targetId) : -1;
+
+      const pastedList: Block[] = [];
+      const idMap: Record<string, string> = {};
+
+      copiedBlocks.forEach((b) => {
+        const newId = `${b.type}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+        idMap[b.id] = newId;
+        pastedList.push({
+          ...b,
+          id: newId,
+          props: JSON.parse(JSON.stringify(b.props)),
+          _note: b._note
+        });
+      });
+
+      pastedList.forEach((b) => {
+        if (b.parentId && idMap[b.parentId]) {
+          b.parentId = idMap[b.parentId];
+        }
+      });
+
+      if (targetIdx !== -1) {
+        newBlocks.splice(targetIdx + 1, 0, ...pastedList);
+      } else {
+        newBlocks.push(...pastedList);
+      }
+
+      saveStateToHistory(newBlocks);
+      set({ 
+        selectedBlockId: pastedList[0].id,
+        selectedBlockIds: pastedList.map(b => b.id)
+      });
+    },
+
+    groupSelectedBlocks: () => {
+      const { blocks, selectedBlockIds } = get();
+      if (selectedBlockIds.length === 0) return;
+
+      const groupId = `group-${Date.now()}`;
+      const groupBlock: Block = {
+        id: groupId,
+        type: "group",
+        props: { title: "Group Container" }
+      };
+
+      const newBlocks = blocks.map(b => {
+        if (selectedBlockIds.includes(b.id)) {
+          return { ...b, parentId: groupId };
+        }
+        return b;
+      });
+
+      const firstIdx = blocks.findIndex(b => selectedBlockIds.includes(b.id));
+      const targetIdx = firstIdx !== -1 ? firstIdx : newBlocks.length;
+      newBlocks.splice(targetIdx, 0, groupBlock);
+
+      saveStateToHistory(newBlocks);
+      set({ selectedBlockId: groupId, selectedBlockIds: [groupId] });
+    },
+
+    deleteSelectedBlocks: () => {
+      const { blocks, selectedBlockIds } = get();
+      if (selectedBlockIds.length === 0) return;
+
+      const newBlocks = blocks.filter(b => !selectedBlockIds.includes(b.id) && (!b.parentId || !selectedBlockIds.includes(b.parentId)));
+      saveStateToHistory(newBlocks);
+      set({ selectedBlockId: null, selectedBlockIds: [] });
+    },
+
+    moveSelectedBlocks: (direction) => {
+      const { blocks, selectedBlockIds } = get();
+      if (selectedBlockIds.length === 0) return;
+
+      const newBlocks = [...blocks];
+      const sortedSelectedIds = [...selectedBlockIds].sort((a, b) => {
+        return blocks.findIndex(x => x.id === a) - blocks.findIndex(x => x.id === b);
+      });
+
+      if (direction === "up") {
+        for (const id of sortedSelectedIds) {
+          const idx = newBlocks.findIndex(x => x.id === id);
+          if (idx > 0) {
+            const temp = newBlocks[idx];
+            newBlocks[idx] = newBlocks[idx - 1];
+            newBlocks[idx - 1] = temp;
+          }
+        }
+      } else {
+        for (let i = sortedSelectedIds.length - 1; i >= 0; i--) {
+          const id = sortedSelectedIds[i];
+          const idx = newBlocks.findIndex(x => x.id === id);
+          if (idx !== -1 && idx < newBlocks.length - 1) {
+            const temp = newBlocks[idx];
+            newBlocks[idx] = newBlocks[idx + 1];
+            newBlocks[idx + 1] = temp;
+          }
+        }
+      }
+
+      saveStateToHistory(newBlocks);
+    },
+
+    duplicateSelectedBlocks: () => {
+      const { blocks, selectedBlockIds } = get();
+      if (selectedBlockIds.length === 0) return;
+
+      const newBlocks = [...blocks];
+      const duplicatedIds: string[] = [];
+
+      selectedBlockIds.forEach((id) => {
+        const idx = newBlocks.findIndex((b) => b.id === id);
+        if (idx === -1) return;
+        const target = newBlocks[idx];
+        const newId = `${target.type}-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
+        const duplicate: Block = {
+          id: newId,
+          type: target.type,
+          props: JSON.parse(JSON.stringify(target.props)),
+          parentId: target.parentId,
+          _note: target._note
+        };
+        newBlocks.splice(idx + 1, 0, duplicate);
+        duplicatedIds.push(newId);
+      });
+
+      saveStateToHistory(newBlocks);
+      set({ selectedBlockIds: duplicatedIds, selectedBlockId: duplicatedIds[0] });
+    },
+
+    setProjectName: (name) => {
+      set({ projectName: name });
+      if (typeof window !== "undefined") {
+        localStorage.setItem("readme-studio-project-name", name);
+      }
+    },
+
+    setActiveProjectId: (id) => {
+      set({ activeProjectId: id });
+    },
+
+    setProjects: (projects) => {
+      set({ projects });
+    },
+
+    loadProject: (id) => {
+      const proj = get().projects.find(p => p.id === id);
+      if (proj) {
+        set({
+          blocks: proj.blocks,
+          projectName: proj.name,
+          activeProjectId: proj.id,
+          selectedBlockId: proj.blocks[0]?.id || null,
+          selectedBlockIds: proj.blocks[0] ? [proj.blocks[0].id] : [],
+          history: [],
+          future: []
+        });
+        if (typeof window !== "undefined") {
+          localStorage.setItem("readme-studio-blocks", JSON.stringify(proj.blocks));
+          localStorage.setItem("readme-studio-project-name", proj.name);
+        }
+      }
     },
 
     resetStore: () => {
       saveStateToHistory(INITIAL_BLOCKS);
-      set({ selectedBlockId: INITIAL_BLOCKS[0].id });
+      set({ 
+        selectedBlockId: INITIAL_BLOCKS[0].id, 
+        selectedBlockIds: [INITIAL_BLOCKS[0].id],
+        projectName: "Untitled README",
+        activeProjectId: null
+      });
+      if (typeof window !== "undefined") {
+        localStorage.setItem("readme-studio-project-name", "Untitled README");
+      }
     },
 
     undo: () => {
@@ -529,6 +746,7 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
         history: newHistory,
         blocks: previous,
         selectedBlockId: previous[0]?.id || null,
+        selectedBlockIds: previous[0] ? [previous[0].id] : [],
       }));
 
       if (typeof window !== "undefined") {
@@ -548,6 +766,7 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
         future: newFuture,
         blocks: next,
         selectedBlockId: next[0]?.id || null,
+        selectedBlockIds: next[0] ? [next[0].id] : [],
       }));
 
       if (typeof window !== "undefined") {
@@ -564,7 +783,7 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
 
       const cloned = JSON.parse(JSON.stringify(templateData));
       saveStateToHistory(cloned);
-      set({ selectedBlockId: cloned[0]?.id || null });
+      set({ selectedBlockId: cloned[0]?.id || null, selectedBlockIds: cloned[0] ? [cloned[0].id] : [] });
     },
   };
 });
