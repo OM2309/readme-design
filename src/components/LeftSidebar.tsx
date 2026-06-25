@@ -145,7 +145,7 @@ function SortableLayerItem({ block, isSelected, onSelect }: SortableLayerItemPro
         isNested ? "ml-5 bg-[#111215]/50 border-dashed border-[#23252a]" : "bg-[#191b1f] border-transparent"
       } ${
         isSelected 
-          ? "border-indigo-500/50 bg-indigo-500/10 text-white" 
+          ? "border-emerald-500/50 bg-emerald-500/10 text-white" 
           : "hover:bg-[#23252a] text-[#8a8f98] hover:text-[#f7f8f8]"
       }`}
     >
@@ -158,7 +158,7 @@ function SortableLayerItem({ block, isSelected, onSelect }: SortableLayerItemPro
           <GripVertical className="w-3.5 h-3.5" />
         </button>
         
-        <Icon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? "text-indigo-400" : "text-neutral-500"}`} />
+        <Icon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? "text-emerald-400" : "text-neutral-500"}`} />
         <span className="truncate font-medium">{displayName}</span>
       </div>
 
@@ -242,7 +242,7 @@ export default function LeftSidebar() {
       <div className="w-[200px] bg-[#0c0d0f] border-r border-[#23252a] flex flex-col">
         <div className="p-4 pb-2">
           <div className="flex items-center gap-2 text-white font-semibold mb-4 text-sm tracking-tight">
-            <LayoutGrid className="w-4 h-4 text-indigo-400" />
+            <LayoutGrid className="w-4 h-4 text-emerald-400" />
             Add Block
           </div>
           <div className="relative mb-3">
@@ -252,7 +252,7 @@ export default function LeftSidebar() {
               placeholder="Search blocks..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-[#191b1f] border border-[#23252a] rounded-md h-8 pl-8 pr-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-indigo-500/50 transition-colors"
+              className="w-full bg-[#191b1f] border border-[#23252a] rounded-md h-8 pl-8 pr-2 text-xs text-white placeholder-neutral-500 focus:outline-none focus:border-emerald-500/50 transition-colors"
             />
           </div>
         </div>
@@ -266,7 +266,7 @@ export default function LeftSidebar() {
                 onClick={() => handleAddBlock(item.type)}
                 className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-[#8a8f98] hover:text-white hover:bg-[#191b1f] transition-all text-left group"
               >
-                <Icon className="w-4 h-4 shrink-0 text-neutral-500 group-hover:text-indigo-400 transition-colors" />
+                <Icon className="w-4 h-4 shrink-0 text-neutral-500 group-hover:text-emerald-400 transition-colors" />
                 <span className="text-xs font-medium truncate">{item.label}</span>
               </button>
             );
@@ -278,7 +278,7 @@ export default function LeftSidebar() {
       <div className="w-[240px] bg-[#111215] flex flex-col">
         <div className="p-4 pb-3 flex items-center justify-between border-b border-[#23252a]">
           <div className="flex items-center gap-2 text-white font-semibold text-sm tracking-tight">
-            <Layers className="w-4 h-4 text-indigo-400" />
+            <Layers className="w-4 h-4 text-emerald-400" />
             Layers
           </div>
           <button

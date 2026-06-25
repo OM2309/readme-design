@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-export const alt = 'README Studio';
+export const alt = 'Readme Design — Design beautiful GitHub READMEs, visually.';
 export const size = {
   width: 1200,
   height: 630,
@@ -15,67 +15,100 @@ export default function Image() {
     (
       <div
         style={{
-          background: '#07080a',
+          position: 'relative',
+          background: '#0a0a0a',
           width: '100%',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          alignItems: 'center',
           justifyContent: 'center',
+          padding: '80px',
         }}
       >
         <div
           style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: '#121212',
-            borderRadius: '40px',
-            width: '240px',
-            height: '240px',
-            marginBottom: '40px',
-            boxShadow: '0 10px 40px rgba(0,0,0,0.8)',
-            border: '2px solid rgba(255,255,255,0.05)',
+            position: 'absolute',
+            top: '-220px',
+            right: '-120px',
+            width: '640px',
+            height: '640px',
+            background:
+              'radial-gradient(circle, rgba(52,211,153,0.16) 0%, rgba(52,211,153,0) 70%)',
           }}
-        >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            width="120" 
-            height="120" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="#f4f4f6" 
-            strokeWidth="2" 
-            strokeLinecap="round" 
-            strokeLinejoin="round"
+        />
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+          <div
+            style={{
+              width: '88px',
+              height: '88px',
+              borderRadius: '20px',
+              backgroundColor: '#f5f5f5',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
           >
-            <path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/>
-            <path d="M14 2v4a2 2 0 0 0 2 2h4"/>
-            <path d="M10 9H8"/>
-            <path d="M16 13H8"/>
-            <path d="M16 17H8"/>
-          </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="52"
+              height="52"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="#0a0a0a"
+              strokeWidth="2.6"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M4 5h16" />
+              <path d="M4 12h10" />
+              <path d="M4 19h7" />
+            </svg>
+          </div>
+          <div
+            style={{
+              fontSize: 46,
+              fontFamily: 'sans-serif',
+              color: '#ffffff',
+              fontWeight: 600,
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Readme Design
+          </div>
         </div>
+
         <div
           style={{
-            fontSize: 80,
+            display: 'flex',
+            fontSize: 78,
             fontFamily: 'sans-serif',
-            color: '#ffffff',
+            color: '#f5f5f5',
             fontWeight: 700,
             letterSpacing: '-0.03em',
+            lineHeight: 1.05,
+            marginTop: '56px',
+            maxWidth: '1000px',
           }}
         >
-          README Studio
+          Design beautiful GitHub READMEs, visually.
         </div>
-        <div
-          style={{
-            fontSize: 40,
-            color: '#a1a1aa',
-            marginTop: '20px',
-            fontWeight: 400,
-          }}
-        >
-          Design Better READMEs
+
+        <div style={{ display: 'flex', marginTop: '44px' }}>
+          <div
+            style={{
+              display: 'flex',
+              backgroundColor: '#34d399',
+              color: '#022c22',
+              fontSize: 27,
+              fontFamily: 'sans-serif',
+              fontWeight: 600,
+              padding: '12px 26px',
+              borderRadius: '999px',
+            }}
+          >
+            Drag-and-drop · AI autofill · One-click push
+          </div>
         </div>
       </div>
     ),

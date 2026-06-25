@@ -173,9 +173,9 @@ export default function StudioHome() {
             {/* Center Canvas with wrappers for layout banner & warning indicator */}
             <div className="flex-1 flex flex-col overflow-hidden relative">
               {showAiBanner && (
-                <div className="bg-indigo-950/40 border-b border-indigo-900/30 px-6 py-2.5 text-xs text-indigo-300 flex items-center justify-between animate-in slide-in-from-top duration-200">
+                <div className="bg-emerald-950/40 border-b border-emerald-900/30 px-6 py-2.5 text-xs text-emerald-300 flex items-center justify-between animate-in slide-in-from-top duration-200">
                   <div className="flex items-center gap-2">
-                    <Sparkles className="w-4 h-4 text-indigo-400 animate-pulse" />
+                    <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
                     <span><strong>AI Auto-Fill Completed:</strong> Canvas layout successfully generated from the GitHub repository!</span>
                   </div>
                   <button 

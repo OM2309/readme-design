@@ -35,9 +35,9 @@ export default function MarkdownEditor({ value, onChange, onSyncApplied }: Markd
   return (
     <div className="flex-1 bg-[#1e1e1e] flex flex-col h-[calc(100vh-64px)]">
       {/* Editor Warning Banner */}
-      <div className="bg-indigo-950/30 border-b border-indigo-500/20 px-6 py-2 flex items-center justify-between gap-4 text-xs text-indigo-300 select-none">
+      <div className="bg-emerald-950/30 border-b border-emerald-500/20 px-6 py-2 flex items-center justify-between gap-4 text-xs text-emerald-300 select-none">
         <div className="flex items-center gap-2">
-          <Info className="w-4 h-4 text-indigo-400 shrink-0" />
+          <Info className="w-4 h-4 text-emerald-400 shrink-0" />
           <span>
             <strong>Direct Edit Mode:</strong> Edit raw markdown here. Click <strong>Sync to Canvas</strong> to save changes back to visual blocks.
           </span>
@@ -45,7 +45,7 @@ export default function MarkdownEditor({ value, onChange, onSyncApplied }: Markd
         <Button 
           size="sm" 
           onClick={handleSync}
-          className="bg-indigo-600 hover:bg-indigo-500 text-white flex items-center gap-1.5 h-7 px-3 text-xs shrink-0"
+          className="bg-emerald-400 hover:bg-emerald-400/90 text-emerald-950 flex items-center gap-1.5 h-7 px-3 text-xs shrink-0"
         >
           <RefreshCw className="w-3.5 h-3.5" />
           Sync to Canvas

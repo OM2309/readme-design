@@ -88,7 +88,7 @@ export default function RightSidebar() {
           <h3 className="text-xs font-semibold text-neutral-400 tracking-wider uppercase">
             Block Properties
           </h3>
-          <span className="text-[10px] text-indigo-400 font-mono bg-indigo-500/10 px-2 py-0.5 rounded-full border border-indigo-500/20">
+          <span className="text-[10px] text-emerald-400 font-mono bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
             {BLOCK_FRIENDLY_NAMES[selectedBlock.type]}
           </span>
         </div>
@@ -298,7 +298,7 @@ function HeaderSettings({ props, onUpdate }: { props: Record<string, any>; onUpd
                   size="icon" 
                   className="w-8 h-8 shrink-0 bg-neutral-900 border-neutral-800 hover:bg-neutral-800"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+                  <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
                 </Button>
               </div>
             </div>

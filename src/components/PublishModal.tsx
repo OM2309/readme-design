@@ -128,7 +128,7 @@ export default function PublishModal({ isOpen, onClose, markdown }: PublishModal
       <DialogContent className="max-w-md bg-panel border-neutral-800 text-foreground select-none">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-base font-bold">
-            <GithubIcon className="w-5 h-5 text-indigo-400" />
+            <GithubIcon className="w-5 h-5 text-emerald-400" />
             Publish to GitHub
           </DialogTitle>
           <DialogDescription className="text-[11px] text-neutral-400">
@@ -190,7 +190,7 @@ export default function PublishModal({ isOpen, onClose, markdown }: PublishModal
                         }}
                         className={`w-full text-left px-2.5 py-2 rounded text-[11px] font-medium transition-all ${
                           selectedRepo?.id === repo.id 
-                            ? "bg-indigo-600/20 border border-indigo-500/20 text-white" 
+                            ? "bg-emerald-600/20 border border-emerald-500/20 text-white" 
                             : "hover:bg-neutral-900/60 text-neutral-400 hover:text-white"
                         }`}
                       >
@@ -204,7 +204,7 @@ export default function PublishModal({ isOpen, onClose, markdown }: PublishModal
 
             {selectedRepo && (
               <div className="bg-neutral-950 border border-neutral-850 p-3 rounded-lg space-y-3 animate-in fade-in slide-in-from-top-2 duration-150">
-                <div className="flex items-center gap-1.5 text-xs text-indigo-400 font-semibold mb-1">
+                <div className="flex items-center gap-1.5 text-xs text-emerald-400 font-semibold mb-1">
                   <span>Target Configuration</span>
                 </div>
 
@@ -252,7 +252,7 @@ export default function PublishModal({ isOpen, onClose, markdown }: PublishModal
               <Button 
                 type="submit" 
                 disabled={loading || !selectedRepo} 
-                className="bg-indigo-600 hover:bg-indigo-500 text-white text-xs h-8 px-4 flex items-center gap-1.5"
+                className="bg-emerald-400 hover:bg-emerald-400/90 text-emerald-950 text-xs h-8 px-4 flex items-center gap-1.5"
               >
                 {loading ? (
                   <>

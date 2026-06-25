@@ -92,7 +92,7 @@ export default function CommandPalette({
             </Command.Empty>
 
             {/* Group: Core Views & Operations */}
-            <Command.Group heading="Workspace Layout & View" className="text-[10px] font-bold text-indigo-400/80 px-2.5 py-1.5 uppercase tracking-wider">
+            <Command.Group heading="Workspace Layout & View" className="text-[10px] font-bold text-emerald-400/80 px-2.5 py-1.5 uppercase tracking-wider">
               <Command.Item
                 onSelect={() => handleAction(() => setViewMode("design"))}
                 className="flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-neutral-300 hover:bg-neutral-850 hover:text-white cursor-pointer"
@@ -123,7 +123,7 @@ export default function CommandPalette({
             </Command.Group>
 
             {/* Group: File Export & Actions */}
-            <Command.Group heading="Project Actions" className="text-[10px] font-bold text-indigo-400/80 px-2.5 py-1.5 uppercase tracking-wider">
+            <Command.Group heading="Project Actions" className="text-[10px] font-bold text-emerald-400/80 px-2.5 py-1.5 uppercase tracking-wider">
               <Command.Item
                 onSelect={() => handleAction(onSaveProject)}
                 className="flex items-center justify-between px-2.5 py-2 rounded-lg text-xs text-neutral-300 hover:bg-neutral-850 hover:text-white cursor-pointer"
@@ -183,7 +183,7 @@ export default function CommandPalette({
             </Command.Group>
 
             {/* Group: History & Reset */}
-            <Command.Group heading="Workspace Operations" className="text-[10px] font-bold text-indigo-400/80 px-2.5 py-1.5 uppercase tracking-wider">
+            <Command.Group heading="Workspace Operations" className="text-[10px] font-bold text-emerald-400/80 px-2.5 py-1.5 uppercase tracking-wider">
               <Command.Item
                 onSelect={() => handleAction(undo)}
                 disabled={!canUndo()}
@@ -220,7 +220,7 @@ export default function CommandPalette({
             </Command.Group>
 
             {/* Group: Add Visual Blocks */}
-            <Command.Group heading="Add visual blocks" className="text-[10px] font-bold text-indigo-400/80 px-2.5 py-1.5 uppercase tracking-wider">
+            <Command.Group heading="Add visual blocks" className="text-[10px] font-bold text-emerald-400/80 px-2.5 py-1.5 uppercase tracking-wider">
               {Object.keys(blockLabels).map((key) => {
                 const bType = key as BlockType;
                 const Icon = blockIcons[bType] || Code;
@@ -240,7 +240,7 @@ export default function CommandPalette({
             </Command.Group>
 
             {/* Group: Load Template Configurations */}
-            <Command.Group heading="Templates Library" className="text-[10px] font-bold text-indigo-400/80 px-2.5 py-1.5 uppercase tracking-wider">
+            <Command.Group heading="Templates Library" className="text-[10px] font-bold text-emerald-400/80 px-2.5 py-1.5 uppercase tracking-wider">
               {[
                 { type: "npm-package", name: "NPM Package Boilerplate" },
                 { type: "react-component", name: "React Component" },

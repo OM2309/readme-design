@@ -112,8 +112,12 @@ export default function Navbar({
       {/* Left side: Project name edit & Count */}
       <div className="flex items-center gap-3 min-w-0">
         <div className="flex items-center gap-2 shrink-0">
-          <a href="/" className="w-[24px] h-[24px] rounded-[6px] flex items-center justify-center" style={{ backgroundColor: "#121212" }}>
-            <FileText className="w-3.5 h-3.5" style={{ color: "#f4f4f6" }} />
+          <a href="/" className="grid size-7 place-items-center rounded-lg bg-foreground text-background" title="Readme Design — home">
+            <svg viewBox="0 0 24 24" className="size-4" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <path d="M4 5h16" />
+              <path d="M4 12h10" />
+              <path d="M4 19h7" />
+            </svg>
           </a>
         </div>
 
@@ -141,7 +145,7 @@ export default function Navbar({
             </span>
           )}
           
-          <span className="text-[9px] font-medium uppercase tracking-wider bg-white/10 text-white/90 px-1.5 py-0.5 rounded-full border border-white/5 shrink-0">
+          <span className="text-[9px] font-medium uppercase tracking-wider bg-emerald-400/10 text-emerald-300 px-1.5 py-0.5 rounded-full border border-emerald-400/20 shrink-0">
             Beta
           </span>
         </div>
@@ -223,7 +227,7 @@ export default function Navbar({
           onClick={openTemplateLibrary}
           className="flex items-center gap-1 border-border hover:bg-accent text-xs h-8 px-2.5"
         >
-          <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
+          <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
           Templates
         </Button>
 
@@ -235,7 +239,7 @@ export default function Navbar({
           className="flex items-center gap-1 border-border hover:bg-accent text-xs h-8 px-2.5"
           title="AI Import from Repo URL"
         >
-          <Sparkles className="w-3.5 h-3.5 text-indigo-400 animate-pulse" />
+          <Sparkles className="w-3.5 h-3.5 text-emerald-400 animate-pulse" />
           AI Import
         </Button>
 
@@ -247,7 +251,7 @@ export default function Navbar({
           className="flex items-center gap-1 border-border hover:bg-accent text-xs h-8 px-2.5"
           title="Publish README to GitHub"
         >
-          <GithubIcon className="w-3.5 h-3.5 text-indigo-400" />
+          <GithubIcon className="w-3.5 h-3.5 text-emerald-400" />
           Publish
         </Button>
 
@@ -285,7 +289,7 @@ export default function Navbar({
               }}
               className="w-full text-left px-3 py-2 rounded-lg text-neutral-350 hover:bg-neutral-800 hover:text-white flex items-center gap-2 cursor-pointer font-medium"
             >
-              <ImageIcon className="w-3.5 h-3.5 text-indigo-400" />
+              <ImageIcon className="w-3.5 h-3.5 text-emerald-400" />
               Export as PNG Image
             </button>
           </PopoverContent>

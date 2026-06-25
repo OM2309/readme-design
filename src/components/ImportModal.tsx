@@ -80,7 +80,7 @@ export default function ImportModal({ isOpen, onClose, onAiSuccess }: ImportModa
       <DialogContent className="max-w-md bg-panel border-neutral-800 text-foreground select-none">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2 text-base font-bold">
-            <Sparkles className="w-4 h-4 text-indigo-400 animate-pulse" />
+            <Sparkles className="w-4 h-4 text-emerald-400 animate-pulse" />
             AI Auto-Fill from GitHub
           </DialogTitle>
           <DialogDescription className="text-[11px] text-neutral-400">
@@ -105,7 +105,7 @@ export default function ImportModal({ isOpen, onClose, onAiSuccess }: ImportModa
             </div>
           </div>
 
-          <Button type="submit" disabled={loading || !repoPath.trim()} className="w-full h-8 text-xs bg-indigo-600 hover:bg-indigo-500 text-white flex items-center justify-center gap-1.5">
+          <Button type="submit" disabled={loading || !repoPath.trim()} className="w-full h-8 text-xs bg-emerald-400 hover:bg-emerald-400/90 text-emerald-950 flex items-center justify-center gap-1.5">
             {loading ? (
               <>
                 <Loader2 className="w-3.5 h-3.5 animate-spin" /> Fetching & compiling layout...

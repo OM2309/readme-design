@@ -50,7 +50,7 @@ export default function KeyboardShortcutsModal({ isOpen, onClose }: KeyboardShor
         <div className="grid grid-cols-2 gap-6 py-2">
           {categories.map((cat, i) => (
             <div key={i} className="space-y-4">
-              <h4 className="text-xs font-bold text-indigo-400 border-b border-border pb-1.5">{cat.title}</h4>
+              <h4 className="text-xs font-bold text-emerald-400 border-b border-border pb-1.5">{cat.title}</h4>
               <div className="space-y-3">
                 {cat.shortcuts.map((sc, j) => (
                   <div key={j} className="flex justify-between items-center text-[11px]">

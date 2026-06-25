@@ -54,7 +54,7 @@ export default function AddBlockModal({ isOpen, onClose }: AddBlockModalProps) {
       <DialogContent className="max-w-xl bg-[#111215] border-[#23252a] text-[#f7f8f8] select-none rounded-xl p-6">
         <DialogHeader className="mb-4">
           <DialogTitle className="flex items-center gap-2 text-xl font-semibold tracking-tight text-white">
-            <Plus className="w-5 h-5 text-indigo-400" />
+            <Plus className="w-5 h-5 text-emerald-400" />
             Add Block
           </DialogTitle>
           <DialogDescription className="text-[#8a8f98] text-sm mt-1.5">
@@ -69,7 +69,7 @@ export default function AddBlockModal({ isOpen, onClose }: AddBlockModalProps) {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleSearchKeyDown}
-            className="pl-9 h-10 bg-[#191b1f] border-[#23252a] focus-visible:ring-1 focus-visible:ring-indigo-500/50 rounded-lg text-sm text-white"
+            className="pl-9 h-10 bg-[#191b1f] border-[#23252a] focus-visible:ring-1 focus-visible:ring-emerald-500/50 rounded-lg text-sm text-white"
             autoFocus
           />
         </div>
@@ -87,12 +87,12 @@ export default function AddBlockModal({ isOpen, onClose }: AddBlockModalProps) {
                 onClick={() => handleAddBlock(item.type)}
                 className={`flex flex-col items-center justify-center p-3 rounded-xl border text-center group cursor-pointer transition-all gap-2 ${
                   isMatch
-                    ? "border-indigo-500/60 bg-indigo-950/20 text-white shadow-[0_0_6px_rgba(99,102,241,0.3)] animate-pulse"
+                    ? "border-emerald-500/60 bg-emerald-950/20 text-white shadow-[0_0_6px_rgba(16,185,129,0.3)] animate-pulse"
                     : "border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-neutral-600 text-neutral-400 hover:text-white"
                 }`}
               >
                 <div className={`p-2 rounded-lg transition-colors ${
-                  isMatch ? "bg-indigo-900/40 text-indigo-300" : "bg-[#111215] group-hover:bg-[#191b1f]"
+                  isMatch ? "bg-emerald-900/40 text-emerald-300" : "bg-[#111215] group-hover:bg-[#191b1f]"
                 }`}>
                   <Icon className="w-5 h-5 shrink-0" />
                 </div>
