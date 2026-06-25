@@ -24,7 +24,9 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent
+  DragEndEvent,
+  DragStartEvent,
+  DragOverlay
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -33,6 +35,7 @@ import {
   useSortable
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { motion, AnimatePresence } from "motion/react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import rehypeRaw from "rehype-raw";
@@ -64,10 +67,9 @@ function CanvasBlockWrapper({ block, children }: CanvasBlockWrapperProps) {
     isDragging,
   } = useSortable({ id: block.id });
 
-  const style = {
+  const sortableStyle = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.3 : 1,
   };
 
   const isSelected = selectedBlockIds.includes(block.id);
@@ -99,12 +101,25 @@ function CanvasBlockWrapper({ block, children }: CanvasBlockWrapperProps) {
   };
 
   return (
-    <div
+    <motion.div
       ref={setNodeRef}
-      style={style}
+      style={sortableStyle}
+      layout
+      layoutId={block.id}
+      transition={{
+        layout: { type: "spring", stiffness: 350, damping: 30 },
+      }}
+      initial={{ opacity: 0, y: 12, scale: 0.97 }}
+      animate={{ 
+        opacity: isDragging ? 0.4 : 1, 
+        y: 0, 
+        scale: isDragging ? 0.98 : 1,
+        boxShadow: isDragging ? "0 0 0 2px rgba(52, 211, 153, 0.25)" : "0 0 0 0px transparent"
+      }}
+      exit={{ opacity: 0, y: -8, scale: 0.95, transition: { duration: 0.2 } }}
       onClick={handleBlockClick}
       onContextMenu={handleContextMenu}
-      className={`group relative border rounded-xl transition-all duration-200 cursor-pointer ${
+      className={`group relative border rounded-xl cursor-pointer ${
         isNested ? "ml-6 border-dashed border-neutral-800" : "border-transparent"
       } ${
         isSelected 
@@ -114,13 +129,16 @@ function CanvasBlockWrapper({ block, children }: CanvasBlockWrapperProps) {
       title="Right-click to add/toggle notes. Shift+click to multi-select."
     >
       {/* Left Drag Handle */}
-      <div 
+      <motion.div 
         {...attributes} 
         {...listeners}
-        className="absolute left-[-14px] top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity cursor-grab active:cursor-grabbing p-1 bg-neutral-900 border border-neutral-800 rounded-md text-neutral-400 hover:text-white shadow-md z-10"
+        className="absolute left-[-14px] top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 cursor-grab active:cursor-grabbing p-1 bg-neutral-900 border border-neutral-800 rounded-md text-neutral-400 hover:text-white shadow-md z-10"
+        whileHover={{ scale: 1.15 }}
+        whileTap={{ scale: 0.9 }}
+        transition={{ type: "spring", stiffness: 400, damping: 20 }}
       >
         <GripVertical className="w-3.5 h-3.5" />
-      </div>
+      </motion.div>
 
       {/* Hover Action Bar */}
       <div className="absolute right-3 top-[-14px] opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity flex items-center gap-1.5 bg-neutral-950 border border-neutral-800 p-1 rounded-lg shadow-xl z-20">
@@ -148,32 +166,62 @@ function CanvasBlockWrapper({ block, children }: CanvasBlockWrapperProps) {
         {children}
 
         {/* Inline Yellow Sticky Note */}
-        {block._note !== undefined && (
-          <div 
-            onClick={(e) => e.stopPropagation()} 
-            className="mt-4 bg-yellow-500/10 border border-yellow-500/20 text-yellow-200 p-3 rounded-lg text-xs flex gap-2 items-start font-sans"
-          >
-            <StickyNote className="w-4 h-4 text-yellow-500 shrink-0 mt-0.5" />
-            <div className="flex-1">
-              <textarea
-                value={block._note}
-                onChange={(e) => updateBlockNote(block.id, e.target.value)}
-                className="w-full bg-transparent border-none outline-none resize-none placeholder-yellow-500/50 text-xs text-yellow-100"
-                placeholder="Write your editorial comment here..."
-                rows={2}
-              />
-            </div>
-            <button 
-              onClick={() => updateBlockNote(block.id, undefined as any)} 
-              className="text-neutral-500 hover:text-red-400 transition-colors"
-              title="Remove note"
+        <AnimatePresence>
+          {block._note !== undefined && (
+            <motion.div 
+              initial={{ opacity: 0, height: 0, marginTop: 0 }}
+              animate={{ opacity: 1, height: "auto", marginTop: 16 }}
+              exit={{ opacity: 0, height: 0, marginTop: 0 }}
+              transition={{ type: "spring", stiffness: 300, damping: 25 }}
+              onClick={(e) => e.stopPropagation()} 
+              className="bg-yellow-500/10 border border-yellow-500/20 text-yellow-200 p-3 rounded-lg text-xs flex gap-2 items-start font-sans overflow-hidden"
             >
-              <Trash2 className="w-3.5 h-3.5" />
-            </button>
-          </div>
-        )}
+              <StickyNote className="w-4 h-4 text-yellow-500 shrink-0 mt-0.5" />
+              <div className="flex-1">
+                <textarea
+                  value={block._note}
+                  onChange={(e) => updateBlockNote(block.id, e.target.value)}
+                  className="w-full bg-transparent border-none outline-none resize-none placeholder-yellow-500/50 text-xs text-yellow-100"
+                  placeholder="Write your editorial comment here..."
+                  rows={2}
+                />
+              </div>
+              <button 
+                onClick={() => updateBlockNote(block.id, undefined as any)} 
+                className="text-neutral-500 hover:text-red-400 transition-colors"
+                title="Remove note"
+              >
+                <Trash2 className="w-3.5 h-3.5" />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </div>
+    </motion.div>
+  );
+}
+
+// Drag overlay component for the floating preview while dragging
+function DragOverlayBlock({ block, renderBlockVisual }: { block: Block; renderBlockVisual: (block: Block) => React.ReactNode }) {
+  return (
+    <motion.div
+      initial={{ scale: 1, boxShadow: "0 0 0 0px transparent" }}
+      animate={{ 
+        scale: 1.03, 
+        boxShadow: "0 20px 60px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(52, 211, 153, 0.3)",
+        rotate: 1.2,
+      }}
+      exit={{ scale: 1, boxShadow: "0 0 0 0px transparent", rotate: 0 }}
+      transition={{ type: "spring", stiffness: 300, damping: 24 }}
+      className="relative border border-emerald-500/30 rounded-xl bg-neutral-900/95 backdrop-blur-sm cursor-grabbing"
+      style={{ maxWidth: 760 }}
+    >
+      <div className="p-5 pointer-events-none">
+        {renderBlockVisual(block)}
+      </div>
+      {/* Emerald glow ring */}
+      <div className="absolute inset-0 rounded-xl ring-2 ring-emerald-400/20 pointer-events-none" />
+    </motion.div>
   );
 }
 
@@ -782,6 +830,8 @@ export default function Canvas() {
     duplicateSelectedBlocks
   } = useReadmeStore();
 
+  const [activeId, setActiveId] = useState<string | null>(null);
+
   const sensors = useSensors(
     useSensor(PointerSensor, {
       activationConstraint: {
@@ -793,13 +843,22 @@ export default function Canvas() {
     })
   );
 
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveId(event.active.id as string);
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
+    setActiveId(null);
     if (!over || active.id === over.id) return;
 
     const fromIndex = blocks.findIndex((b) => b.id === active.id);
     const toIndex = blocks.findIndex((b) => b.id === over.id);
     reorderBlocks(fromIndex, toIndex);
+  };
+
+  const handleDragCancel = () => {
+    setActiveId(null);
   };
 
   const renderBlockVisual = (block: Block) => {
@@ -829,6 +888,7 @@ export default function Canvas() {
 
   const blockIds = blocks.map((b) => b.id);
   const isMultiSelect = selectedBlockIds.length > 1;
+  const activeBlock = activeId ? blocks.find((b) => b.id === activeId) : null;
 
   return (
     <div 
@@ -836,37 +896,50 @@ export default function Canvas() {
       onClick={() => selectBlock(null)}
     >
       {/* Floating Multi-Select Toolbar (Requirement 13) */}
-      {isMultiSelect && (
-        <div className="fixed top-20 z-40 bg-neutral-900 border border-neutral-800 px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-3 animate-in fade-in slide-in-from-top-4 select-none">
-          <div className="flex items-center gap-1.5 text-xs text-neutral-300 font-semibold border-r border-border pr-3">
-            <Group className="w-4 h-4 text-emerald-400" />
-            <span>{selectedBlockIds.length} blocks selected</span>
-          </div>
-          <div className="flex gap-2">
-            <Button size="xs" variant="outline" onClick={groupSelectedBlocks} className="text-xs bg-neutral-950 border-neutral-800 hover:bg-neutral-800">
-              Group
-            </Button>
-            <Button size="xs" variant="outline" onClick={duplicateSelectedBlocks} className="text-xs bg-neutral-950 border-neutral-800 hover:bg-neutral-800">
-              Duplicate
-            </Button>
-            <Button size="xs" variant="outline" onClick={() => moveSelectedBlocks("up")} className="text-xs bg-neutral-950 border-neutral-800 hover:bg-neutral-800 flex items-center">
-              <MoveUp className="w-3 h-3 mr-1" /> Up
-            </Button>
-            <Button size="xs" variant="outline" onClick={() => moveSelectedBlocks("down")} className="text-xs bg-neutral-950 border-neutral-800 hover:bg-neutral-800 flex items-center">
-              <MoveDown className="w-3 h-3 mr-1" /> Down
-            </Button>
-            <Button size="xs" variant="destructive" onClick={deleteSelectedBlocks} className="text-xs flex items-center">
-              <Trash2 className="w-3 h-3 mr-1" /> Delete
-            </Button>
-          </div>
-        </div>
-      )}
+      <AnimatePresence>
+        {isMultiSelect && (
+          <motion.div
+            initial={{ opacity: 0, y: -20, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ type: "spring", stiffness: 400, damping: 28 }}
+            className="fixed top-20 z-40 bg-neutral-900 border border-neutral-800 px-4 py-2.5 rounded-xl shadow-2xl flex items-center gap-3 select-none"
+          >
+            <div className="flex items-center gap-1.5 text-xs text-neutral-300 font-semibold border-r border-border pr-3">
+              <Group className="w-4 h-4 text-emerald-400" />
+              <span>{selectedBlockIds.length} blocks selected</span>
+            </div>
+            <div className="flex gap-2">
+              <Button size="xs" variant="outline" onClick={groupSelectedBlocks} className="text-xs bg-neutral-950 border-neutral-800 hover:bg-neutral-800">
+                Group
+              </Button>
+              <Button size="xs" variant="outline" onClick={duplicateSelectedBlocks} className="text-xs bg-neutral-950 border-neutral-800 hover:bg-neutral-800">
+                Duplicate
+              </Button>
+              <Button size="xs" variant="outline" onClick={() => moveSelectedBlocks("up")} className="text-xs bg-neutral-950 border-neutral-800 hover:bg-neutral-800 flex items-center">
+                <MoveUp className="w-3 h-3 mr-1" /> Up
+              </Button>
+              <Button size="xs" variant="outline" onClick={() => moveSelectedBlocks("down")} className="text-xs bg-neutral-950 border-neutral-800 hover:bg-neutral-800 flex items-center">
+                <MoveDown className="w-3 h-3 mr-1" /> Down
+              </Button>
+              <Button size="xs" variant="destructive" onClick={deleteSelectedBlocks} className="text-xs flex items-center">
+                <Trash2 className="w-3 h-3 mr-1" /> Delete
+              </Button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Canvas Box */}
-      <div className="w-full max-w-[760px] bg-neutral-950 border border-neutral-900 rounded-2xl p-8 h-fit shadow-2xl space-y-6">
+      <div className="w-full max-w-[760px] bg-neutral-950 border border-neutral-900 rounded-2xl p-8 h-fit shadow-2xl">
         {/* Onboarding Empty Canvas State (Requirement 11) */}
         {blocks.length === 0 ? (
-          <div className="flex flex-col items-center justify-center py-16 text-center select-none">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="flex flex-col items-center justify-center py-16 text-center select-none"
+          >
             <div className="p-4 bg-neutral-900 border border-neutral-850 text-emerald-400 rounded-full mb-4">
               <FileText className="w-8 h-8 stroke-[1.5]" />
             </div>
@@ -902,25 +975,39 @@ export default function Canvas() {
                 ))}
               </div>
             </div>
-          </div>
+          </motion.div>
         ) : (
           <DndContext
             sensors={sensors}
             collisionDetection={closestCenter}
+            onDragStart={handleDragStart}
             onDragEnd={handleDragEnd}
+            onDragCancel={handleDragCancel}
           >
             <SortableContext
               items={blockIds}
               strategy={verticalListSortingStrategy}
             >
               <div className="space-y-4">
-                {blocks.map((block) => (
-                  <CanvasBlockWrapper key={block.id} block={block}>
-                    {renderBlockVisual(block)}
-                  </CanvasBlockWrapper>
-                ))}
+                <AnimatePresence mode="popLayout">
+                  {blocks.map((block) => (
+                    <CanvasBlockWrapper key={block.id} block={block}>
+                      {renderBlockVisual(block)}
+                    </CanvasBlockWrapper>
+                  ))}
+                </AnimatePresence>
               </div>
             </SortableContext>
+
+            {/* Drag Overlay — floating preview that follows the cursor */}
+            <DragOverlay dropAnimation={{
+              duration: 250,
+              easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22)",
+            }}>
+              {activeBlock ? (
+                <DragOverlayBlock block={activeBlock} renderBlockVisual={renderBlockVisual} />
+              ) : null}
+            </DragOverlay>
           </DndContext>
         )}
       </div>

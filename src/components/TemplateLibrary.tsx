@@ -14,7 +14,13 @@ import {
   Sparkles,
   Rocket,
   Package,
-  Video
+  Video,
+  Brain,
+  Palette,
+  Gamepad2,
+  Zap,
+  Globe,
+  BookOpen
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -366,6 +372,216 @@ export default function TemplateLibrary({ isOpen, onClose }: TemplateLibraryProp
                 <span
                   key={idx}
                   className="text-[10px] font-mono font-medium text-teal-400/80 bg-teal-950/30 border border-teal-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 10. AI / ML Project */}
+          <div
+            onClick={() => handleSelectTemplate("ai-ml-project", "AI / ML Project")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-violet-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-violet-900/50 bg-violet-950/20 text-violet-400">
+                <Brain className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-violet-400 hover:text-violet-300 hover:bg-violet-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-violet-50 transition-colors">
+              AI / ML Project
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              Built for machine learning repos. Includes model card, benchmark results, training instructions, and citation block.
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Model Card", "Benchmarks", "Training", "Citation"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-violet-400/80 bg-violet-950/30 border border-violet-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 11. Design System */}
+          <div
+            onClick={() => handleSelectTemplate("design-system", "Design System")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-pink-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-pink-900/50 bg-pink-950/20 text-pink-400">
+                <Palette className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-pink-400 hover:text-pink-300 hover:bg-pink-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-pink-50 transition-colors">
+              Design System
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              For UI libraries and component kits. Showcases design tokens, component catalog, Storybook setup, and accessibility compliance.
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Design Tokens", "Components", "Storybook", "a11y"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-pink-400/80 bg-pink-950/30 border border-pink-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 12. Game / Indie Dev */}
+          <div
+            onClick={() => handleSelectTemplate("game-project", "Game Project")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-emerald-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-emerald-900/50 bg-emerald-950/20 text-emerald-400">
+                <Gamepad2 className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-emerald-400 hover:text-emerald-300 hover:bg-emerald-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-emerald-50 transition-colors">
+              Game / Indie Dev
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              Showcase your game with a trailer embed, features list, system requirements, build instructions, and development roadmap.
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Trailer", "Features", "Sys. Reqs", "Roadmap"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-emerald-400/80 bg-emerald-950/30 border border-emerald-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 13. Startup Landing */}
+          <div
+            onClick={() => handleSelectTemplate("startup-landing", "Startup Landing")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-orange-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-orange-900/50 bg-orange-950/20 text-orange-400">
+                <Zap className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-orange-400 hover:text-orange-300 hover:bg-orange-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-orange-50 transition-colors">
+              Startup Landing
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              A high-impact README for developer tools and startups. Features traction metrics, quick-start CLI, roadmap, and community links.
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Traction", "Quick Start", "Roadmap", "Community"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-orange-400/80 bg-orange-950/30 border border-orange-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 14. Open Source Organization */}
+          <div
+            onClick={() => handleSelectTemplate("open-source-org", "Open Source Org")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-indigo-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-indigo-900/50 bg-indigo-950/20 text-indigo-400">
+                <Globe className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-indigo-50 transition-colors">
+              Open Source Org
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              For organizations managing multiple projects. Includes project catalog, governance structure, contributors grid, and community events.
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Projects", "Governance", "Contributors", "Events"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-indigo-400/80 bg-indigo-950/30 border border-indigo-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 15. Documentation Site */}
+          <div
+            onClick={() => handleSelectTemplate("docs-site", "Documentation Site")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-slate-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-slate-700/50 bg-slate-900/20 text-slate-400">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-slate-400 hover:text-slate-300 hover:bg-slate-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-slate-50 transition-colors">
+              Documentation Site
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              Comprehensive project docs template with architecture overview, config reference, API docs, deployment guide, and FAQ section.
+            </p>
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Architecture", "API Docs", "Config", "FAQ"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-slate-400/80 bg-slate-800/30 border border-slate-700/30 px-2 py-1 rounded-md"
                 >
                   {badge}
                 </span>

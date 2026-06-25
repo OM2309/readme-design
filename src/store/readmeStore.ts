@@ -21,7 +21,13 @@ export type TemplateType =
   | "hackathon-2"
   | "rest-api-2"
   | "npm-package-2"
-  | "modern-toolkit";
+  | "modern-toolkit"
+  | "ai-ml-project"
+  | "design-system"
+  | "game-project"
+  | "startup-landing"
+  | "open-source-org"
+  | "docs-site";
 
 export interface Project {
   id: string;
@@ -530,50 +536,358 @@ Consider sponsoring my work to keep open source sustainable:
         content: "## 🤝 Contributing\n\nContributions are welcome. Please read [CONTRIBUTING.md](./CONTRIBUTING.md) first.\n\n```bash\ngit clone https://github.com/your-username/your-repo.git\ncd your-repo\npnpm install\npnpm dev\n```\n\n## 📄 License\n\nMIT © [Your Name](https://github.com/your-username)\n\n> If this helped you, consider giving it a ⭐"
       }
     }
+  ],
+  "ai-ml-project": [
+    {
+      id: "ai-h",
+      type: "header",
+      props: {
+        style: "gradient",
+        title: "NeuralVision",
+        subtitle: "State-of-the-art vision transformer for real-time object detection and segmentation. 97.3% mAP on COCO val2017.",
+        bgGradientStart: "#7c3aed",
+        bgGradientEnd: "#2563eb",
+        logoType: "none",
+        align: "center",
+        border: true,
+        watermark: false
+      }
+    },
+    {
+      id: "ai-b",
+      type: "badges",
+      props: {
+        githubRepo: "your-org/neuralvision",
+        badgeList: ["github-stars", "license"],
+        badgeStyle: "for-the-badge"
+      }
+    },
+    {
+      id: "ai-txt1",
+      type: "text",
+      props: {
+        content: "## 🧠 Overview\n\nNeuralVision is a production-ready vision transformer that achieves **state-of-the-art accuracy** while maintaining real-time inference speeds. Built on top of PyTorch with ONNX export support.\n\n### Key Results\n\n| Model | mAP@50 | mAP@50-95 | FPS (A100) | Params |\n|-------|--------|-----------|------------|--------|\n| NeuralVision-S | 94.2% | 78.1% | 142 | 28M |\n| NeuralVision-M | 96.1% | 82.4% | 98 | 62M |\n| NeuralVision-L | 97.3% | 85.7% | 64 | 118M |\n\n## 🚀 Quick Start\n\n### Installation\n\n```bash\npip install neuralvision\n# or from source\ngit clone https://github.com/your-org/neuralvision.git\ncd neuralvision\npip install -e \".[dev]\"\n```\n\n### Inference\n\n```python\nfrom neuralvision import NeuralVision\n\nmodel = NeuralVision.from_pretrained(\"neuralvision-m\")\nresults = model.predict(\"image.jpg\")\n\nfor detection in results:\n    print(f\"{detection.label}: {detection.confidence:.2f}\")\n```\n\n### Training\n\n```bash\nneuralvision train \\\n  --model neuralvision-m \\\n  --dataset coco \\\n  --epochs 300 \\\n  --batch-size 16 \\\n  --gpus 4\n```"
+      }
+    },
+    {
+      id: "ai-tech",
+      type: "techstack",
+      props: {
+        techs: "Python, PyTorch, Docker, ONNX",
+        layout: "row",
+        iconSize: 40,
+        showLabel: true
+      }
+    },
+    {
+      id: "ai-txt2",
+      type: "text",
+      props: {
+        content: "## 📊 Model Architecture\n\n```\nInput Image (640×640)\n    │\n    ├── Patch Embedding (16×16)\n    ├── Transformer Encoder (12 layers)\n    ├── Feature Pyramid Network\n    └── Detection Head\n        ├── Classification\n        ├── Bounding Box Regression\n        └── Segmentation Mask\n```\n\n## 📋 Model Card\n\n| Property | Value |\n|----------|-------|\n| **Architecture** | Vision Transformer + FPN |\n| **Training Data** | COCO 2017, Objects365 |\n| **License** | Apache 2.0 |\n| **Hardware** | 8× NVIDIA A100 80GB |\n| **Training Time** | ~72 hours |\n| **Carbon Footprint** | ~45 kg CO₂eq |\n\n## 🤝 Contributing\n\nWe welcome contributions! See [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.\n\n## 📄 Citation\n\n```bibtex\n@article{neuralvision2025,\n  title={NeuralVision: Real-Time Object Detection with Vision Transformers},\n  author={Your Name},\n  year={2025}\n}\n```\n\n## 📄 License\n\nApache 2.0 — see [LICENSE](./LICENSE)"
+      }
+    }
+  ],
+  "design-system": [
+    {
+      id: "ds-h",
+      type: "header",
+      props: {
+        style: "gradient",
+        title: "✦ Prism UI",
+        subtitle: "A meticulously crafted design system for building consistent, accessible, and beautiful interfaces at scale.",
+        bgGradientStart: "#ec4899",
+        bgGradientEnd: "#f59e0b",
+        logoType: "none",
+        align: "center",
+        border: false,
+        watermark: false
+      }
+    },
+    {
+      id: "ds-b",
+      type: "badges",
+      props: {
+        packageName: "prism-ui",
+        githubRepo: "your-org/prism-ui",
+        badgeList: ["npm-v", "github-stars", "license"],
+        badgeStyle: "flat-square"
+      }
+    },
+    {
+      id: "ds-txt1",
+      type: "text",
+      props: {
+        content: "## ✨ Why Prism UI?\n\n- 🎨 **60+ components** — Buttons, inputs, modals, data tables, charts, and more\n- ♿ **WCAG 2.1 AA** — Every component is keyboard-navigable and screen-reader friendly\n- 🌗 **Dark & light mode** — Built-in theme switching with CSS custom properties\n- 🧩 **Framework-agnostic** — Works with React, Vue, Svelte, and vanilla JS\n- 📐 **Design tokens** — Consistent spacing, color, and typography scales\n- 🔌 **Tree-shakeable** — Only ship what you use\n\n## 📦 Installation\n\n```bash\nnpm install @prism-ui/core @prism-ui/react\n# or\npnpm add @prism-ui/core @prism-ui/react\n```\n\n## 🚀 Quick Start\n\n```tsx\nimport { Button, Card, Badge } from '@prism-ui/react'\nimport '@prism-ui/core/themes/dark.css'\n\nexport default function App() {\n  return (\n    <Card padding=\"lg\" shadow=\"md\">\n      <Badge variant=\"success\">New</Badge>\n      <h2>Welcome to Prism UI</h2>\n      <Button variant=\"primary\" size=\"md\">\n        Get Started\n      </Button>\n    </Card>\n  )\n}\n```"
+      }
+    },
+    {
+      id: "ds-tech",
+      type: "techstack",
+      props: {
+        techs: "TypeScript, React, CSS3, Storybook",
+        layout: "row",
+        iconSize: 40,
+        showLabel: true
+      }
+    },
+    {
+      id: "ds-txt2",
+      type: "text",
+      props: {
+        content: "## 🎨 Design Tokens\n\n| Token | Example | Usage |\n|-------|---------|-------|\n| `--prism-color-primary` | `#6366f1` | Primary actions, links |\n| `--prism-color-success` | `#22c55e` | Success states, confirmations |\n| `--prism-color-danger` | `#ef4444` | Errors, destructive actions |\n| `--prism-space-md` | `16px` | Standard padding/gaps |\n| `--prism-radius-lg` | `12px` | Cards, modals |\n| `--prism-font-sans` | `Inter` | Body text |\n| `--prism-font-mono` | `JetBrains Mono` | Code blocks |\n\n## 📚 Components\n\n| Category | Components |\n|----------|------------|\n| **Layout** | Container, Grid, Stack, Divider |\n| **Forms** | Input, Select, Checkbox, Radio, Switch, Slider |\n| **Feedback** | Alert, Toast, Progress, Skeleton, Spinner |\n| **Navigation** | Tabs, Breadcrumb, Sidebar, Pagination |\n| **Data Display** | Table, Card, Badge, Avatar, Tooltip |\n| **Overlay** | Modal, Drawer, Popover, Dropdown |\n\n## 🛠️ Development\n\n```bash\ngit clone https://github.com/your-org/prism-ui.git\ncd prism-ui\npnpm install\npnpm storybook  # Launch Storybook at localhost:6006\npnpm test       # Run test suite\npnpm build      # Build packages\n```\n\n## 📄 License\n\nMIT © [Your Org](https://github.com/your-org)"
+      }
+    }
+  ],
+  "game-project": [
+    {
+      id: "game-h",
+      type: "header",
+      props: {
+        style: "gradient",
+        title: "🎮 Voxel Horizons",
+        subtitle: "A procedurally generated open-world survival game with real-time terrain deformation and multiplayer co-op.",
+        bgGradientStart: "#059669",
+        bgGradientEnd: "#0d9488",
+        logoType: "none",
+        align: "center",
+        border: true,
+        watermark: false
+      }
+    },
+    {
+      id: "game-b",
+      type: "badges",
+      props: {
+        githubRepo: "your-studio/voxel-horizons",
+        badgeList: ["github-stars", "license"],
+        badgeStyle: "for-the-badge"
+      }
+    },
+    {
+      id: "game-video",
+      type: "video",
+      props: {
+        url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        caption: "Gameplay Trailer — Voxel Horizons Alpha 0.8",
+        width: 90,
+        align: "center"
+      }
+    },
+    {
+      id: "game-txt1",
+      type: "text",
+      props: {
+        content: "## 🌍 About\n\nVoxel Horizons is a modern voxel-based survival game built with a custom engine. Explore procedurally generated worlds, build structures, craft tools, and survive with friends.\n\n## ✨ Features\n\n- 🗺️ **Infinite procedural worlds** — Unique biomes, caves, and structures every playthrough\n- ⛏️ **Real-time terrain deformation** — Dig, build, and reshape the world dynamically\n- 👥 **Multiplayer co-op** — Play with up to 16 players on dedicated servers\n- 🔧 **Deep crafting system** — 200+ recipes across 8 crafting disciplines\n- 🎵 **Dynamic soundtrack** — Adaptive music that responds to gameplay\n- 🌦️ **Weather & day/night cycle** — Dynamic lighting with volumetric clouds\n- 🤖 **Mod support** — Lua scripting API for custom content"
+      }
+    },
+    {
+      id: "game-tech",
+      type: "techstack",
+      props: {
+        techs: "C++, Rust, Lua, Vulkan",
+        layout: "row",
+        iconSize: 40,
+        showLabel: true
+      }
+    },
+    {
+      id: "game-txt2",
+      type: "text",
+      props: {
+        content: "## 💻 System Requirements\n\n| | Minimum | Recommended |\n|--|---------|-------------|\n| **OS** | Windows 10 / Ubuntu 20.04 | Windows 11 / Ubuntu 22.04 |\n| **CPU** | Intel i5-8400 / Ryzen 5 2600 | Intel i7-12700 / Ryzen 7 5800X |\n| **RAM** | 8 GB | 16 GB |\n| **GPU** | GTX 1060 / RX 580 | RTX 3070 / RX 6800 |\n| **Storage** | 4 GB SSD | 8 GB NVMe SSD |\n\n## 🏗️ Building from Source\n\n```bash\ngit clone --recursive https://github.com/your-studio/voxel-horizons.git\ncd voxel-horizons\ncmake -B build -DCMAKE_BUILD_TYPE=Release\ncmake --build build -j$(nproc)\n./build/voxel-horizons\n```\n\n## 🗺️ Roadmap\n\n- [x] Core engine & rendering pipeline\n- [x] Procedural world generation\n- [x] Multiplayer networking\n- [ ] Quest system & NPCs\n- [ ] Steam Workshop integration\n- [ ] Console ports (PS5, Xbox Series X)\n\n## 📄 License\n\nGPL-3.0 — see [LICENSE](./LICENSE)"
+      }
+    },
+    {
+      id: "game-roadmap",
+      type: "roadmap",
+      props: {
+        items: [
+          { text: "Core engine & rendering pipeline", done: true },
+          { text: "Procedural world generation", done: true },
+          { text: "Multiplayer networking", done: true },
+          { text: "Quest system & NPCs", done: false },
+          { text: "Steam Workshop integration", done: false },
+          { text: "Console ports", done: false }
+        ]
+      }
+    }
+  ],
+  "startup-landing": [
+    {
+      id: "su-h",
+      type: "header",
+      props: {
+        style: "gradient",
+        title: "Lightspeed",
+        subtitle: "Ship 10x faster. The all-in-one developer platform for CI/CD, previews, and edge deployment.",
+        bgGradientStart: "#f97316",
+        bgGradientEnd: "#ef4444",
+        logoType: "none",
+        align: "center",
+        font: "sans",
+        border: false,
+        watermark: false
+      }
+    },
+    {
+      id: "su-b",
+      type: "badges",
+      props: {
+        githubRepo: "lightspeed-dev/lightspeed",
+        badgeList: ["github-stars", "license", "github-status"],
+        badgeStyle: "for-the-badge"
+      }
+    },
+    {
+      id: "su-txt1",
+      type: "text",
+      props: {
+        content: "## 🔥 Why Lightspeed?\n\nModern teams waste hours on deployment pipelines, preview environments, and infrastructure. Lightspeed replaces your entire DevOps stack with a single command.\n\n```bash\nnpx lightspeed deploy\n# ✓ Built in 4.2s\n# ✓ Tests passed (142/142)\n# ✓ Deployed to edge (32 regions)\n# ✓ Preview: https://pr-847.lightspeed.app\n```\n\n## ✨ Features\n\n| Feature | Description |\n|---------|-------------|\n| ⚡ **Edge-first** | Deploy to 32 global regions in under 5 seconds |\n| 🔍 **Preview Deploys** | Every PR gets its own URL — automatically |\n| 🧪 **Built-in CI** | Run tests, lint, and type-check without config |\n| 📊 **Real-time Analytics** | Page views, Web Vitals, and error tracking |\n| 🔒 **Zero-config SSL** | HTTPS everywhere, automatically provisioned |\n| 🤖 **AI Code Review** | Get intelligent suggestions on every pull request |"
+      }
+    },
+    {
+      id: "su-tech",
+      type: "techstack",
+      props: {
+        techs: "TypeScript, Go, Docker, Kubernetes",
+        layout: "row",
+        iconSize: 40,
+        showLabel: true
+      }
+    },
+    {
+      id: "su-txt2",
+      type: "text",
+      props: {
+        content: "## 📈 Traction\n\n| Metric | Value |\n|--------|-------|\n| **GitHub Stars** | 12.4k+ |\n| **Weekly Downloads** | 89k+ |\n| **Teams Using** | 2,400+ |\n| **Deployments/Day** | 45,000+ |\n| **Avg Deploy Time** | 4.8s |\n\n## 🚀 Getting Started\n\n### 1. Install\n\n```bash\nnpm install -g @lightspeed/cli\n```\n\n### 2. Login\n\n```bash\nlightspeed login\n```\n\n### 3. Deploy\n\n```bash\ncd your-project\nlightspeed deploy --prod\n```\n\n## 🗺️ Roadmap\n\n- [x] Edge deployment (32 regions)\n- [x] Preview environments\n- [x] Built-in CI pipeline\n- [x] Analytics dashboard\n- [ ] Custom domains with wildcard SSL\n- [ ] Serverless functions (Deno runtime)\n- [ ] Team collaboration & RBAC\n- [ ] SOC 2 Type II compliance\n\n## 💬 Community\n\n- [Discord](https://discord.gg/example) — Chat with the team and community\n- [Twitter](https://twitter.com/example) — Follow for updates\n- [Blog](https://blog.example.com) — Deep dives and changelogs\n\n## 📄 License\n\nBSL 1.1 — see [LICENSE](./LICENSE)"
+      }
+    },
+    {
+      id: "su-socials",
+      type: "socials",
+      props: {
+        items: [
+          { platform: "Twitter/X", label: "Follow Us", url: "https://twitter.com/example" },
+          { platform: "Discord", label: "Join Discord", url: "https://discord.gg/example" },
+          { platform: "GitHub", label: "Star on GitHub", url: "https://github.com/example" }
+        ],
+        layout: "row"
+      }
+    }
+  ],
+  "open-source-org": [
+    {
+      id: "oss-h",
+      type: "header",
+      props: {
+        style: "gradient",
+        title: "🌐 OpenStack Foundation",
+        subtitle: "Building open infrastructure for the world. 100+ projects. 500+ contributors. Completely open source.",
+        bgGradientStart: "#1e40af",
+        bgGradientEnd: "#7c3aed",
+        logoType: "none",
+        align: "center",
+        border: false,
+        watermark: false
+      }
+    },
+    {
+      id: "oss-b",
+      type: "badges",
+      props: {
+        githubRepo: "openstack-foundation/core",
+        badgeList: ["github-stars", "license", "github-status"],
+        badgeStyle: "for-the-badge"
+      }
+    },
+    {
+      id: "oss-txt1",
+      type: "text",
+      props: {
+        content: "## 🏛️ About\n\nThe OpenStack Foundation is an open-source organization dedicated to building infrastructure tools that power the modern internet. Our projects are used by thousands of companies worldwide.\n\n## 📦 Our Projects\n\n| Project | Description | Stars |\n|---------|-------------|-------|\n| **Core** | The foundational runtime and plugin system | ⭐ 8.2k |\n| **Mesh** | Service mesh for microservices communication | ⭐ 4.1k |\n| **Vault** | Secrets management and encryption at rest | ⭐ 3.7k |\n| **Pulse** | Real-time monitoring and alerting | ⭐ 2.9k |\n| **Gate** | API gateway with rate limiting and auth | ⭐ 2.3k |\n| **Flow** | Workflow orchestration engine | ⭐ 1.8k |\n\n## 🤝 How to Contribute\n\nWe welcome contributors of all experience levels! Here's how to get started:\n\n1. **Find an issue** — Look for `good first issue` or `help wanted` labels\n2. **Fork & clone** — Fork the repo and create a feature branch\n3. **Make changes** — Follow our [coding standards](./CONTRIBUTING.md)\n4. **Submit a PR** — Our maintainers will review within 48 hours\n\n```bash\n# Quick contribution setup\ngit clone https://github.com/openstack-foundation/core.git\ncd core\nmake setup\nmake test\n```"
+      }
+    },
+    {
+      id: "oss-contributors",
+      type: "contributors",
+      props: {
+        repo: "vercel/next.js",
+        maxCount: 15,
+        avatarSize: 44
+      }
+    },
+    {
+      id: "oss-txt2",
+      type: "text",
+      props: {
+        content: "## 🏗️ Governance\n\n| Role | Responsibility | Members |\n|------|---------------|----------|\n| **Steering Committee** | Strategic direction, roadmap | 5 elected members |\n| **Maintainers** | Code review, releases | 24 across all projects |\n| **Committers** | Feature development | 80+ active contributors |\n| **Community** | Issues, discussions, RFCs | 500+ members |\n\n## 💰 Sponsors\n\nWe're grateful to our sponsors who make this work possible.\n\n## 📅 Community Events\n\n- **Weekly Office Hours** — Tuesdays at 10am UTC on Discord\n- **Monthly Town Hall** — First Friday of each month\n- **Annual Conference** — OpenStack Summit (March)\n\n## 📄 License\n\nApache 2.0 — see [LICENSE](./LICENSE)\n\n---\n\n> _\"Open source is not about code. It's about people.\"_ — Our founding principle"
+      }
+    },
+    {
+      id: "oss-socials",
+      type: "socials",
+      props: {
+        items: [
+          { platform: "Twitter/X", label: "Twitter", url: "https://twitter.com/example" },
+          { platform: "Discord", label: "Discord", url: "https://discord.gg/example" },
+          { platform: "GitHub", label: "GitHub", url: "https://github.com/example" },
+          { platform: "YouTube", label: "YouTube", url: "https://youtube.com/@example" }
+        ],
+        layout: "row"
+      }
+    }
+  ],
+  "docs-site": [
+    {
+      id: "docs-h",
+      type: "header",
+      props: {
+        style: "minimal",
+        title: "📖 Project Documentation",
+        subtitle: "Comprehensive guides, API references, and tutorials for getting the most out of the platform.",
+        logoType: "none",
+        align: "left",
+        border: true,
+        watermark: false
+      }
+    },
+    {
+      id: "docs-b",
+      type: "badges",
+      props: {
+        githubRepo: "your-org/your-project",
+        badgeList: ["github-stars", "license"],
+        badgeStyle: "flat-square"
+      }
+    },
+    {
+      id: "docs-txt1",
+      type: "text",
+      props: {
+        content: "## 📋 Table of Contents\n\n- [Getting Started](#-getting-started)\n- [Architecture](#-architecture)\n- [Configuration](#-configuration)\n- [API Reference](#-api-reference)\n- [Deployment](#-deployment)\n- [FAQ](#-faq)\n\n## 🚀 Getting Started\n\n### Prerequisites\n\n| Tool | Version | Purpose |\n|------|---------|---------|\n| Node.js | ≥ 18.0 | Runtime |\n| pnpm | ≥ 8.0 | Package manager |\n| Docker | ≥ 24.0 | Local services |\n| PostgreSQL | ≥ 15 | Database |\n\n### Quick Setup\n\n```bash\n# 1. Clone the repository\ngit clone https://github.com/your-org/your-project.git\ncd your-project\n\n# 2. Install dependencies\npnpm install\n\n# 3. Set up environment\ncp .env.example .env.local\n\n# 4. Start local services\ndocker compose up -d\n\n# 5. Run database migrations\npnpm db:migrate\n\n# 6. Start development server\npnpm dev\n```\n\nThe app will be available at `http://localhost:3000`."
+      }
+    },
+    {
+      id: "docs-tech",
+      type: "techstack",
+      props: {
+        techs: "TypeScript, React, Node.js, PostgreSQL, Docker",
+        layout: "row",
+        iconSize: 36,
+        showLabel: true
+      }
+    },
+    {
+      id: "docs-txt2",
+      type: "text",
+      props: {
+        content: "## 🏗️ Architecture\n\n```\nyour-project/\n├── apps/\n│   ├── web/          # Next.js frontend\n│   ├── api/          # Express API server\n│   └── worker/       # Background job processor\n├── packages/\n│   ├── ui/           # Shared component library\n│   ├── db/           # Database schema & migrations\n│   ├── config/       # Shared configuration\n│   └── utils/        # Common utilities\n├── docs/             # Documentation (this file)\n├── scripts/          # Build & deploy scripts\n└── docker/           # Docker configurations\n```\n\n## ⚙️ Configuration\n\n| Variable | Required | Default | Description |\n|----------|----------|---------|-------------|\n| `DATABASE_URL` | ✅ | — | PostgreSQL connection string |\n| `REDIS_URL` | ✅ | — | Redis connection for caching |\n| `JWT_SECRET` | ✅ | — | Secret for JWT signing |\n| `SMTP_HOST` | ❌ | — | Email server host |\n| `S3_BUCKET` | ❌ | — | File storage bucket |\n| `LOG_LEVEL` | ❌ | `info` | Logging verbosity |\n\n## 📡 API Reference\n\n### Authentication\n\nAll API requests require a Bearer token:\n\n```bash\ncurl -H \"Authorization: Bearer <token>\" \\\n  https://api.yourproject.com/v1/resource\n```\n\n### Core Endpoints\n\n| Method | Endpoint | Description |\n|--------|----------|-------------|\n| `POST` | `/v1/auth/login` | Authenticate user |\n| `GET` | `/v1/users/:id` | Get user profile |\n| `GET` | `/v1/resources` | List resources (paginated) |\n| `POST` | `/v1/resources` | Create new resource |\n| `PUT` | `/v1/resources/:id` | Update resource |\n| `DELETE` | `/v1/resources/:id` | Delete resource |\n\n## 🚢 Deployment\n\n### Using Docker\n\n```bash\ndocker build -t your-project .\ndocker run -p 3000:3000 --env-file .env your-project\n```\n\n### Using Vercel\n\n```bash\nnpx vercel --prod\n```\n\n## ❓ FAQ\n\n**Q: How do I reset the database?**\n```bash\npnpm db:reset && pnpm db:seed\n```\n\n**Q: How do I run tests?**\n```bash\npnpm test          # Unit tests\npnpm test:e2e      # End-to-end tests\npnpm test:coverage # With coverage report\n```\n\n**Q: How do I add a new API endpoint?**\nSee [CONTRIBUTING.md](./CONTRIBUTING.md#adding-endpoints) for the full guide.\n\n## 📄 License\n\nMIT © [Your Org](https://github.com/your-org)"
+      }
+    }
   ]
 };
 
-const INITIAL_BLOCKS: Block[] = [
-  {
-    id: "header-3",
-    type: "header",
-    props: {
-      style: "minimal",
-      title: "⚡ FAST-CLI",
-      subtitle: "A super-fast developer terminal tool that automates environment setup, git hooks, and docker configs in under 2 seconds.",
-      logoType: "none",
-      theme: "dark",
-      align: "center",
-      font: "mono",
-      border: true,
-      watermark: false,
-    },
-  },
-  {
-    id: "text-3",
-    type: "text",
-    props: {
-      content: `## 🚀 Quick Start
-
-\`\`\`bash
-npx fast-cli-tool create --template fullstack
-\`\`\`
-
-## 📊 Star History
-
-Thank you to all contributors who have starred the repository!
-`,
-    },
-  },
-  {
-    id: "chart-1",
-    type: "chart",
-    props: {
-      repo: "shadcn/ui",
-      theme: "dark",
-    },
-  },
-];
+const INITIAL_BLOCKS: Block[] = TEMPLATE_BLOCKS["startup-landing"];
 
 export const useReadmeStore = create<ReadmeState>((set, get) => {
   const saveStateToHistory = (newBlocks: Block[]) => {
@@ -590,8 +904,8 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
 
   return {
     blocks: INITIAL_BLOCKS,
-    selectedBlockId: "header-3",
-    selectedBlockIds: ["header-3"], // default selection includes active
+    selectedBlockId: "su-h",
+    selectedBlockIds: ["su-h"], // default selection includes active
     copiedBlocks: [],
     history: [],
     future: [],
@@ -610,13 +924,29 @@ export const useReadmeStore = create<ReadmeState>((set, get) => {
           try {
             const parsed = JSON.parse(stored) as Block[];
             if (Array.isArray(parsed) && parsed.length > 0) {
-              set({
-                blocks: parsed,
-                selectedBlockId: parsed[0]?.id || null,
-                selectedBlockIds: parsed[0] ? [parsed[0].id] : [],
-                history: [],
-                future: [],
-              });
+              const isOldDefault = parsed.length === 3 &&
+                parsed[0]?.id === "header-3" &&
+                parsed[1]?.id === "text-3" &&
+                parsed[2]?.id === "chart-1";
+
+              if (isOldDefault) {
+                set({
+                  blocks: INITIAL_BLOCKS,
+                  selectedBlockId: INITIAL_BLOCKS[0]?.id || null,
+                  selectedBlockIds: INITIAL_BLOCKS[0] ? [INITIAL_BLOCKS[0].id] : [],
+                  history: [],
+                  future: [],
+                });
+                localStorage.setItem("readme-studio-blocks", JSON.stringify(INITIAL_BLOCKS));
+              } else {
+                set({
+                  blocks: parsed,
+                  selectedBlockId: parsed[0]?.id || null,
+                  selectedBlockIds: parsed[0] ? [parsed[0].id] : [],
+                  history: [],
+                  future: [],
+                });
+              }
             }
           } catch (e) {
             console.error("Error parsing stored blocks:", e);

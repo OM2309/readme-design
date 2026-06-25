@@ -32,7 +32,9 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-  DragEndEvent
+  DragEndEvent,
+  DragStartEvent,
+  DragOverlay
 } from "@dnd-kit/core";
 import {
   SortableContext,
@@ -41,6 +43,7 @@ import {
   useSortable
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { motion, AnimatePresence } from "motion/react";
 
 // Icon mapping per block type
 export const blockIcons: Record<BlockType, React.ComponentType<any>> = {
@@ -98,10 +101,9 @@ function SortableLayerItem({ block, isSelected, onSelect }: SortableLayerItemPro
     isDragging,
   } = useSortable({ id: block.id });
 
-  const style = {
+  const sortableStyle = {
     transform: CSS.Transform.toString(transform),
     transition,
-    opacity: isDragging ? 0.4 : 1,
   };
 
   const Icon = blockIcons[block.type] || AlignLeft;
@@ -137,11 +139,24 @@ function SortableLayerItem({ block, isSelected, onSelect }: SortableLayerItemPro
   const isNested = !!block.parentId;
 
   return (
-    <div
+    <motion.div
       ref={setNodeRef}
-      style={style}
+      style={sortableStyle}
+      layout
+      layoutId={`layer-${block.id}`}
+      initial={{ opacity: 0, x: -8 }}
+      animate={{ 
+        opacity: isDragging ? 0.4 : 1, 
+        x: 0,
+        scale: isDragging ? 0.97 : 1,
+      }}
+      exit={{ opacity: 0, x: -8, transition: { duration: 0.15 } }}
+      transition={{
+        layout: { type: "spring", stiffness: 400, damping: 30 },
+        opacity: { duration: 0.2 },
+      }}
       onClick={onSelect}
-      className={`group flex items-center justify-between gap-2 px-3 py-2 rounded-lg cursor-pointer transition-all border text-xs select-none ${
+      className={`group flex items-center justify-between gap-2 px-3 py-2 rounded-lg cursor-pointer border text-xs select-none ${
         isNested ? "ml-5 bg-[#111215]/50 border-dashed border-[#23252a]" : "bg-[#191b1f] border-transparent"
       } ${
         isSelected 
@@ -150,13 +165,16 @@ function SortableLayerItem({ block, isSelected, onSelect }: SortableLayerItemPro
       }`}
     >
       <div className="flex items-center gap-2.5 min-w-0 flex-1">
-        <button
+        <motion.button
           {...attributes}
           {...listeners}
           className="cursor-grab active:cursor-grabbing text-neutral-600 hover:text-neutral-300 p-0.5 rounded group-hover:opacity-100 transition-opacity"
+          whileHover={{ scale: 1.2 }}
+          whileTap={{ scale: 0.85 }}
+          transition={{ type: "spring", stiffness: 400, damping: 15 }}
         >
           <GripVertical className="w-3.5 h-3.5" />
-        </button>
+        </motion.button>
         
         <Icon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? "text-emerald-400" : "text-neutral-500"}`} />
         <span className="truncate font-medium">{displayName}</span>
@@ -167,7 +185,37 @@ function SortableLayerItem({ block, isSelected, onSelect }: SortableLayerItemPro
           <StickyNote className="w-3.5 h-3.5 text-yellow-500/80 shrink-0" />
         </span>
       )}
-    </div>
+    </motion.div>
+  );
+}
+
+// Drag overlay for layer items
+function LayerDragOverlay({ block, isSelected }: { block: Block; isSelected: boolean }) {
+  const Icon = blockIcons[block.type] || AlignLeft;
+  let displayName = blockLabels[block.type];
+  if (block.type === "header" && block.props.title) displayName = block.props.title;
+  else if (block.type === "text" && block.props.content) {
+    displayName = block.props.content.trim().split("\n")[0]?.replace(/[#*`[\]]/g, "").slice(0, 18) || "Markdown Text";
+  }
+
+  return (
+    <motion.div
+      initial={{ scale: 1, boxShadow: "none" }}
+      animate={{ 
+        scale: 1.04, 
+        boxShadow: "0 8px 30px -8px rgba(0, 0, 0, 0.6), 0 0 0 1px rgba(52, 211, 153, 0.25)",
+        rotate: 2,
+      }}
+      transition={{ type: "spring", stiffness: 350, damping: 22 }}
+      className={`flex items-center gap-2.5 px-3 py-2 rounded-lg border text-xs select-none bg-[#191b1f]/95 backdrop-blur-sm cursor-grabbing ${
+        isSelected ? "border-emerald-500/50 text-white" : "border-neutral-700 text-[#f7f8f8]"
+      }`}
+      style={{ width: 220 }}
+    >
+      <GripVertical className="w-3.5 h-3.5 text-neutral-400" />
+      <Icon className={`w-3.5 h-3.5 shrink-0 ${isSelected ? "text-emerald-400" : "text-neutral-500"}`} />
+      <span className="truncate font-medium">{displayName}</span>
+    </motion.div>
   );
 }
 
@@ -184,6 +232,7 @@ export default function LeftSidebar() {
 
   const [filterNotesOnly, setFilterNotesOnly] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeLayerId, setActiveLayerId] = useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -194,13 +243,22 @@ export default function LeftSidebar() {
     })
   );
 
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveLayerId(event.active.id as string);
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
+    setActiveLayerId(null);
     if (!over || active.id === over.id) return;
 
     const fromIndex = blocks.findIndex((b) => b.id === active.id);
     const toIndex = blocks.findIndex((b) => b.id === over.id);
     reorderBlocks(fromIndex, toIndex);
+  };
+
+  const handleDragCancel = () => {
+    setActiveLayerId(null);
   };
 
   const handleSelectBlock = (e: React.MouseEvent, id: string) => {
@@ -216,6 +274,7 @@ export default function LeftSidebar() {
     ? blocks.filter(b => b._note && b._note.trim() !== "")
     : blocks;
   const blockIds = filteredBlocks.map((b) => b.id);
+  const activeLayerBlock = activeLayerId ? filteredBlocks.find((b) => b.id === activeLayerId) : null;
 
   const paletteItems: { type: BlockType; label: string; icon: React.ComponentType<any> }[] = Object.keys(blockLabels).map((key) => ({
     type: key as BlockType,
@@ -261,14 +320,17 @@ export default function LeftSidebar() {
           {filteredPalette.map((item) => {
             const Icon = item.icon;
             return (
-              <button
+              <motion.button
                 key={item.type}
                 onClick={() => handleAddBlock(item.type)}
                 className="w-full flex items-center gap-3 px-3 py-2 rounded-md text-[#8a8f98] hover:text-white hover:bg-[#191b1f] transition-all text-left group"
+                whileHover={{ x: 2 }}
+                whileTap={{ scale: 0.97 }}
+                transition={{ type: "spring", stiffness: 400, damping: 20 }}
               >
                 <Icon className="w-4 h-4 shrink-0 text-neutral-500 group-hover:text-emerald-400 transition-colors" />
                 <span className="text-xs font-medium truncate">{item.label}</span>
-              </button>
+              </motion.button>
             );
           })}
         </div>
@@ -296,26 +358,51 @@ export default function LeftSidebar() {
         
         <div className="flex-1 overflow-y-auto p-3 custom-scrollbar">
           {filteredBlocks.length === 0 ? (
-            <div className="h-full flex flex-col items-center justify-center text-center p-4 border border-dashed border-[#23252a] rounded-lg">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="h-full flex flex-col items-center justify-center text-center p-4 border border-dashed border-[#23252a] rounded-lg"
+            >
               <Layers className="w-8 h-8 text-neutral-700 mb-2" />
               <p className="text-xs text-[#8a8f98]">
                 {filterNotesOnly ? "No blocks have comments." : "Your canvas is empty. Add a block from the left menu."}
               </p>
-            </div>
+            </motion.div>
           ) : (
-            <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+            <DndContext 
+              sensors={sensors} 
+              collisionDetection={closestCenter} 
+              onDragStart={handleDragStart}
+              onDragEnd={handleDragEnd}
+              onDragCancel={handleDragCancel}
+            >
               <SortableContext items={blockIds} strategy={verticalListSortingStrategy}>
                 <div className="space-y-1.5">
-                  {filteredBlocks.map((block) => (
-                    <SortableLayerItem
-                      key={block.id}
-                      block={block}
-                      isSelected={selectedBlockIds.includes(block.id)}
-                      onSelect={(e) => handleSelectBlock(e, block.id)}
-                    />
-                  ))}
+                  <AnimatePresence mode="popLayout">
+                    {filteredBlocks.map((block) => (
+                      <SortableLayerItem
+                        key={block.id}
+                        block={block}
+                        isSelected={selectedBlockIds.includes(block.id)}
+                        onSelect={(e) => handleSelectBlock(e, block.id)}
+                      />
+                    ))}
+                  </AnimatePresence>
                 </div>
               </SortableContext>
+
+              {/* Drag overlay for layers */}
+              <DragOverlay dropAnimation={{
+                duration: 200,
+                easing: "cubic-bezier(0.18, 0.67, 0.6, 1.22)",
+              }}>
+                {activeLayerBlock ? (
+                  <LayerDragOverlay 
+                    block={activeLayerBlock} 
+                    isSelected={selectedBlockIds.includes(activeLayerBlock.id)} 
+                  />
+                ) : null}
+              </DragOverlay>
             </DndContext>
           )}
         </div>
