@@ -71,13 +71,13 @@ export default function TemplateLibrary({ isOpen, onClose }: TemplateLibraryProp
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-2xl bg-panel border-neutral-800 text-foreground select-none">
+      <DialogContent className="max-w-4xl bg-[#111215] border-[#23252a] text-[#f7f8f8] select-none rounded-[12px]">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-lg font-bold">
-            <Sparkles className="w-5 h-5 text-indigo-400 animate-pulse" />
-            Template Library
+          <DialogTitle className="flex items-center gap-2 text-lg font-semibold tracking-tight">
+            <Sparkles className="w-5 h-5 text-[#5e6ad2] animate-pulse" />
+            Template library
           </DialogTitle>
-          <DialogDescription className="text-neutral-400 text-xs">
+          <DialogDescription className="text-[#8a8f98] text-xs">
             Choose a starting template to kickstart your project. Loading a template will replace all existing blocks in your current session.
           </DialogDescription>
         </DialogHeader>
@@ -89,25 +89,25 @@ export default function TemplateLibrary({ isOpen, onClose }: TemplateLibraryProp
               <div
                 key={tpl.id}
                 onClick={() => handleSelectTemplate(tpl.id, tpl.title)}
-                className="flex flex-col p-4 rounded-xl border border-border bg-card hover:bg-neutral-900/50 hover:border-neutral-700 transition-all cursor-pointer group"
+                className="flex flex-col p-4 rounded-[12px] border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-neutral-600 transition-all cursor-pointer group"
               >
                 <div className="flex items-start justify-between">
-                  <div className={`p-2 rounded-lg border ${tpl.color}`}>
+                  <div className="p-2 rounded-[8px] border border-[#23252a] bg-[#010102] text-[#5e6ad2]">
                     <Icon className="w-5 h-5" />
                   </div>
                   <Button
                     variant="ghost"
                     size="sm"
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-7 px-2.5 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-950/30"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-7 px-2.5 text-[#5e6ad2] hover:text-[#828fff] hover:bg-[#5e6ad2]/10"
                   >
                     Load
                   </Button>
                 </div>
 
-                <h4 className="font-semibold text-sm text-neutral-200 mt-3 group-hover:text-white transition-colors">
+                <h4 className="font-semibold text-sm text-[#f7f8f8] mt-3 group-hover:text-white transition-colors">
                   {tpl.title}
                 </h4>
-                <p className="text-[11px] text-neutral-400 mt-1 leading-relaxed flex-1">
+                <p className="text-[11px] text-[#8a8f98] mt-1 leading-relaxed flex-1">
                   {tpl.description}
                 </p>
 
@@ -115,7 +115,7 @@ export default function TemplateLibrary({ isOpen, onClose }: TemplateLibraryProp
                   {tpl.badges.map((badge, idx) => (
                     <span
                       key={idx}
-                      className="text-[9px] font-mono font-medium text-neutral-500 bg-neutral-950 border border-neutral-850 px-1.5 py-0.5 rounded"
+                      className="text-[9px] font-mono font-medium text-[#8a8f98] bg-[#010102] border border-[#23252a] px-1.5 py-0.5 rounded-[4px]"
                     >
                       {badge}
                     </span>
