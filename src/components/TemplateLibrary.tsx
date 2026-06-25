@@ -8,10 +8,13 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { 
-  Terminal, 
+import {
+  Terminal,
   User,
-  Sparkles
+  Sparkles,
+  Rocket,
+  Package,
+  Video
 } from "lucide-react";
 import { toast } from "sonner";
 
@@ -33,7 +36,7 @@ export default function TemplateLibrary({ isOpen, onClose }: TemplateLibraryProp
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="max-w-[640px] bg-[#111215] border-[#23252a] text-[#f7f8f8] select-none rounded-xl p-6">
+      <DialogContent className="min-w-[900px] max-h-[85vh] overflow-y-auto custom-scrollbar bg-[#111215] border-[#23252a] text-[#f7f8f8] select-none rounded-xl p-6 ">
         <DialogHeader className="mb-4">
           <DialogTitle className="flex items-center gap-2 text-xl font-semibold tracking-tight text-white">
             <Sparkles className="w-5 h-5 text-indigo-400 animate-pulse" />
@@ -44,8 +47,82 @@ export default function TemplateLibrary({ isOpen, onClose }: TemplateLibraryProp
           </DialogDescription>
         </DialogHeader>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          {/* CLI Developer Tool */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {/* 1. Product / SaaS Landing */}
+          <div
+            onClick={() => handleSelectTemplate("saas-landing", "Product / SaaS")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-blue-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-blue-900/50 bg-blue-950/20 text-blue-400">
+                <Rocket className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-blue-400 hover:text-blue-300 hover:bg-blue-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-blue-50 transition-colors">
+              Product / SaaS Page
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              A highly converting layout for digital products, SaaS, or open-core tools. Features bold headers, feature grids, and call-to-actions.
+            </p>
+
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Hero Section", "Feature Grid", "Tech Stack", "CTA"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-blue-400/80 bg-blue-950/30 border border-blue-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 2. GitHub Profile README */}
+          <div
+            onClick={() => handleSelectTemplate("profile-readme", "GitHub Profile")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-purple-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-purple-900/50 bg-purple-950/20 text-purple-400">
+                <User className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-purple-400 hover:text-purple-300 hover:bg-purple-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-purple-50 transition-colors">
+              GitHub Profile README
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              A beautiful, personalized introduction for your GitHub profile landing page. Includes a compact gradient banner, bio text, and sponsors grid.
+            </p>
+
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Compact Gradient", "Bio Markdown", "Sponsors Grid", "Links"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-purple-400/80 bg-purple-950/30 border border-purple-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          {/* 3. CLI Developer Tool */}
           <div
             onClick={() => handleSelectTemplate("cli-tool", "CLI Developer Tool")}
             className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-emerald-500/50 transition-all cursor-pointer group"
@@ -82,42 +159,80 @@ export default function TemplateLibrary({ isOpen, onClose }: TemplateLibraryProp
             </div>
           </div>
 
-          {/* GitHub Profile README */}
+          {/* 4. Minimal Package */}
           <div
-            onClick={() => handleSelectTemplate("profile-readme", "GitHub Profile README")}
-            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-purple-500/50 transition-all cursor-pointer group"
+            onClick={() => handleSelectTemplate("npm-package", "Minimal Package")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-orange-500/50 transition-all cursor-pointer group"
           >
             <div className="flex items-start justify-between mb-3">
-              <div className="p-2.5 rounded-lg border border-purple-900/50 bg-purple-950/20 text-purple-400">
-                <User className="w-6 h-6" />
+              <div className="p-2.5 rounded-lg border border-orange-900/50 bg-orange-950/20 text-orange-400">
+                <Package className="w-6 h-6" />
               </div>
               <Button
                 variant="ghost"
                 size="sm"
-                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-purple-400 hover:text-purple-300 hover:bg-purple-400/10"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-orange-400 hover:text-orange-300 hover:bg-orange-400/10"
               >
                 Load Template
               </Button>
             </div>
 
-            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-purple-50 transition-colors">
-              GitHub Profile README
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-orange-50 transition-colors">
+              Minimal Boilerplate
             </h4>
             <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
-              A beautiful, personalized introduction for your GitHub profile landing page. Includes a compact gradient banner, bio text, and sponsors grid.
+              A clean, no-nonsense boilerplate for libraries, APIs, or open-source packages. Includes badges, installation, and usage code snippets.
             </p>
 
             <div className="flex flex-wrap gap-1.5 mt-5">
-              {["Compact Gradient", "Bio Markdown", "Sponsors Grid", "Links"].map((badge, idx) => (
+              {["Badges", "Installation", "Usage Snippets", "License"].map((badge, idx) => (
                 <span
                   key={idx}
-                  className="text-[10px] font-mono font-medium text-purple-400/80 bg-purple-950/30 border border-purple-900/30 px-2 py-1 rounded-md"
+                  className="text-[10px] font-mono font-medium text-orange-400/80 bg-orange-950/30 border border-orange-900/30 px-2 py-1 rounded-md"
                 >
                   {badge}
                 </span>
               ))}
             </div>
           </div>
+
+          {/* 5. YouTube Channel */}
+          <div
+            onClick={() => handleSelectTemplate("youtube-channel", "YouTube Channel")}
+            className="flex flex-col p-5 rounded-xl border border-[#23252a] bg-[#191b1f] hover:bg-[#22242a] hover:border-red-500/50 transition-all cursor-pointer group"
+          >
+            <div className="flex items-start justify-between mb-3">
+              <div className="p-2.5 rounded-lg border border-red-900/50 bg-red-950/20 text-red-400">
+                <Video className="w-6 h-6" />
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="opacity-0 group-hover:opacity-100 transition-opacity text-xs h-8 px-3 text-red-400 hover:text-red-300 hover:bg-red-400/10"
+              >
+                Load Template
+              </Button>
+            </div>
+
+            <h4 className="font-semibold text-base text-white mt-2 group-hover:text-red-50 transition-colors">
+              YouTube Channel
+            </h4>
+            <p className="text-xs text-[#8a8f98] mt-2 leading-relaxed flex-1">
+              Perfect for content creators and streamers. Showcases your latest videos, channel banner, and social media links effortlessly.
+            </p>
+
+            <div className="flex flex-wrap gap-1.5 mt-5">
+              {["Header Banner", "Video Embed", "Social Links"].map((badge, idx) => (
+                <span
+                  key={idx}
+                  className="text-[10px] font-mono font-medium text-red-400/80 bg-red-950/30 border border-red-900/30 px-2 py-1 rounded-md"
+                >
+                  {badge}
+                </span>
+              ))}
+            </div>
+          </div>
+
         </div>
       </DialogContent>
     </Dialog>

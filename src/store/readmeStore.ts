@@ -16,7 +16,8 @@ export type TemplateType =
   | "portfolio"
   | "browser-ext"
   | "vscode-ext"
-  | "discord-bot";
+  | "discord-bot"
+  | "youtube-channel";
 
 export interface Project {
   id: string;
@@ -347,6 +348,12 @@ Consider sponsoring my work to keep open source sustainable:
   "discord-bot": [
     { id: "bot-h", type: "header", props: { style: "gradient", title: "ModeratorBot Discord", subtitle: "Auto-moderation bot keeping communities safe and rewarding contributions.", bgGradientStart: "#7289da", bgGradientEnd: "#23272a", logoType: "auto", border: true } },
     { id: "bot-t", type: "techstack", props: { techs: "Node.js, Discord.js, MongoDB", layout: "row", iconSize: 40, showLabel: true } }
+  ],
+  "youtube-channel": [
+    { id: "yt-h", type: "header", props: { style: "gradient", title: "My YouTube Channel 🎥", subtitle: "Welcome! I create weekly videos about coding, design, and tech.", bgGradientStart: "#ff0000", bgGradientEnd: "#111111", logoType: "none", align: "center", border: false } },
+    { id: "yt-v", type: "video", props: { url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ", width: "70%", align: "center" } },
+    { id: "yt-txt", type: "text", props: { content: "## Latest Videos\nCheck out my latest content above and don't forget to subscribe!" } },
+    { id: "yt-s", type: "socials", props: { youtube: "https://youtube.com/@example", twitter: "https://twitter.com/example", align: "center" } }
   ]
 };
 

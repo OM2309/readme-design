@@ -55,12 +55,6 @@ export default function LandingPage() {
       {/* ═══════ PRIMARY NAV ═══════ */}
       <header
         className="fixed top-0 left-0 right-0 z-50 h-[56px] select-none"
-        style={{
-          backgroundColor: `${C.canvas}e6`,
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
-          borderBottom: `1px solid ${C.hairline}`,
-        }}
       >
         <div className="max-w-[1240px] mx-auto px-6 h-full flex items-center justify-between">
           {/* Wordmark */}
@@ -99,13 +93,13 @@ export default function LandingPage() {
               </svg>
               Star on GitHub
             </a>
-            <Link
+            {/* <Link
               href="/studio"
               className="text-[13px] px-3 py-1.5 rounded-[8px] transition-colors duration-100"
               style={{ color: C.mute, fontWeight: 500, letterSpacing: "0.2px" }}
             >
               Sign in
-            </Link>
+            </Link> */}
           </div>
         </div>
       </header>
@@ -142,25 +136,22 @@ export default function LandingPage() {
 
             {/* Display headline */}
             <h1
-              className={`text-[40px] sm:text-[54px] lg:text-[62px] leading-[1.08] ${mounted ? "fade-in-up fade-in-up-delay-2" : "opacity-0"}`}
+              className={`text-[44px] sm:text-[56px] lg:text-[64px] leading-[1.05] tracking-tight ${mounted ? "fade-in-up fade-in-up-delay-2" : "opacity-0"}`}
               style={{
                 color: "#ffffff",
                 fontWeight: 700,
                 letterSpacing: "-0.03em",
-                fontFeatureSettings: '"calt", "kern", "ss02", "ss03"',
               }}
             >
-              The READMEs <br className="hidden sm:inline" />
-              your <span className="inline-flex items-center mx-1 bg-[#121316] border border-[#242728] px-3.5 py-1 rounded-[10px] font-mono text-[0.82em] font-normal lowercase select-none shadow-[inset_0_1px_2px_rgba(255,255,255,0.05),0_4px_12px_rgba(0,0,0,0.5)]">repository</span> and <br className="hidden sm:inline" />
-              <span className="inline-flex items-center mx-1 bg-[#121316] border border-[#242728] px-3.5 py-1 rounded-[10px] font-mono text-[0.82em] font-normal lowercase select-none shadow-[inset_0_1px_2px_rgba(255,255,255,0.05),0_4px_12px_rgba(0,0,0,0.5)]">profile</span> crave.
+              Design Better READMEs
             </h1>
 
             {/* Subhead */}
             <p
-              className={`text-[16px] sm:text-[18px] leading-[1.6] max-w-[500px] text-left ${mounted ? "fade-in-up fade-in-up-delay-3" : "opacity-0"}`}
-              style={{ color: "#cdcdcd", fontWeight: 400 }}
+              className={`text-[16px] sm:text-[18px] leading-[1.6] max-w-[500px] text-left mt-2 ${mounted ? "fade-in-up fade-in-up-delay-3" : "opacity-0"}`}
+              style={{ color: "#a1a1aa", fontWeight: 400 }}
             >
-              Build stunning, developer-native README layouts visually. Drag, drop, customize blocks, and sync directly with your GitHub repositories.
+              The visual drag-and-drop editor for developers. Build beautiful, engaging READMEs for your GitHub profile and projects in minutes without writing markdown.
             </p>
 
             {/* CTA buttons */}
@@ -462,10 +453,6 @@ export default function LandingPage() {
       {/* ═══════ FOOTER ═══════ */}
       <footer
         className="select-none mt-auto"
-        style={{
-          backgroundColor: C.canvas,
-          borderTop: `1px solid ${C.hairline}`,
-        }}
       >
         <div className="max-w-[1240px] mx-auto px-6 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           {/* Left: product + year */}
